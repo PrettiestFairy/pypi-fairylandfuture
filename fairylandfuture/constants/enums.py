@@ -35,7 +35,7 @@ class DateTimeEnum(StringEnum):
         return cls.DATETIME_CN.value
 
 
-class EncodingEnum(BaseEnum):
+class EncodingEnum(EnumBase):
     """
     Encoding enum.
     """
@@ -50,7 +50,7 @@ class EncodingEnum(BaseEnum):
         return cls.UTF_8.value
 
 
-class LogLevelEnum(BaseEnum):
+class LogLevelEnum(EnumBase):
     """
     Log level Enum.
     """

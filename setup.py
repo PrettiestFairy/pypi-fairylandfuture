@@ -17,12 +17,12 @@ from datetime import datetime
 
 _MARK_TYPE = Literal["release", "test", "alpha", "beta"]
 
-ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
-MAJOR = 1
-SUB = 0
-STAGE = 0
-REVISE = 9
-MARK = "alpha"
+_ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+_MAJOR = 1
+_SUB = 0
+_STAGE = 0
+_REVISE = 10
+_MARK = "alpha"
 
 if sys.version_info < (3, 7):
     sys.exit("Python 3.7 or higher is required.")
@@ -116,7 +116,7 @@ class PackageInfo(object):
 
     @property
     def long_description(self):
-        with open(os.path.join(ROOT_PATH, "README.md"), "r", encoding="UTF-8") as FileIO:
+        with open(os.path.join(_ROOT_PATH, "README.md"), "r", encoding="UTF-8") as FileIO:
             long_description = FileIO.read()
 
         return long_description
@@ -135,8 +135,10 @@ class PackageInfo(object):
     def packages_exclude(self):
         exclude = (
             "bin",
-            "deploy",
+            "conf" "deploy",
+            "docs",
             "scripts",
+            "temp",
             "test",
             "fairylandfuture/test",
         )
@@ -199,7 +201,7 @@ class PackageInfo(object):
     def install_requires(self):
         results = [
             "loguru",
-            "pip-review",
+            # "pip-review",
             # "pip-autoremove",
             # "black",
             # "python-dotenv",
@@ -231,7 +233,7 @@ class PackageInfo(object):
         return param
 
 
-package = PackageInfo(MAJOR, SUB, STAGE, REVISE, MARK)
+package = PackageInfo(_MAJOR, _SUB, _STAGE, _REVISE, _MARK)
 
 setuptools.setup(
     name=package.name,
@@ -244,7 +246,9 @@ setuptools.setup(
     long_description=package.long_description,
     long_description_content_type=package.long_description_content_type,
     url=package.url,
-    packages=setuptools.find_packages(exclude=package.packages_exclude),
+    # license="AGPLv3+",
+    # packages=setuptools.find_packages(exclude=package.packages_exclude),
+    packages=setuptools.find_packages(include=package.packages_include, exclude=package.packages_exclude),
     include_package_data=package.include_package_data,
     classifiers=package.classifiers,
     python_requires=package.python_requires,

@@ -8,6 +8,7 @@
 """
 
 import functools
+import abc
 
 from typing import Any, Dict
 
@@ -36,13 +37,14 @@ class SingletonMeta(type):
             return getattr(cls, "__instance")
 
 
-class SingletonABCMeta(ABCMeta):
+class SingletonABCMeta(abc.ABCMeta):
     """
     Singleton meta
     """
+
     _instances: Dict[type, object] = dict()
 
-    def __call__(self, *args, **kwargs):
-        if self not in self._instances:
-            self._instances.update({self: super().__call__(*args, **kwargs)})
-        return self._instances.get(self)
+    def __call__(cls, *args, **kwargs):
+        if cls not in cls._instances:
+            cls._instances.update({cls: super().__call__(*args, **kwargs)})
+        return cls._instances.get(cls)

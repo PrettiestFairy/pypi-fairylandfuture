@@ -11,12 +11,11 @@ import sys
 from loguru import logger
 
 from fairylandfuture.constants.typed import TypeLogLevel
-from fairylandfuture.modules.decorators import SingletonDecorator
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
+from fairylandfuture.core.abstracts.metaclass import SingletonMeta
 
 
-@SingletonPattern
-class JournalSingleton:
+class JournalSingleton(metaclass=SingletonMeta):
     """
     Log
     """

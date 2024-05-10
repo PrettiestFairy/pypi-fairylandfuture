@@ -90,19 +90,19 @@ class ActionDecorator:
     """
     Decorator to log method execution tips (start, success, failure).
 
-    :param name: The name of the method for logging purposes. Defaults to "A Method".
-    :type name: str
+    :param action: The name of the method for logging purposes. Defaults to "A Method".
+    :type action: str
     """
 
-    def __init__(self, name: str = "A Method"):
-        self.__name = name
+    def __init__(self, action: str = "A Method"):
+        self.__action = action
 
-    def __call__(self, __method: Union[FunctionType, MethodType], *args: Any, **kwargs: Any) -> Callable[..., Any]:
+    def __call__(self, method: Union[FunctionType, MethodType], *args: Any, **kwargs: Any) -> Callable[..., Any]:
         """
         The decorator's logic to wrap around the given method.
 
-        :param __method: The function or method to be decorated.
-        :type __method: FunctionType or MethodType
+        :param method: The function or method to be decorated.
+        :type method: FunctionType or MethodType
         :param args: args
         :type args: Any
         :param kwargs: kwargs
@@ -123,12 +123,12 @@ class ActionDecorator:
             :rtype: ...
             """
             try:
-                journal.info(f"Action Running {self.__name}")
-                results = __method(*args, **kwargs)
-                journal.success(f"Success Running {self.__name}")
+                journal.info(f"Action Running {self.__action}")
+                results = method(*args, **kwargs)
+                journal.success(f"Success Running {self.__action}")
             except Exception as error:
                 journal.exception(error)
-                journal.error(f"Failure Running {self.__name}")
+                journal.error(f"Failure Running {self.__action}")
                 journal.error(error.args.__getitem__(0))
                 raise error
 
