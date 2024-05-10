@@ -37,6 +37,9 @@ class SingletonMeta(type):
 
 
 class SingletonABCMeta(ABCMeta):
+    """
+    Singleton meta
+    """
     _instances: Dict[type, object] = dict()
 
     def __call__(self, *args, **kwargs):

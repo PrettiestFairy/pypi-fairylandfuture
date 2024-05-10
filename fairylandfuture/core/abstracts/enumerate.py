@@ -16,7 +16,7 @@ _TypeEnumBase = TypeVar("_TypeEnumBase", bound="EnumBase")
 
 class EnumBase(Enum):
     """
-    Enum Base Class
+    Enum Base Class.
     """
 
     @classmethod

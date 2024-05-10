@@ -14,7 +14,9 @@ from fairylandfuture.core.abstracts.enumerate import EnumBase
 
 
 class DateTimeEnum(StringEnum):
-    """Datetime"""
+    """
+    Date time enum.
+    """
 
     DATE = date = "%Y-%m-%d"
     TIME = time = "%H:%M:%S"
@@ -34,7 +36,9 @@ class DateTimeEnum(StringEnum):
 
 
 class EncodingEnum(BaseEnum):
-    """Encoding"""
+    """
+    Encoding enum.
+    """
 
     UTF_8 = utf_8 = "UTF-8"
     GBK = gbk = "GBK"
@@ -47,7 +51,9 @@ class EncodingEnum(BaseEnum):
 
 
 class LogLevelEnum(BaseEnum):
-    """Log Level"""
+    """
+    Log level Enum.
+    """
 
     TRACE = trace = "TRACE"
     DEBUG = debug = "DEBUG"

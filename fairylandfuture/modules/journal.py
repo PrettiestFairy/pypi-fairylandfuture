@@ -17,7 +17,9 @@ from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 
 @SingletonPattern
 class JournalSingleton:
-    """Log Module"""
+    """
+    Log
+    """
 
     def __init__(self):
         self.__fairyland_logo = """                                                                 高山仰止,景行行止.虽不能至,心向往之。
