@@ -11,13 +11,14 @@ import sys
 from loguru import logger
 
 from fairylandfuture.constants.typed import TypeLogLevel
-from fairylandfuture.modules.decorators import SingletonDecorator
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
+from fairylandfuture.core.abstracts.metaclass import SingletonMeta
 
 
-@SingletonPattern
-class JournalSingleton:
-    """Log Module"""
+class JournalSingleton(metaclass=SingletonMeta):
+    """
+    Log
+    """
 
     def __init__(self):
         self.__fairyland_logo = """                                                                 高山仰止,景行行止.虽不能至,心向往之。
