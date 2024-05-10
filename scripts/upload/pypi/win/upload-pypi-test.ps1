@@ -1,11 +1,3 @@
-#!/bin/bash
-# @File: upload-test-pypi
-# @Editor: PyCharm
-# @Author: Austin (From Chengdu.China) https://fairy.host
-# @HomePage: https://github.com/AustinFairyland
-# @OperatingSystem: Windows 11 Professional Workstation 23H2 Canary Channel
-# @CreatedTime: 2024-01-07
-
 deployment/upload-pypi/build-package
 cp deployment/upload-pypi/config/.pypirc ~/.pypirc
 pip install twine -i https://pypi.tuna.tsinghua.edu.cn/simple

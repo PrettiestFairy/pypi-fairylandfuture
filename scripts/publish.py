@@ -53,7 +53,7 @@ class PackageInfo(object):
         self.__major = self.__paramscheck(major, int)
         self.__sub = self.__paramscheck(sub, int)
         self.__stage = self.__paramscheck(stage, int)
-        self.__revise = self.__paramscheck(revise, int)
+        self.__revise = self.__paramscheck(revise, int) + 1
 
         if not mark.lower() in _MARK_TYPE.__args__:
             raise TypeError(f"Param: mark type error, mark must in {_MARK_TYPE.__args__}.")

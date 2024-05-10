@@ -10,9 +10,9 @@
 import os
 import setuptools
 
-from deploy.publish import PackageInfo
+from scripts.publish import PackageInfo
 
-package = PackageInfo(1, 0, 0, 6, "alpha")
+package = PackageInfo(1, 0, 0, 8, "alpha")
 
 setuptools.setup(
     name=package.name,
