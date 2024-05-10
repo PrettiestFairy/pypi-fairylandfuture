@@ -10,10 +10,9 @@
 import sys
 from loguru import logger
 
-from fairyland.framework.constants.typing import TypeLogLevel
-from fairyland.framework.modules.decorators.patterns.Design import SingletonPattern
-from fairyland.framework.constants.enum import EncodingFormat
-from fairyland.framework.constants.enum import LogLevelFormat
+from fairylandfuture.constants.typed import TypeLogLevel
+from fairylandfuture.modules.decorators import SingletonDecorator
+from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 
 
 @SingletonPattern
@@ -50,8 +49,8 @@ class JournalSingleton:
             retention=self.__log_retention,
             format=self.__log_format,
             compression="gz",
-            encoding=EncodingFormat.default(),
-            level=LogLevelFormat.default(),
+            encoding=EncodingEnum.default(),
+            level=LogLevelEnum.default(),
             enqueue=True,
             colorize=False,
             backtrace=True,
@@ -64,8 +63,8 @@ class JournalSingleton:
             retention=self.__log_retention,
             format=self.__log_format,
             compression="gz",
-            encoding=EncodingFormat.default(),
-            level=LogLevelFormat.default(),
+            encoding=EncodingEnum.default(),
+            level=LogLevelEnum.default(),
             enqueue=True,
             colorize=False,
             backtrace=True,
@@ -79,8 +78,8 @@ class JournalSingleton:
             retention=self.__log_retention,
             format=self.__log_format,
             compression="gz",
-            encoding=EncodingFormat.default(),
-            level=LogLevelFormat.default_debug(),
+            encoding=EncodingEnum.default(),
+            level=LogLevelEnum.default_debug(),
             enqueue=True,
             colorize=False,
             backtrace=True,
@@ -90,7 +89,7 @@ class JournalSingleton:
         logger.add(
             sink=sys.stdout,
             format="<level>[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}</level>",
-            level=LogLevelFormat.default_debug(),
+            level=LogLevelEnum.default_debug(),
             colorize=True,
             enqueue=True,
         )

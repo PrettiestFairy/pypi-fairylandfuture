@@ -24,3 +24,6 @@ from fairylandfuture.core.abstracts.enumerate import EnumBase, StringEnum, Integ
 
 # 抽象类 - 元类
 from fairylandfuture.core.abstracts.metaclass import SingletonMeta, SingletonABCMeta
+
+# 类型标识
+from fairylandfuture.constants.typed import TypeLogLevel

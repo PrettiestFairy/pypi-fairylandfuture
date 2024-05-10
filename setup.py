@@ -12,7 +12,7 @@ import setuptools
 
 from deploy.publish import PackageInfo
 
-package = PackageInfo(1, 0, 0, 0, "alpha")
+package = PackageInfo(1, 0, 0, 3, "alpha")
 
 setuptools.setup(
     name=package.name,
