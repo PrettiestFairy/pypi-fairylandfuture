@@ -11,5 +11,5 @@ import os.path
 import setuptools
 
 if __name__ == "__main__":
-    print(setuptools.find_packages(include=("fairylandfuture",)))
+    print(setuptools.find_packages(exclude=("bin", "deploy", "scripts", "test", "fairylandfuture/test")))
     print()
