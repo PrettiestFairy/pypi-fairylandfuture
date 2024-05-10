@@ -29,8 +29,12 @@ Development Environment
 
 # Quick Start
 
+## Installation
+
+To install `PyFairylandFuture`, use the following command:
+
 ```shell
-pip install PyFairyland
+pip install PyFairylandFuture
 ```
 
 # Document

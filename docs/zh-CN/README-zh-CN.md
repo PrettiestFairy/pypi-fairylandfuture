@@ -1,4 +1,4 @@
-# PyPI Fairylandfuture
+# PyPI - FairylandFuture
 
 > @software: PyCharm  
 > @author: [Lionel Johnson](https://fairy.host)  
