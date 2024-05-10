@@ -11,7 +11,9 @@ from typing import Dict, List, Tuple, Any, Set
 
 
 class DefaultConstantUtils:
-    """DefaultConstantUtils"""
+    """
+    Default constant utils.
+    """
 
     @staticmethod
     def string() -> str:
@@ -74,6 +76,9 @@ class DefaultConstantUtils:
 
 
 class APIConstantUtils(DefaultConstantUtils):
+    """
+    API constant utils.
+    """
 
     @staticmethod
     def results() -> Dict[str, Any]:
@@ -82,6 +87,9 @@ class APIConstantUtils(DefaultConstantUtils):
 
 
 class EncodingConstantUtils(DefaultConstantUtils):
+    """
+    Encoding constant utils.
+    """
 
     @staticmethod
     def encodings() -> Tuple[str, ...]:

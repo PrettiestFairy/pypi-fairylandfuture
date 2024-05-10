@@ -16,7 +16,7 @@ _TypeEnumBase = TypeVar("_TypeEnumBase", bound="EnumBase")
 
 class EnumBase(Enum):
     """
-    Enum Base Class
+    Enum Base Class.
     """
 
     @classmethod
@@ -34,7 +34,7 @@ class EnumBase(Enum):
         """
         Get the Enum value by member.
 
-        :param value: Attribute name
+        :param value: Attribute action
         :type value: str
         :return: Attribute value
         :rtype: ...
@@ -42,7 +42,7 @@ class EnumBase(Enum):
         if not isinstance(value, str):
             raise TypeError("The value must be a string.")
 
-        value_object: _TypeBaseEnum = getattr(cls, value)
+        value_object: _TypeEnumBase = getattr(cls, value)
 
         return value_object.value
 
@@ -51,7 +51,7 @@ class EnumBase(Enum):
         cls,
         exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None,
         only_value: bool = False,
-    ) -> Union[Tuple[_TypeBaseEnum, ...], Tuple[Any, ...]]:
+    ) -> Union[Tuple[_TypeEnumBase, ...], Tuple[Any, ...]]:
         """
         Returns a tuple with all members of the Enum.
 
@@ -65,10 +65,10 @@ class EnumBase(Enum):
         if exclude_enums and not isinstance(exclude_enums, (list, tuple, set)):
             raise TypeError("The exclude_enums must be a list, tuple or set.")
 
-        member_list: List[_TypeBaseEnum] = list(cls)
+        member_list: List[_TypeEnumBase] = list(cls)
 
         if exclude_enums:
-            member_list: List[_TypeBaseEnum] = [member for member in member_list if member not in exclude_enums]
+            member_list: List[_TypeEnumBase] = [member for member in member_list if member not in exclude_enums]
 
         if only_value:
             return tuple(member.value for member in member_list)

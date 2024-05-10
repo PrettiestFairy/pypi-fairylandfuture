@@ -4,9 +4,5 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-09 18:31:40 UTC+8
+@since: 2024-05-10 15:38:49 UTC+8
 """
-
-from deploy.publish import ROOT_PATH
-
-print(ROOT_PATH)
