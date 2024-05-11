@@ -62,7 +62,7 @@ class PackageInfo(object):
         self.__major = self.__paramscheck(major, int)
         self.__sub = self.__paramscheck(sub, int)
         self.__stage = self.__paramscheck(stage, int)
-        self.__revise = 0
+        self.__revise = self.__get_github_commit_count()
 
         if not mark.lower() in _MARK_TYPE.__args__:
             raise TypeError(f"Param: mark type error, mark must in {_MARK_TYPE.__args__}.")
@@ -234,18 +234,9 @@ class PackageInfo(object):
         return param
 
     def __get_github_commit_count(self):
-        url = "https://api.github.com/repos/PrettiestFairy/pypi-fairylandfuture/commits"
-        response = requests.get(url, params={"per_page": 1})
-        if response.status_code == 200:
-            commits_count = response.links["last"]["url"].split("&page=")[1]
-            with open(os.path.join(_ROOT_PATH, "conf", "build", ".commitrc"), "w", encoding="UTF-8") as FileIO:
-                FileIO.write(commits_count)
-            return commits_count
-        else:
-            print("The commit count fails because the repository doesn't exist or because of API restrictions.")
-            with open(os.path.join(_ROOT_PATH, "conf", "build", ".commitrc"), "r", encoding="UTF-8") as FileIO:
-                commits_count = FileIO.read()
-            return commits_count + 1
+        with open(os.path.join(_ROOT_PATH, "conf", "publish", ".commitrc"), "r", encoding="UTF-8") as FileIO:
+            commit_count = FileIO.read()
+        return int(commit_count)
 
 
 package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
