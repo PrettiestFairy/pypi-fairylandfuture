@@ -8,8 +8,11 @@ name: Stats Commit Count
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '0 0 * * *'
+  push:
+    branches:
+      - 'Pre-release'
+    paths:
+      - '**'
 
 jobs:
   count-commits:
@@ -38,8 +41,17 @@ jobs:
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@fairylandfuture@outlook.com'
-          git checkout -b defend-stats || git checkout defend-stats
-          git add .commitrc
-          git commit -m "Update commit count" || echo "No changes to commit"
-          git push origin defend-stats
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git checkout -b Pre-release || git checkout Pre-release
+          git add conf/publish/.commitrc
+          git commit -m ":wrench: Update commit count" || echo "No changes to commit"
+          git push origin Pre-release
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: 'Pre-release'
+          branch: 'ReleaseMaster'
+          title: 'Update commit count'
+          body: 'This is an auto-generated pull request to update commit count.'
