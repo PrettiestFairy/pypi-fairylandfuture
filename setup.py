@@ -10,6 +10,7 @@
 import os.path
 import setuptools
 import sys
+import requests
 
 from typing import Literal
 import subprocess
@@ -127,6 +128,7 @@ class PackageInfo(object):
     @property
     def packages_include(self):
         include = ("fairylandfuture",)
+        # include = ("fairylandfuture/conf/publish/gitcommitrc",)
 
         return include
 
@@ -233,9 +235,17 @@ class PackageInfo(object):
         return param
 
     def __get_github_commit_count(self):
-        with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
-            commit_count = FileIO.read()
-        return int(commit_count)
+        # Fixed, Package error
+        # with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
+        #     commit_count = FileIO.read()
+        # return int(commit_count)
+        url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/fairylandfuture/conf/publish/gitcommitrc"
+        response = requests.get(url)
+        if response.status_code == 200:
+            commit_count = int(response.text)
+            return commit_count
+        else:
+            return 0
 
 
 package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
@@ -260,3 +270,6 @@ setuptools.setup(
     install_requires=package.install_requires,
     cmdclass=package.cmdclass,
 )
+
+if __name__ == "__main__":
+    print(package.version)
