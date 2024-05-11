@@ -28,7 +28,7 @@ def count_commits(token):
     #     return 0
     page = 1
     per_page = 100
-    commit_count = 0
+    count = 0
 
     while True:
         response = requests.get(f"{url}?page={page}&per_page={per_page}", headers=headers)
@@ -37,19 +37,21 @@ def count_commits(token):
             break
 
         current_batch = len(response.json())
-        commit_count += current_batch
+        count += current_batch
 
         if current_batch < per_page:
             break
 
         page += 1
 
-    return commit_count
+    return count
 
 
-def write_commit_count(commit_count):
+def write_commit_count(count):
     with open("fairylandfuture/conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
-        file.write(commit_count)
+        file.write(count)
+    with open("conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
+        file.write(count)
     return "Successful"
 
 

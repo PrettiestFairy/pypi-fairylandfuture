@@ -116,9 +116,8 @@ class DateTimeModule(SingletonMeta):
         :return: Timestamp.
         :rtype: int
         """
-        validator = ParamTypeValidator(
-            {"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str}
-        )
+        validator_expected_types = {"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str}
+        validator = ParamTypeValidator(validator_expected_types)
         validator.validate({"datetime_string": datetime_string, "millisecond": millisecond, "n": n, "_format": _format})
 
         dt = datetime.strptime(datetime_string, _format)
