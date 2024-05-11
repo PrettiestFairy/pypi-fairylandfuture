@@ -6,10 +6,8 @@
 @organization: https://github.com/FairylandFuture
 @since: 2024-05-10 10:46:52 UTC+8
 """
-
-from typing import Tuple, Any, Union, List, TypeVar, Set
-
 from enum import Enum
+from typing import Tuple, Any, Union, List, TypeVar, Set
 
 _TypeEnumBase = TypeVar("_TypeEnumBase", bound="EnumBase")
 
