@@ -29,7 +29,7 @@ def count_commits(token):
 
 
 def write_commit_count(commit_count):
-    with open("conf/publish/commitrc", "w") as file:
+    with open("fairylandfuture/conf/publish/gitcommitrc", "w") as file:
         file.write(commit_count)
 
 
