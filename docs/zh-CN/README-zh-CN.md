@@ -10,7 +10,8 @@
 
 ---
 
-开发环境
+开发环境  
+**请高于以下版本**
 
 [![DevelopmentSystem](https://img.shields.io/badge/Development%20System-Win11%20Pro%20Workstations%2023H2%20Canary%20Channel-%230078D4?logo=windows11&logoColor=%230078D4)](https://www.microsoft.com/software-download/windows11) [![VCS](https://img.shields.io/badge/VCS-GitHub-%23181717?logo=github&logoColor=%23181717)](https://github.com/AustinFairyland) [![Anaconda](https://img.shields.io/badge/Anaconda-latest-%2344A833?logo=anaconda&logoColor=%2344A833)](https://www.anaconda.com/download#downloads) [![Python](https://img.shields.io/badge/Python-3.9.13-%233776AB?logo=python&logoColor=%233776AB)](https://www.python.org/downloads/release/python-3913/) [![Pip](https://img.shields.io/badge/PIP-23.2.1-%233775A9?logo=pypi&logoColor=%233775A9)](https://pypi.org/) ![MySQL](https://img.shields.io/badge/MySQL-8.0.33-%234479A1?logo=mysql&logoColor=%234479A1) [![GO](https://img.shields.io/badge/Go-1.20.6-%2300ADD8?logo=go&logoColor=%2300ADD8)](https://go.dev/dl/) ![NodeJS](https://img.shields.io/badge/Node-18.18.0-%23339933?logo=nodedotjs&logoColor=%23339933) ![Npm](https://img.shields.io/badge/Npm-10.1.0-%23CB3837?logo=npm&logoColor=%23CB3837) ![Pnpm](https://img.shields.io/badge/Pnpm-8.7.6-%23F69220?logo=pnpm&logoColor=%23F69220) ![Yarn](https://img.shields.io/badge/Yarn-1.22.19-%232C8EBB?logo=yarn&logoColor=%232C8EBB) ![Maven](https://img.shields.io/badge/Maven-3.9.1-%23C71A36?logo=apachemaven&logoColor=%23C71A36) ![Perl](https://img.shields.io/badge/Perl-8.3.0-%2339457E?logo=perl&logoColor=%2339457E) [![jetbrains](https://img.shields.io/badge/Jetbrains-2024-%2347f38a?logo=jetbrains&logoColor=%2347f38a)](https://www.jetbrains.com/) ![Git](https://img.shields.io/badge/Git-2.42.0-%23F05032?logo=git&logoColor=%23F05032) ![Chrome](https://img.shields.io/badge/Chrome-119_dev-%234285F4?logo=googlechrome&logoColor=%234285F4) ![AdaptingWindows](https://img.shields.io/badge/Adapting%20OS-Windows-%230078D4?logo=windows&logoColor=%230078D4) ![AdaptingLinux](https://img.shields.io/badge/Adapting%20OS-Linux-%23FCC624?logo=linux&logoColor=%23FCC624) ![AdaptingMac](https://img.shields.io/badge/Adapting%20OS-Mac-%23ffffff?logo=apple&logoColor=%23ffffff) ![Deployment](https://img.shields.io/badge/Deployment-Local-%2351BB7B?logo=local&logoColor=%2351BB7B) [![Deployment](https://img.shields.io/badge/Deployment-Docker-%232496ED?logo=docker&logoColor=%232496ED)](https://www.docker.com/) [![Deployment](https://img.shields.io/badge/Deployment-Kubernetes-%23326CE5?logo=kubernetes&logoColor=%23326CE5)](https://kubernetes.io/) [![Package](https://img.shields.io/badge/Package-requirements.txt-%2302A8EF?logo=packer&logoColor=%2302A8EF)](requirements.txt)
 
@@ -51,11 +52,9 @@ pip install PyFairylandFuture
 
 # 🧑 贡献者
 
-提示: 等待填充
+![https://github.com/AustinFairyland/AustinFairylandRepository/graphs/contributors](https://contrib.rocks/image?repo=PrettiestFairy/pypi-fairylandfuture)
 
-![https://github.com/AustinFairyland/AustinFairylandRepository/graphs/contributors](https://contrib.rocks/image?repo=AustinFairyland/AustinFairylandRepository)
-
-[PrettiestFairy](https://github.com/PrettiestFairy) · [AustinEngineer](https://github.com/AustinEngineer) · []()
+[PrettiestFairy-Lionel Johnson(Admin)](https://github.com/PrettiestFairy) · [PrettiestFairy-Lionel Johnson(work)](https://github.com/AustinEngineer) · [duhuanzhuo](https://github.com/duhuanzhuo)
 
 Gitee:
 

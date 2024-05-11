@@ -124,11 +124,11 @@ class DatetimeUtils:
     @classmethod
     def timestamp_to_datetime(cls, timestamp: Union[int, float]) -> datetime:
         """
-        Convert timestamp to datetime
+        Convert timestamp to datetime_str
 
         :param timestamp: Timestamp value
         :type timestamp: int or float
-        :return: Corresponding datetime
+        :return: Corresponding datetime_str
         :rtype: datetime
         """
         if not isinstance(timestamp, (int, float)):
@@ -142,7 +142,7 @@ class DatetimeUtils:
     @classmethod
     def datetime_to_timestamp(cls, datetime_object: datetime) -> float:
         """
-        Convert datetime to timestamp
+        Convert datetime_str to timestamp
 
         :param datetime_object: Datetime object
         :type datetime_object: datetime
@@ -178,7 +178,7 @@ class DatetimeUtils:
         """
         Convert string to timestamp
 
-        :param string: String representation of datetime
+        :param string: String representation of datetime_str
         :type string: str
         :param __format: Format string
         :type __format: str
@@ -195,7 +195,7 @@ class DatetimeUtils:
     @classmethod
     def datetime_to_string(cls, datetime_object: datetime, __format: str = DateTimeEnum.DATETIME.value) -> str:
         """
-        Convert datetime to string
+        Convert datetime_str to string
 
         :param datetime_object: Datetime object
         :type datetime_object: datetime
@@ -212,13 +212,13 @@ class DatetimeUtils:
     @classmethod
     def string_to_datetime(cls, string: str, format: str = DateTimeEnum.DATETIME.value) -> datetime:
         """
-        Convert string to datetime
+        Convert string to datetime_str
 
-        :param string: String representation of datetime
+        :param string: String representation of datetime_str
         :type string: str
         :param format: Format string
         :type format: str
-        :return: Corresponding datetime
+        :return: Corresponding datetime_str
         :rtype: datetime
         """
         if not isinstance(string, str):
@@ -307,9 +307,9 @@ class DatetimeUtils:
     @classmethod
     def yesterday(cls) -> datetime:
         """
-        Get the datetime for yesterday.
+        Get the datetime_str for yesterday.
 
-        :return: Yesterday's datetime.
+        :return: Yesterday's datetime_str.
         :rtype: datetime
         """
         return cls.sub_datetime(days=1)
@@ -317,9 +317,9 @@ class DatetimeUtils:
     @classmethod
     def tomorrow(cls) -> datetime:
         """
-        Get the datetime for tomorrow.
+        Get the datetime_str for tomorrow.
 
-        :return: Tomorrow's datetime.
+        :return: Tomorrow's datetime_str.
         :rtype: datetime
         """
         return cls.add_datetime(days=1)
@@ -327,7 +327,7 @@ class DatetimeUtils:
     @classmethod
     def week_later(cls) -> datetime:
         """
-        Get the datetime for a week later.
+        Get the datetime_str for a week later.
 
         :return: Datetime for a week later.
         :rtype: datetime
@@ -337,7 +337,7 @@ class DatetimeUtils:
     @classmethod
     def month_later(cls) -> datetime:
         """
-        Get the datetime for a month later.
+        Get the datetime_str for a month later.
 
         :return: Datetime for a month later.
         :rtype: datetime

@@ -52,11 +52,11 @@ class DateTimeModule(SingletonMeta):
     @classmethod
     def datetime(cls, _format: str = DateTimeEnum.DATETIME.value) -> str:
         """
-        Get the current datetime.
+        Get the current datetime_str.
 
         :param _format: Datetime format.
         :type _format: str
-        :return: Current datetime
+        :return: Current datetime_str
         :rtype: str
         """
         return datetime.now().strftime(_format)
@@ -80,17 +80,49 @@ class DateTimeModule(SingletonMeta):
         return int(round(time.time()))
 
     @classmethod
-    def timestamp_to_datetime(cls, timestamp: Union[int, float], _fromat: str = DateTimeEnum.DATETIME.value):
+    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: str = DateTimeEnum.DATETIME.value):
         """
-        Convert timestamp to datetime.
+        Convert timestamp to datetime_str.
 
         :param timestamp: Timestamp.
         :type timestamp: int or float
-        :param _fromat: Datetime format.
-        :type _fromat: str
-        :return: Formatted datetime string.
+        :param _format: Datetime format.
+        :type _format: str
+        :return: Formatted datetime_str string.
         :rtype: str
         """
+        validator = ParamTypeValidator({"timestamp": (int, float)})
+        validator.validate({"timestamp": timestamp})
+
         if len(str(int(timestamp))) == 13:
             timestamp /= 1000
-        return datetime.fromtimestamp(timestamp).strftime(_fromat)
+        return datetime.fromtimestamp(timestamp).strftime(_format)
+
+    @classmethod
+    def datetime_to_timestamp(cls, datetime_string: str, millisecond: bool = False, n: Optional[int] = None, _format: str = DateTimeEnum.DATETIME.value) -> int:
+        """
+        Convert datetime to timestamp.
+
+        :param datetime_string: Datetime string.
+        :type datetime_string: str
+        :param millisecond: Whether to include milliseconds.
+        :type millisecond: bool
+        :param n: Number of decimal places for the timestamp.
+        :type n: int or None
+        :param _format: Datetime format.
+        :type _format: str
+        :return: Timestamp.
+        :rtype: int
+        """
+        validator = ParamTypeValidator({"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str})
+        validator.validate({"datetime_string": datetime_string, "millisecond": millisecond, "n": n, "_format": _format})
+
+        dt = datetime.strptime(datetime_string, _format)
+        timestamp = dt.timestamp()
+
+        if millisecond:
+            return int(timestamp * 1000)
+        if n:
+            return int(timestamp * (10 ** (n - 10)))
+
+        return int(timestamp)

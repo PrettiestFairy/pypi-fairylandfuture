@@ -1,0 +1,45 @@
+# @software: PyCharm
+# @author: Lionel Johnson
+# @contact: https://fairy.host
+# @organization: https://github.com/FairylandFuture
+# @since: 05 11, 2024
+---
+name: Stats Commit Count
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  count-commits:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Count commits and write to file
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python scripts/workflows/stats_count_commits.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@fairylandfuture@outlook.com'
+          git checkout -b defend-stats || git checkout defend-stats
+          git add .commitrc
+          git commit -m "Update commit count" || echo "No changes to commit"
+          git push origin defend-stats
