@@ -10,6 +10,7 @@
 import os.path
 import setuptools
 import sys
+import requests
 
 from typing import Literal
 import subprocess
@@ -21,7 +22,6 @@ _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _MAJOR = 1
 _SUB = 0
 _STAGE = 0
-_REVISE = 10
 _MARK = "alpha"
 
 if sys.version_info < (3, 7):
@@ -58,11 +58,11 @@ class PackageInfo(object):
     :type mark: str
     """
 
-    def __init__(self, major: int, sub: int, stage: int, revise: int, mark: _MARK_TYPE):
+    def __init__(self, major: int, sub: int, stage: int, mark: _MARK_TYPE):
         self.__major = self.__paramscheck(major, int)
         self.__sub = self.__paramscheck(sub, int)
         self.__stage = self.__paramscheck(stage, int)
-        self.__revise = self.__paramscheck(revise, int) + 1
+        self.__revise = 0
 
         if not mark.lower() in _MARK_TYPE.__args__:
             raise TypeError(f"Param: mark type error, mark must in {_MARK_TYPE.__args__}.")
@@ -135,12 +135,13 @@ class PackageInfo(object):
     def packages_exclude(self):
         exclude = (
             "bin",
-            "conf" "deploy",
+            "conf",
+            "deploy",
             "docs",
             "scripts",
             "temp",
             "test",
-            "fairylandfuture/test",
+            # "fairylandfuture/test",
         )
 
         return exclude
@@ -232,8 +233,22 @@ class PackageInfo(object):
 
         return param
 
+    def __get_github_commit_count(self):
+        url = "https://api.github.com/repos/PrettiestFairy/pypi-fairylandfuture/commits"
+        response = requests.get(url, params={"per_page": 1})
+        if response.status_code == 200:
+            commits_count = response.links["last"]["url"].split("&page=")[1]
+            with open(os.path.join(_ROOT_PATH, "conf", "build", ".commitrc"), "w", encoding="UTF-8") as FileIO:
+                FileIO.write(commits_count)
+            return commits_count
+        else:
+            print("The commit count fails because the repository doesn't exist or because of API restrictions.")
+            with open(os.path.join(_ROOT_PATH, "conf", "build", ".commitrc"), "r", encoding="UTF-8") as FileIO:
+                commits_count = FileIO.read()
+            return commits_count + 1
 
-package = PackageInfo(_MAJOR, _SUB, _STAGE, _REVISE, _MARK)
+
+package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
 
 setuptools.setup(
     name=package.name,
@@ -247,8 +262,8 @@ setuptools.setup(
     long_description_content_type=package.long_description_content_type,
     url=package.url,
     # license="AGPLv3+",
-    # packages=setuptools.find_packages(exclude=package.packages_exclude),
-    packages=setuptools.find_packages(include=package.packages_include, exclude=package.packages_exclude),
+    # packages=setuptools.find_packages(include=package.packages_include, exclude=package.packages_exclude),
+    packages=setuptools.find_packages(exclude=package.packages_exclude),
     include_package_data=package.include_package_data,
     classifiers=package.classifiers,
     python_requires=package.python_requires,
