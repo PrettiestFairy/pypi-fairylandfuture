@@ -38,7 +38,7 @@ jobs:
       - name: Commit and push changes
         run: |
           git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@fairylandfuture@outlook.com'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -b defend-stats || git checkout defend-stats
           git add .commitrc
           git commit -m "Update commit count" || echo "No changes to commit"
