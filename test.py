@@ -7,9 +7,18 @@
 @since: 2024-05-09 17:04:24 UTC+8
 """
 
-import os.path
 import setuptools
 
 if __name__ == "__main__":
-    print(setuptools.find_packages(exclude=("bin", "deploy", "scripts", "test", "fairylandfuture/test")))
-    print()
+    exclude_tuple = (
+        "bin",
+        "conf",
+        "deploy",
+        "docs",
+        "scripts",
+        "temp",
+        "test",
+    )
+    install_package_list = setuptools.find_packages(exclude=exclude_tuple)
+    for i in install_package_list:
+        print(i)

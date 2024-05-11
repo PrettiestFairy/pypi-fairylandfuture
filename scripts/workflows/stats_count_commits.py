@@ -29,8 +29,9 @@ def count_commits(token):
 
 
 def write_commit_count(commit_count):
-    with open("fairylandfuture/conf/publish/gitcommitrc", "w") as file:
+    with open("fairylandfuture/conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
         file.write(commit_count)
+    return "Successful"
 
 
 if __name__ == "__main__":

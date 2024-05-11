@@ -10,7 +10,6 @@
 import os.path
 import setuptools
 import sys
-import requests
 
 from typing import Literal
 import subprocess
