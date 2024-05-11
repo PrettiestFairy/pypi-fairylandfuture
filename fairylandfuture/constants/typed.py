@@ -9,5 +9,6 @@
 
 from typing import Literal
 
+
 # log level
 TypeLogLevel = Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"]

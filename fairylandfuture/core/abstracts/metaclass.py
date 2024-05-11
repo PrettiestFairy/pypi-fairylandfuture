@@ -7,9 +7,8 @@
 @since: 2024-05-10 10:58:14 UTC+8
 """
 
-import functools
 import abc
-
+import functools
 from typing import Any, Dict
 
 

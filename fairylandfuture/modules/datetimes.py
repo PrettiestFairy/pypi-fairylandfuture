@@ -7,16 +7,12 @@
 @since: 2024-05-10 12:34:34 UTC+8
 """
 
-from typing import Union, Any, Optional
-from datetime import datetime, timedelta
 import time
-from dateutil.relativedelta import relativedelta
+from datetime import datetime
+from typing import Union, Optional
 
-from datetime import date as TypeDate
-from datetime import time as TypeTime
-
-from fairylandfuture.core.abstracts.metaclass import SingletonMeta
 from fairylandfuture.constants.enums import DateTimeEnum
+from fairylandfuture.core.abstracts.metaclass import SingletonMeta
 from fairylandfuture.util.verifies.validate import ParamTypeValidator
 
 
@@ -99,7 +95,13 @@ class DateTimeModule(SingletonMeta):
         return datetime.fromtimestamp(timestamp).strftime(_format)
 
     @classmethod
-    def datetime_to_timestamp(cls, datetime_string: str, millisecond: bool = False, n: Optional[int] = None, _format: str = DateTimeEnum.DATETIME.value) -> int:
+    def datetime_to_timestamp(
+        cls,
+        datetime_string: str,
+        millisecond: bool = False,
+        n: Optional[int] = None,
+        _format: str = DateTimeEnum.DATETIME.value,
+    ) -> int:
         """
         Convert datetime to timestamp.
 
@@ -114,7 +116,9 @@ class DateTimeModule(SingletonMeta):
         :return: Timestamp.
         :rtype: int
         """
-        validator = ParamTypeValidator({"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str})
+        validator = ParamTypeValidator(
+            {"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str}
+        )
         validator.validate({"datetime_string": datetime_string, "millisecond": millisecond, "n": n, "_format": _format})
 
         dt = datetime.strptime(datetime_string, _format)

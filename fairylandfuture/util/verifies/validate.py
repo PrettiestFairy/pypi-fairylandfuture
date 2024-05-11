@@ -7,7 +7,7 @@
 @since: 2024-05-10 18:56:45 UTC+8
 """
 
-from typing import Dict, Type
+from typing import Dict, Type, Union, Tuple
 
 from fairylandfuture.modules.exceptions import ParameterTypeError, ParameterError
 
@@ -40,7 +40,7 @@ class ParamTypeValidator:
             # handle errors
     """
 
-    def __init__(self, expected_types: Dict[str, Type]):
+    def __init__(self, expected_types: Dict[str, Union[Type, Tuple[Type, ...]]]):
         self.expected_types = expected_types
 
     def validate(self, params: Dict[str, object]):
