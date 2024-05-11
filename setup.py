@@ -62,7 +62,7 @@ class PackageInfo(object):
         self.__major = self.__paramscheck(major, int)
         self.__sub = self.__paramscheck(sub, int)
         self.__stage = self.__paramscheck(stage, int)
-        self.__revise = 0
+        self.__revise = self.__get_github_commit_count()
 
         if not mark.lower() in _MARK_TYPE.__args__:
             raise TypeError(f"Param: mark type error, mark must in {_MARK_TYPE.__args__}.")
@@ -128,6 +128,7 @@ class PackageInfo(object):
     @property
     def packages_include(self):
         include = ("fairylandfuture",)
+        # include = ("fairylandfuture/conf/publish/gitcommitrc",)
 
         return include
 
@@ -234,18 +235,17 @@ class PackageInfo(object):
         return param
 
     def __get_github_commit_count(self):
-        url = "https://api.github.com/repos/PrettiestFairy/pypi-fairylandfuture/commits"
-        response = requests.get(url, params={"per_page": 1})
+        # Fixed, Package error
+        # with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
+        #     commit_count = FileIO.read()
+        # return int(commit_count)
+        url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/fairylandfuture/conf/publish/gitcommitrc"
+        response = requests.get(url)
         if response.status_code == 200:
-            commits_count = response.links["last"]["url"].split("&page=")[1]
-            with open(os.path.join(_ROOT_PATH, "conf", "build", ".commitrc"), "w", encoding="UTF-8") as FileIO:
-                FileIO.write(commits_count)
-            return commits_count
+            commit_count = int(response.text)
+            return commit_count
         else:
-            print("The commit count fails because the repository doesn't exist or because of API restrictions.")
-            with open(os.path.join(_ROOT_PATH, "conf", "build", ".commitrc"), "r", encoding="UTF-8") as FileIO:
-                commits_count = FileIO.read()
-            return commits_count + 1
+            return 0
 
 
 package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
@@ -270,3 +270,6 @@ setuptools.setup(
     install_requires=package.install_requires,
     cmdclass=package.cmdclass,
 )
+
+if __name__ == "__main__":
+    print(package.version)

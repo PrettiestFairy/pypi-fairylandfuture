@@ -8,10 +8,11 @@
 """
 
 import sys
+
 from loguru import logger
 
-from fairylandfuture.constants.typed import TypeLogLevel
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
+from fairylandfuture.constants.typed import TypeLogLevel
 from fairylandfuture.core.abstracts.metaclass import SingletonMeta
 
 
@@ -33,7 +34,9 @@ class JournalSingleton(metaclass=SingletonMeta):
         self.__log_level: TypeLogLevel = "DEBUG"
         self.__log_rotation: str = "10 MB"
         self.__log_retention: str = "60 days"
-        self.__log_format: str = "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
+        self.__log_format: str = (
+            "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
+        )
         self.__init_logger()
 
     def __init_logger(self):
@@ -89,7 +92,14 @@ class JournalSingleton(metaclass=SingletonMeta):
 
         logger.add(
             sink=sys.stdout,
-            format="<level>[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}</level>",
+            format=(
+                "<level>"
+                "[{time:YYYY-MM-DD HH:mm:ss} | "
+                "Process ID: {process:<8} | "
+                "Thread ID: {thread:<8} | "
+                "{level:<8}]: {message}"
+                "</level>"
+            ),
             level=LogLevelEnum.default_debug(),
             colorize=True,
             enqueue=True,

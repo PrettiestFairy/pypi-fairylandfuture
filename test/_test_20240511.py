@@ -43,3 +43,7 @@ class TestDateTimeModule:
 
 if __name__ == "__main__":
     TestDateTimeModule.run()
+
+    with open("../conf/publish/.commitrc", "r", encoding="UTF-8") as f:
+        r = f.read()
+    print(int(r))

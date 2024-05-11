@@ -17,15 +17,21 @@
 
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 
-$pypircPath = "$HOME\.pypirc"
+$ProjectPyPIrcPath = "conf\pypi\.pypirc"
+$PyPIrcPath = "$HOME\.pypirc"
 
-if (-Not (Test-Path $pypircPath)) {
-    Copy-Item -Path "conf\pypi\.pypirc" -Destination $pypircPath -Force
+if (-Not (Test-Path $ProjectPyPIrcPath)) {
+    Write-Host "The file .pypirc does not exist"
+    exit
+}
+
+if (-Not (Test-Path $PyPIrcPath)) {
+    Copy-Item -Path $ProjectPyPIrcPath -Destination $PyPIrcPath -Force
 } else {
     Write-Host "The file .pypirc already exists in the home directory. No action taken."
 }
 
-Copy-Item -Path conf\pypi\.pypirc -Destination $HOME\.pypirc -Force
+Copy-Item -Path $ProjectPyPIrcPath -Destination $PyPIrcPath -Force
 pip install --no-cache-dir -r dev-win-requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 python -m build --no-isolation
 # If you want to upload to the official PyPI repository, use the following command instead:

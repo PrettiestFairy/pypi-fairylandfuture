@@ -42,7 +42,7 @@ class DefaultConstantUtils:
 
     @staticmethod
     def tuple() -> Tuple[None]:
-        results = ()
+        results = tuple()
         return results
 
     @staticmethod

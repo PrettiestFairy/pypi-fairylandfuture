@@ -14,23 +14,43 @@ import os
 def count_commits(token):
     url = "https://api.github.com/repos/PrettiestFairy/pypi-fairylandfuture/commits"
     headers = {"Authorization": f"token {token}"}
-    response = requests.get(url, headers=headers)
-    try:
-        if response.status_code == 200:
-            commit_data = response.json()
-            print(f"Fetched {len(commit_data)} commits")
-            return len(commit_data)
-        else:
-            print(f"Failed to fetch commits, status code: {response.status_code}")
-            return 0
-    except Exception as err:
-        print(f"Failed to fetch commits, error: {err}")
-        return 0
+    # response = requests.get(url, headers=headers)
+    # try:
+    #     if response.status_code == 200:
+    #         commit_data = response.json()
+    #         print(f"Fetched {len(commit_data)} commits")
+    #         return len(commit_data)
+    #     else:
+    #         print(f"Failed to fetch commits, status code: {response.status_code}")
+    #         return 0
+    # except Exception as err:
+    #     print(f"Failed to fetch commits, error: {err}")
+    #     return 0
+    page = 1
+    per_page = 100
+    commit_count = 0
+
+    while True:
+        response = requests.get(f"{url}?page={page}&per_page={per_page}", headers=headers)
+        if response.status_code != 200:
+            print(f"Request failed. HTTP status code：{response.status_code}")
+            break
+
+        current_batch = len(response.json())
+        commit_count += current_batch
+
+        if current_batch < per_page:
+            break
+
+        page += 1
+
+    return commit_count
 
 
 def write_commit_count(commit_count):
-    with open("conf/publish/.commitrc", "w") as file:
+    with open("fairylandfuture/conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
         file.write(commit_count)
+    return "Successful"
 
 
 if __name__ == "__main__":
