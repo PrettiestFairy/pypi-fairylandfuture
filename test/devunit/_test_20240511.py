@@ -8,7 +8,7 @@
 """
 
 # 日志
-from fairylandfuture.modules.journal import journal, logger
+from fairylandfuture.modules.journal import journal
 
 # 时间模块
 from fairylandfuture.modules.datetimes import DateTimeModule
@@ -17,9 +17,6 @@ from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.modules.decorators import ActionDecorator, TimingDecorator
 
 # 枚举
-from fairylandfuture.constants.enums import DateTimeEnum
-
-from test._test_20240510 import TestDateTimeModule as TestDateTimeModule20240510
 
 
 class TestDateTimeModule:
