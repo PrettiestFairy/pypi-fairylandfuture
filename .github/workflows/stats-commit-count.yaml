@@ -51,7 +51,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          base: 'ReleaseMaster'
-          branch: 'Pre-release'
+          base: 'Pre-release'
+          branch: 'ReleaseMaster'
           title: 'Update commit count'
           body: 'This is an auto-generated pull request to update commit count.'
