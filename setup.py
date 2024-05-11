@@ -234,7 +234,7 @@ class PackageInfo(object):
         return param
 
     def __get_github_commit_count(self):
-        with open(os.path.join(_ROOT_PATH, "conf", "publish", ".commitrc"), "r", encoding="UTF-8") as FileIO:
+        with open(os.path.join(_ROOT_PATH, "conf", "publish", "commitrc"), "r", encoding="UTF-8") as FileIO:
             commit_count = FileIO.read()
         return int(commit_count)
 
