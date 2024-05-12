@@ -8,8 +8,9 @@
 """
 
 import time
-from datetime import datetime
-from typing import Union, Optional
+from datetime import datetime, timedelta
+from typing import Union, Optional, Any
+from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.constants.enums import DateTimeEnum
 from fairylandfuture.core.abstracts.metaclass import SingletonMeta
@@ -129,3 +130,65 @@ class DateTimeModule(SingletonMeta):
             return int(timestamp * (10 ** (n - 10)))
 
         return int(timestamp)
+
+    @classmethod
+    def yesterday(cls, _format: str = DateTimeEnum.DATE.value) -> str:
+        """
+        Get yesterday's date.
+
+        :param _format: Date format.
+        :type _format: str
+        :return: Yesterday's date.
+        :rtype: str
+        """
+        return (datetime.now() - relativedelta(days=1)).strftime(_format)
+
+    @classmethod
+    def tomorrow(cls, _format: str = DateTimeEnum.DATE.value) -> str:
+        """
+        Get tomorrow's date.
+
+        :param _format: Date format.
+        :type _format: str
+        :return: Tomorrow's date.
+        :rtype: str
+        """
+        return (datetime.now() + relativedelta(days=1)).strftime(_format)
+
+    @classmethod
+    def daysdelta(
+        cls,
+        dt1: Union[str, int, float],
+        dt2: Union[str, int, float],
+        timestamp: bool = False,
+        millisecond: bool = False,
+        _format: str = DateTimeEnum.DATE.value,
+    ) -> int:
+        """
+        Calculate the number of days between two dates.
+
+        :param dt1: Datetime_str or timestamp of the first date.
+        :type dt1: str or int or float
+        :param dt2: Datetime_str or timestamp of the second date.
+        :type dt2: str or int or float
+        :param timestamp: Is timestamp or datetime_str.
+        :type timestamp: bool
+        :param millisecond: Is millisecond or not.
+        :type millisecond: bool
+        :param _format: Datetime_str format.
+        :type _format: str
+        :return: Days delta.
+        :rtype: int
+        """
+        if timestamp:
+            if millisecond:
+                date1 = datetime.fromtimestamp(dt1 / 1000)
+                date2 = datetime.fromtimestamp(dt2 / 1000)
+            else:
+                date1 = datetime.fromtimestamp(dt1)
+                date2 = datetime.fromtimestamp(dt2)
+        else:
+            date1 = datetime.strptime(dt1, _format)
+            date2 = datetime.strptime(dt2, _format)
+
+        return abs((date2 - date1).days)
