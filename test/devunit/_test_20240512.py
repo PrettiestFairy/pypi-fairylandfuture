@@ -6,12 +6,15 @@
 @organization: https://github.com/FairylandFuture
 @since: 2024-05-12 02:24:21 UTC+8
 """
+
+import os
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.modules.journal import journal
+from fairylandfuture.utils.journal import journal
 from fairylandfuture.modules.decorators import TipsDecorator, SingletonDecorator, TimingDecorator, ActionDecorator
 
 from _test import TestBase
@@ -57,6 +60,20 @@ class TestClass(TestBase):
     def test_004(cls):
         def a():
             pass
+
+    @classmethod
+    def test_005(cls):
+        logs_dir = "logs"
+        logs_file = "test.log"
+        a = os.path.join(logs_dir, logs_file)
+        journal.debug(a)
+        journal.debug(type(a))
+
+    @classmethod
+    def test_006(cls):
+        a = "s"
+        n, e = os.path.splitext(a)
+        # print(repr(n), repr(e))
 
 
 @SingletonDecorator
