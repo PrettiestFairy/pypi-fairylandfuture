@@ -9,176 +9,198 @@
 
 import time
 
-from types import FunctionType, MethodType
-from typing import Union, Any, Callable
-
-from fairylandfuture.modules.journal import journal
+from typing import Literal, Type, TypeVar, Generic
 
 
-class SingletonDecorator:
+_T = TypeVar("_T")
+
+
+class SingletonDecorator(Generic[_T]):
     """
-    Implements the Singleton pattern as a decorator class.
+    A decorator class that turns a class into a Singleton by ensuring that only one instance of the class exists.
 
-    This class ensures that a class is only instantiated once and
-    returns the same instance on subsequent calls.
-    """
+    :param cls: The class to be transformed into a Singleton.
+    :type cls: object
 
-    def __init__(self, __cls):
-        self.__cls = __cls
-        self.__instance = dict()
+    Usage::
 
-    def __call__(self, *args: Any, **kwargs: Any):
-        """
-        On call, ensures the decorated class is instantiated only once
-        and returns the singleton instance.
+        @SingletonDecorator
+        class MyClass:
+            pass
 
-        :param args: args
-        :type args: tuple
-        :param kwargs: kwargs
-        :type kwargs: dict
-        :return: Singleton instance
-        :rtype: Any
-        """
-        if not self.__instance:
-            self.__instance.update(__instance=self.__cls(*args, **kwargs))
-            return self.__instance.get("__instance")
-        else:
-            return self.__instance.get("__instance")
+        my_instance1 = MyClass()
+        my_instance2 = MyClass()
 
-
-class TimingDecorator:
-    """
-    Calculate running time
+        assert my_instance1 is my_instance2  # True because both are the same instance
     """
 
-    def __init__(self, __method: Union[FunctionType, MethodType]):
-        self.__method = __method
+    _instance = None
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
-        """
-        Execute the wrapped method and calculate its execution time.
+    def __init__(self, cls: Type):
+        self._cls = cls
 
-        :param args: Positional arguments passed to the method.
-        :type args: ...
-        :param kwargs: Keyword arguments passed to the method.
-        :type kwargs: ...
-        :return: The result of the method execution.
-        :rtype: ...
-        """
+    def __call__(self, *args, **kwargs):
+        if not self._instance:
+            self._instance = self._cls(*args, **kwargs)
+        return self._instance
+
+    def __instancecheck__(self, instance):
+        return isinstance(instance, self._cls)
+
+
+class TimingDecorator(Generic[_T]):
+    """
+    A decorator class for timing the execution duration of a function and printing the elapsed time.
+
+    :param func: The function to be timed.
+    :type func: object
+
+    Usage::
+
+        @TimingDecorator
+        def my_function():
+            # Function implementation
+
+    Note:
+        Customize `output` method in a subclass to handle the timing message output.
+    """
+
+    def __init__(self, func: Type):
+        self.func = func
+
+    def __call__(self, *args, **kwargs):
         start_time = time.time()
-        results = self.__method(*args, **kwargs)
+        results = self.func(*args, **kwargs)
         end_time = time.time()
         elapsed_time = end_time - start_time
-        if elapsed_time.__lt__(60):
-            hour, minute, second = 0, 0, elapsed_time
-        elif elapsed_time.__ge__(60) and elapsed_time.__lt__(3600):
-            hour = 0
-            minute = (elapsed_time / 60).__int__()
-            second = elapsed_time % 60
-        else:
-            hour = (elapsed_time / 3600).__int__()
-            minute = ((elapsed_time - (hour * 3600)) / 60).__int__()
-            second = elapsed_time % 60
 
-        elapsed_time_format_str = f"{hour:02d}:{minute:02d}:{second:06.3f}"
-        journal.success(f"This method ran for {elapsed_time_format_str}")
+        # Calculating hours, minutes, and seconds from elapsed time
+        hour, minute, second = self._calculate_time_parts(elapsed_time)
+
+        elapsed_str = f"Running for {hour:02d}:{minute:02d}:{second:06.3f}"
+        self.output(elapsed_str)
 
         return results
 
+    @staticmethod
+    def _calculate_time_parts(elapsed_time):
+        if elapsed_time < 60:
+            return 0, 0, elapsed_time
+        elif elapsed_time < 3600:
+            return 0, int(elapsed_time / 60), elapsed_time % 60
+        else:
+            hour = int(elapsed_time / 3600)
+            return hour, int((elapsed_time - (hour * 3600)) / 60), elapsed_time % 60
 
-class ActionDecorator:
+    def output(self, msg: str) -> None:
+        raise NotImplementedError("Customize the output in the subclass.")
+
+
+class ActionDecorator(Generic[_T]):
     """
-    Decorator to log method execution tips (start, success, failure).
+    A decorator class that logs the start and end of a function's execution, indicating success or failure.
 
-    :param action: The name of the method for logging purposes. Defaults to "A Method".
+    :param action: An optional action name to log.
     :type action: str
+
+    Usage::
+
+        @ActionDecorator(action="Process Data")
+        def process_data():
+            # Function implementation
+
+    Note:
+        Customize `output` method in a subclass to handle the action message output.
     """
 
-    def __init__(self, action: str = "A Method"):
-        self.__action = action
+    def __init__(self, action: Literal[str] = None):
+        self.action = action
 
-    def __call__(self, method: Union[FunctionType, MethodType], *args: Any, **kwargs: Any) -> Callable[..., Any]:
-        """
-        The decorator's logic to wrap around the given method.
+    def __call__(self, *args, **kwargs):
+        func: Type = args.__getitem__(0)
 
-        :param method: The function or method to be decorated.
-        :type method: FunctionType or MethodType
-        :param args: args
-        :type args: Any
-        :param kwargs: kwargs
-        :type kwargs: Any
-        :return: The wrapper function around the original method.
-        :rtype: Callable
-        """
-
-        def wrapper(*args: Any, **kwargs: Any) -> Any:
-            """
-            Wrapper function that logs the execution status (start, success, failure) of the decorated method.
-
-            :param args: Positional arguments for the decorated method.
-            :type args: Any
-            :param kwargs: Keyword arguments for the decorated method.
-            :type kwargs: Any
-            :return: The return value of the decorated method.
-            :rtype: ...
-            """
+        def wrapper(*args, **kwargs):
+            if not self.action:
+                self.action = func.__name__
             try:
-                journal.info(f"Action Running {self.__action}")
-                results = method(*args, **kwargs)
-                journal.success(f"Success Running {self.__action}")
-            except Exception as error:
-                journal.exception(error)
-                journal.error(f"Failure Running {self.__action}")
-                journal.error(error.args.__getitem__(0))
-                raise error
-
-            return results
+                self.output(msg=f"{self.action} running starts.")
+                results = func(*args, **kwargs)
+                self.output(msg=f"{self.action} running success.")
+                return results
+            except Exception as err:
+                self.output(msg=f"{self.action} running failure.")
+                raise err
 
         return wrapper
 
+    def output(self, msg: str) -> None:
+        raise NotImplementedError("Customize the output in the subclass.")
 
-class TryCatchDecorator:
+
+class TryCatchDecorator(Generic[_T]):
     """
-    A decorator to catch exceptions thrown by the method it decorates.
+    A decorator class that wraps a function in a try-except block, catching and re-raising any exceptions.
+
+    :param func: The function to be wrapped.
+    :type func: object
+
+    Usage::
+
+        @TryCatchDecorator
+        def my_function():
+            # Function implementation
     """
 
-    def __init__(self, __method: Union[FunctionType, MethodType]):
-        self.__method = __method
+    def __init__(self, func: Type):
+        self.func = func
 
     def __call__(self, *args, **kwargs):
-        """
-        Execute the decorated method and catch any exceptions.
-
-        :param args: Positional arguments for the method.
-        :param kwargs: Keyword arguments for the method.
-        :return: The result of the method if no exceptions are raised.
-        """
         try:
-            results = self.__method(*args, **kwargs)
+            results = self.func(*args, **kwargs)
+            return results
         except Exception as error:
-            journal.exception(f"An error occurred: {error}")
             raise error
 
-        return results
 
-
-class TipsDecorator:
+class TipsDecorator(Generic[_T]):
     """
-    A decorator to log the start of a method execution.
+    A decorator class designed to provide optional tips or messages during the execution of a function.
+
+    :param tips: An optional tip or message related to the function's purpose or execution.
+    :type tips: str
+
+    Usage::
+
+        @TipsDecorator(tips="Check the input data carefully.")
+        def data_processing():
+            # Function implementation
     """
 
-    def __init__(self, __method: Union[FunctionType, MethodType]):
-        self.__method = __method
+    def __init__(self, tips: Literal[str] = None):
+        self.tips = tips
 
     def __call__(self, *args, **kwargs):
-        """
-        Log the method execution and then execute the method.
+        func: Type = args.__getitem__(0)
 
-        :param args: Positional arguments for the method.
-        :param kwargs: Keyword arguments for the method.
-        :return: The result of the method.
-        """
-        journal.info(f"Running {self.__method.__name__}")
-        results = self.__method(*args, **kwargs)
+        def wrapper(*args, **kwargs):
+            try:
+                self.output(self.tips)
+            except NotImplementedError:
+                pass
 
-        return results
+            try:
+                results = func(*args, **kwargs)
+                return results
+            except Exception as err:
+                raise err
+
+        return wrapper
+
+    def output(self, msg: str) -> None:
+        """
+        Outputs a message. This should be customized in a subclass to handle the message output.
+
+        :param msg: The message to output.
+        :type msg: str
+        """
+        raise NotImplementedError("Customize the output in the subclass.")
