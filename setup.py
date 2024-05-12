@@ -228,24 +228,34 @@ class PackageInfo(object):
         }
         return results
 
-    def __paramscheck(self, param, _type):
+    @staticmethod
+    def __paramscheck(param, _type):
         if not isinstance(param, _type):
             raise TypeError(f"{param} type error.")
 
         return param
 
-    def __get_github_commit_count(self):
+    @staticmethod
+    def __get_github_commit_count():
         # Fixed, Package error
         # with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
         #     commit_count = FileIO.read()
         # return int(commit_count)
-        url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/fairylandfuture/conf/publish/gitcommitrc"
+        url = (
+            "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
+        )
         response = requests.get(url)
         if response.status_code == 200:
             commit_count = int(response.text)
             return commit_count
         else:
-            return 0
+            try:
+                with open(os.path.join(_ROOT_PATH, "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
+                    commit_count = FileIO.read()
+                return int(commit_count)
+            except Exception as err:
+                print(f"Error: {err}")
+                return 0
 
 
 package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)

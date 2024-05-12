@@ -48,8 +48,8 @@ def count_commits(token):
 
 
 def write_commit_count(count):
-    with open("fairylandfuture/conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
-        file.write(count)
+    # with open("fairylandfuture/conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
+    #     file.write(count)
     with open("conf/publish/gitcommitrc", "w", encoding="UTF-8") as file:
         file.write(count)
     return "Successful"
@@ -59,4 +59,5 @@ if __name__ == "__main__":
     TOKEN = os.environ.get("GITHUB_TOKEN")
     commit_count = count_commits(TOKEN)
     if commit_count:
+        commit_count += 2
         write_commit_count(str(commit_count))
