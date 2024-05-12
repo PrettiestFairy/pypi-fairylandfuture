@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.constants.enums import DateTimeEnum
 from fairylandfuture.core.abstracts.metaclass import SingletonMeta
-from fairylandfuture.util.verifies.validate import ParamTypeValidator
+from fairylandfuture.utils.verifies.validate import ParamTypeValidator
 
 
 class DateTimeModule(SingletonMeta):

@@ -12,22 +12,37 @@ from dateutil.relativedelta import relativedelta
 from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.constants.enums import DateTimeEnum
 from fairylandfuture.modules.journal import journal
+from fairylandfuture.modules.decorators import TipsDecorator, SingletonDecorator, TimingDecorator, ActionDecorator
 
 from _test import TestBase
+
+
+class CustomizeTimingDecorator(TimingDecorator):
+    def output(self, msg: str) -> None:
+        journal.debug(msg)
+
+
+class CustomizeActionDecorator(ActionDecorator):
+    def output(self, msg: str) -> None:
+        journal.debug(msg)
 
 
 class TestClass(TestBase):
 
     @classmethod
+    @TipsDecorator(tips="测试001")
     def test_001(cls):
         journal.debug(DateTimeModule.timestamp())
 
     @classmethod
+    @CustomizeActionDecorator(action="测试002")
     def test_002(cls):
         a = datetime.now() - relativedelta(days=1)
         journal.debug(a.strftime(DateTimeEnum.TIME_CN.value))
 
     @classmethod
+    @CustomizeTimingDecorator
+    @CustomizeActionDecorator(action="测试003")
     def test_003(cls):
         a = DateTimeModule.daysdelta("2024/05/12", "2024/05/25", _format="%Y/%m/%d")
         b = DateTimeModule.datetime_to_timestamp("2024/05/12", millisecond=False, _format="%Y/%m/%d")
@@ -37,6 +52,23 @@ class TestClass(TestBase):
         journal.debug(b)
         journal.debug(c)
         journal.debug(d)
+
+    @classmethod
+    def test_004(cls):
+        def a():
+            pass
+
+
+@SingletonDecorator
+class A:
+
+    @classmethod
+    def get(cls):
+        return "get"
+
+
+def aa():
+    pass
 
 
 if __name__ == "__main__":

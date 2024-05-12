@@ -8,7 +8,7 @@
 """
 
 # 常量 - 工具类
-from fairylandfuture.util.general.constants import DefaultConstantUtils, APIConstantUtils, EncodingConstantUtils
+from fairylandfuture.utils.general.constants import DefaultConstantUtils, APIConstantUtils, EncodingConstantUtils
 
 # 常量
 from fairylandfuture.constants.enums import DateTimeEnum, EncodingEnum, LogLevelEnum
