@@ -21,7 +21,7 @@ class DateTimeEnum(StringEnum):
     DATETIME = datetime = "%Y-%m-%d %H:%M:%S"
 
     DATE_CN = date_cn = "%Y年%m月%d日"
-    TIME_CH = time_cn = "%H时%M分%S秒"
+    TIME_CN = time_cn = "%H时%M分%S秒"
     DATETIME_CN = datetime_cn = "%Y年%m月%d日 %H时%M分%S秒"
 
     @classmethod
