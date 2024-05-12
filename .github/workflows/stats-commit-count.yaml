@@ -43,7 +43,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git checkout -b Pre-release || git checkout Pre-release
-          git add fairylandfuture/conf/publish/gitcommitrc
+          git add conf/publish/gitcommitrc
           git commit -m ":wrench: Update commit count" || echo "No changes to commit"
           git push origin Pre-release
 

@@ -12,7 +12,7 @@ import time
 from types import FunctionType, MethodType
 from typing import Union, Any, Callable
 
-from fairylandfuture.modules.journal import journal, logger
+from fairylandfuture.modules.journal import journal
 
 
 class SingletonDecorator:
