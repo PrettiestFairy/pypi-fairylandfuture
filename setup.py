@@ -213,6 +213,9 @@ class PackageInfo(object):
     def install_requires(self):
         results = [
             "loguru",
+            "python-dateutil",
+            "requests",
+            "pymysql"
             # "pip-review",
             # "pip-autoremove",
             # "black",
