@@ -10,15 +10,4 @@
 import setuptools
 
 if __name__ == "__main__":
-    exclude_tuple = (
-        "bin",
-        "conf",
-        "deploy",
-        "docs",
-        "scripts",
-        "temp",
-        "test",
-    )
-    install_package_list = setuptools.find_packages(exclude=exclude_tuple)
-    for i in install_package_list:
-        print(i)
+    pass
