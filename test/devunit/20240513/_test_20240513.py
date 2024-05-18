@@ -11,12 +11,6 @@ from _test import TestBase
 
 # from fairylandfuture.modules.datasource import MySQLDataSource
 
-_HOST = "mapping.fairy.host"
-_PORT = 51001
-_USER = "austin"
-_PASSWORD = "Austin.pwd:112#."
-_DATABASE = "public_db_test"
-
 from typing import Union, Tuple, Dict, List, Any
 import pymysql
 
