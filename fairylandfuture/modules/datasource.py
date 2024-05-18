@@ -13,112 +13,53 @@ import pymysql
 
 
 class MySQLDataSource:
-
-    def __init__(self, host: str, port: int, user: str, password: str, database: str):
-        self.host = host
-        self.port = port
-        self.user = user
-        self.password = password
-        self.database = database
-        self.conn = self.connect()
-        self.cur = self.conn.cursor()
-
-    def connect(self):
-        conn = pymysql.connect(
-            host=self.host, port=self.port, user=self.user, password=self.password, database=self.database
+    def __init__(self, host, port, user, password, db):
+        self._connection = pymysql.connect(
+            host=host,
+            port=port,
+            user=user,
+            password=password,
+            database=db,
+            cursorclass=pymysql.cursors.DictCursor
         )
-        return conn
+        self._cursor = self._connection.cursor()
 
-    def close(self):
-        if self.cur:
-            self.cur.close()
-        if self.conn:
-            self.conn.close()
+    def insert(self, sql, params=None):
+        self.cursor.execute(sql, params)
+        self.connection.commit()
 
-    def execute(
-        self,
-        sql: str,
-        params: Union[Tuple[Any, ...], Dict[str, Any], None] = None,
-    ) -> bool:
+    def delete(self, sql, params=None):
+        self.cursor.execute(sql, params)
+        self.connection.commit()
+
+    def update(self, sql, params=None):
+        self.cursor.execute(sql, params)
+        self.connection.commit()
+
+    def select(self, sql, params=None):
+        self.cursor.execute(sql, params)
+        result = self.cursor.fetchall()
+        if len(result) == 1:
+            return result[0]
+        return result
+
+    def batch_insert(self, sql, param_list):
+        self.cursor.executemany(sql, param_list)
+        self.connection.commit()
+
+    def execute_multiple_statements(self, statements):
         try:
-            self.cur.execute(sql, params)
-            self.close()
-            return True
-        except Exception as err:
-            raise err
+            for statement in statements:
+                self.cursor.execute(statement['sql'], statement.get('params'))
+            self.connection.commit()
+        except Exception as e:
+            self.connection.rollback()
+            raise e
 
-    def execute_set(self, mapping_data: Dict[str, Union[Tuple[Any, ...], Dict[str, Any]]]) -> bool:
-        try:
-            self.conn.begin()
-            for sql, params in mapping_data.items():
-                self.cur.execute(sql, params)
-            self.conn.commit()
-            return True
-        except Exception as err:
-            self.conn.rollback()
-            raise err
+    def execute_no_return(self, sql, params=None):
+        self.cursor.execute(sql, params)
+        self.connection.commit()
 
-    def insert(
-        self,
-        sql: str,
-        params: Union[Tuple[Any, ...], Dict[str, Any], None] = None,
-    ) -> bool:
-        try:
-            self.execute(sql, params)
-            self.close()
-            return True
-        except Exception as err:
-            raise err
-
-    def insertmany(self, sql: str, paramset: Union[Tuple[[Tuple[Any, ...]], ...], Tuple[Dict[str, Any], ...]]) -> bool:
-        try:
-            self.cur.executemany(sql, paramset)
-            self.close()
-            return True
-        except Exception as err:
-            raise err
-
-    def delete(
-        self,
-        sql: str,
-        params: Union[Tuple[Any, ...], Dict[str, Any], None] = None,
-    ) -> bool:
-        try:
-            self.execute(sql, params)
-            self.close()
-            return True
-        except Exception as err:
-            raise err
-
-    def select(
-        self,
-        sql: str,
-        params: Union[Tuple[Any, ...], Dict[str, Any], None] = None,
-    ) -> Union[Tuple[Tuple[Any, ...], ...], List[List[Any]]]:
-        try:
-            self.execute(sql, params)
-            results = self.cur.fetchall()
-            self.close()
-            return results
-        except Exception as err:
-            raise err
-
-    def update(
-        self,
-        sql: str,
-        params: Union[Tuple[Any, ...], Dict[str, Any], None] = None,
-    ) -> bool:
-        try:
-            self.execute(sql, params)
-            self.close()
-            return True
-        except Exception as err:
-            raise err
-
-    def updatemany(self, sql: str, paramset: Union[Tuple[[Tuple[Any, ...]], ...], Tuple[Dict[str, Any], ...]]) -> bool:
-        try:
-            self.cur.executemany(sql, paramset)
-            self.close()
-            return True
-        except Exception as err:
-            raise err
+    def __del__(self):
+        self.cursor.close()
+        self.connection.close()

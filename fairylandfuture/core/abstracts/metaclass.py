@@ -8,32 +8,7 @@
 """
 
 import abc
-import functools
-from typing import Any, Dict
-
-
-class SingletonMeta(type):
-    """
-    Singleton pattern metaclass
-    """
-
-    @functools.lru_cache(maxsize=0)
-    def __call__(cls, *args: Any, **kwargs: Any):
-        """
-        Singleton pattern metaclass
-
-        :param args: ...
-        :type args: tuple
-        :param kwargs: ...
-        :type kwargs: dict
-        :return: get instance
-        :rtype: object
-        """
-        if not hasattr(cls, "__instance"):
-            setattr(cls, "__instance", super().__call__(*args, **kwargs))
-            return getattr(cls, "__instance")
-        else:
-            return getattr(cls, "__instance")
+from typing import Dict
 
 
 class SingletonABCMeta(abc.ABCMeta):
