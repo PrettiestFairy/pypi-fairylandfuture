@@ -13,7 +13,7 @@ from typing import Union, Optional, Any
 from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.core.abstracts.metaclass import SingletonMeta
+from fairylandfuture.core.superclass.metaclass import SingletonMeta
 from fairylandfuture.utils.verifies.validate import ParamTypeValidator
 
 

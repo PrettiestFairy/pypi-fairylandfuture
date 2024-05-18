@@ -7,8 +7,8 @@
 @since: 2024-05-10 10:45:41 UTC+8
 """
 
-from fairylandfuture.core.abstracts.enumerate import EnumBase
-from fairylandfuture.core.abstracts.enumerate import StringEnum
+from fairylandfuture.core.superclass.enumerate import EnumBase
+from fairylandfuture.core.superclass.enumerate import StringEnum
 
 
 class DateTimeEnum(StringEnum):

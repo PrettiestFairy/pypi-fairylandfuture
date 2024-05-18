@@ -16,7 +16,7 @@ from loguru import logger
 
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 from fairylandfuture.constants.typed import TypeLogLevel
-from fairylandfuture.core.abstracts.metaclass import SingletonMeta
+from fairylandfuture.core.superclass.metaclass import SingletonMeta
 
 
 class Journal(metaclass=SingletonMeta):

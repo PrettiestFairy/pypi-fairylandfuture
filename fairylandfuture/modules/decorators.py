@@ -9,29 +9,27 @@
 
 import time
 
+from functools import wraps
 from typing import Literal, Type, TypeVar, Generic
 
+from fairylandfuture.core.superclass.decorators import BaseDecorator, BaseParamsDecorator
 
 _T = TypeVar("_T")
 
 
 class SingletonDecorator(Generic[_T]):
     """
-    A decorator class that turns a class into a Singleton by ensuring that only one instance of the class exists.
-
-    :param cls: The class to be transformed into a Singleton.
-    :type cls: object
-
-    Usage::
-
-        @SingletonDecorator
-        class MyClass:
-            pass
-
-        my_instance1 = MyClass()
-        my_instance2 = MyClass()
-
-        assert my_instance1 is my_instance2  # True because both are the same instance
+    Singleton decorator.
+    
+    Usage:
+        >>> @SingletonDecorator
+        >>> class MyClass:
+        >>>     pass
+        >>>
+        >>> obj1 = MyClass()
+        >>> obj2 = MyClass()
+        >>> obj1 is obj2
+        True
     """
 
     _instance = None
@@ -48,38 +46,27 @@ class SingletonDecorator(Generic[_T]):
         return isinstance(instance, self._cls)
 
 
-class TimingDecorator(Generic[_T]):
+class TimingDecorator(BaseDecorator):
     """
-    A decorator class for timing the execution duration of a function and printing the elapsed time.
-
-    :param func: The function to be timed.
-    :type func: object
-
-    Usage::
-
-        @TimingDecorator
-        def my_function():
-            # Function implementation
-
-    Note:
-        Customize `output` method in a subclass to handle the timing message output.
+    Timing decorator.
+    
+    Usage:
+        >>> @TimingDecorator
+        >>> def my_func():
+        >>>     pass
+        >>>
+        >>> my_func()
+        Running for 00:00:00.000
     """
-
-    def __init__(self, func: Type):
-        self.func = func
 
     def __call__(self, *args, **kwargs):
         start_time = time.time()
-        results = self.func(*args, **kwargs)
+        results = super().__call__(*args, **kwargs)
         end_time = time.time()
         elapsed_time = end_time - start_time
-
-        # Calculating hours, minutes, and seconds from elapsed time
         hour, minute, second = self._calculate_time_parts(elapsed_time)
-
         elapsed_str = f"Running for {hour:02d}:{minute:02d}:{second:06.3f}"
         self.output(elapsed_str)
-
         return results
 
     @staticmethod
@@ -93,103 +80,113 @@ class TimingDecorator(Generic[_T]):
             return hour, int((elapsed_time - (hour * 3600)) / 60), elapsed_time % 60
 
     def output(self, msg: str) -> None:
-        raise NotImplementedError("Customize the output in the subclass.")
+        """
+        Output message.
+            rewrote this method to print message to console instead of logging.
+        
+        :param msg: Message to output.
+        :type msg: str
+        :return: ...
+        :rtype: ...
+        """
+        print(msg)
 
 
-class ActionDecorator(Generic[_T]):
+class ActionDecorator(BaseParamsDecorator):
     """
-    A decorator class that logs the start and end of a function's execution, indicating success or failure.
-
-    :param action: An optional action name to log.
-    :type action: str
-
-    Usage::
-
-        @ActionDecorator(action="Process Data")
-        def process_data():
-            # Function implementation
-
-    Note:
-        Customize `output` method in a subclass to handle the action message output.
+    Action decorator.
+    
+    Usage:
+        >>> @ActionDecorator(action="my_action")
+        >>> def my_func():
+        >>>     pass
+        >>>
+        >>> my_func()
+        Running: my_action.
+        Success: my_action.
     """
 
-    def __init__(self, action: Literal[str] = None):
+    def __init__(self, action=None):
+        super().__init__()
         self.action = action
 
     def __call__(self, *args, **kwargs):
-        func: Type = args.__getitem__(0)
+        if args and len(args) == 1 and callable(args.__getitem__(0)):
+            self.func: Type = args.__getitem__(0)
+        action_name = self.action if self.action else self.func.__name__
 
+        @wraps(self.func)
         def wrapper(*args, **kwargs):
-            if not self.action:
-                self.action = func.__name__
             try:
-                self.output(msg=f"{self.action} running starts.")
-                results = func(*args, **kwargs)
-                self.output(msg=f"{self.action} running success.")
-                return results
+                self.output(msg=f"Running: {action_name}.")
+                result = self.func(*args, **kwargs)
+                self.output(msg=f"Success: {action_name}.")
+                return result
             except Exception as err:
-                self.output(msg=f"{self.action} running failure.")
+                self.output(msg=f"Failure: {action_name}.")
                 raise err
 
         return wrapper
 
     def output(self, msg: str) -> None:
-        raise NotImplementedError("Customize the output in the subclass.")
+        """
+        Output message.
+            rewrote this method to print message to console instead of logging.
+        
+        :param msg: Message to output.
+        :type msg: str
+        :return: ...
+        :rtype: ...
+        """
+        print(msg)
 
 
-class TryCatchDecorator(Generic[_T]):
+class TryCatchDecorator(BaseDecorator):
     """
-    A decorator class that wraps a function in a try-except block, catching and re-raising any exceptions.
-
-    :param func: The function to be wrapped.
-    :type func: object
-
-    Usage::
-
-        @TryCatchDecorator
-        def my_function():
-            # Function implementation
+    Try-catch decorator.
+    
+    Usage:
+        >>> @TryCatchDecorator
+        >>> def my_func():
+        >>>     pass
+        >>>
+        >>> my_func()
     """
-
-    def __init__(self, func: Type):
-        self.func = func
 
     def __call__(self, *args, **kwargs):
         try:
             results = self.func(*args, **kwargs)
             return results
-        except Exception as error:
-            raise error
+        except Exception as err:
+            raise err
 
 
-class TipsDecorator(Generic[_T]):
+class TipsDecorator(BaseParamsDecorator):
     """
-    A decorator class designed to provide optional tips or messages during the execution of a function.
-
-    :param tips: An optional tip or message related to the function's purpose or execution.
-    :type tips: str
-
-    Usage::
-
-        @TipsDecorator(tips="Check the input data carefully.")
-        def data_processing():
-            # Function implementation
+    Tips decorator.
+    
+    Usage:
+        >>> @TipsDecorator(tips="This is a tips.")
+        >>> def my_func():
+        >>>     pass
+        >>>
+        >>> my_func()
+        Running tips: my_func.
     """
 
     def __init__(self, tips: Literal[str] = None):
+        super().__init__()
         self.tips = tips
 
     def __call__(self, *args, **kwargs):
-        func: Type = args.__getitem__(0)
+        if args and len(args) == 1 and callable(args.__getitem__(0)):
+            self.func: Type = args.__getitem__(0)
 
+        @wraps(self.func)
         def wrapper(*args, **kwargs):
             try:
-                self.output(self.tips)
-            except NotImplementedError:
-                pass
-
-            try:
-                results = func(*args, **kwargs)
+                self.output(f"Running tips: {self.tips if self.tips else self.func.__name__}")
+                results = self.func(*args, **kwargs)
                 return results
             except Exception as err:
                 raise err
@@ -198,9 +195,12 @@ class TipsDecorator(Generic[_T]):
 
     def output(self, msg: str) -> None:
         """
-        Outputs a message. This should be customized in a subclass to handle the message output.
-
-        :param msg: The message to output.
+        Output message.
+            rewrote this method to print message to console instead of logging.
+        
+        :param msg: Message to output.
         :type msg: str
+        :return: ...
+        :rtype: ...
         """
-        raise NotImplementedError("Customize the output in the subclass.")
+        print(msg)
