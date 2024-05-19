@@ -29,7 +29,8 @@ class ExecuteParams:
     """
     expression: str
     params: Optional[Union[List[Any], Tuple[Any, ...], Dict[str, Any]]] = field(default=None)
-    
+
+
 @dataclass
 class InsertManyParams:
     """

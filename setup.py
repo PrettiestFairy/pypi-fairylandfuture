@@ -215,15 +215,14 @@ class PackageInfo(object):
             "loguru",
             "python-dateutil",
             "requests",
-            "pymysql"
+            "pymysql",
+            "pyyaml",
+            
             # "pip-review",
             # "pip-autoremove",
             # "black",
             # "python-dotenv",
-            # "pymysql",
             # "psycopg2-binary",
-            # "pyyaml",
-            # "requests",
             # "fake-useragent",
             # "tornado",
             # "pandas",

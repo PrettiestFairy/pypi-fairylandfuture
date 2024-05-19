@@ -7,7 +7,7 @@
 @since: 2024-05-12 23:11:45 UTC+8
 """
 
-from typing import Union, Tuple, Dict, List, Any, Iterable
+from typing import Union,  Dict, List, Any, Iterable
 
 import pymysql
 from pymysql.cursors import DictCursor
