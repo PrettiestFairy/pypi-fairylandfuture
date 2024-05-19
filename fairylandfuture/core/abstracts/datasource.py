@@ -11,27 +11,27 @@ from typing import Union, Tuple, Dict, Any, List
 
 import abc
 
+from fairylandfuture.models.dataclasses.datasource import QueryParams
 
-class GenericSQL:
 
-    def __init__(self, host: str, port: int, user: str, passwd: str, database: str):
-        self.host = host
-        self.port = port
-        self.user = user
-        self.passwd = passwd
-        self.database = database
+class GenericDataSource(abc.ABC):
 
     @abc.abstractmethod
-    def connect(self): ...
+    def execute(self, params: QueryParams) -> bool: ...
+
+    def insert(self, params: QueryParams) -> bool:
+        return self.execute(params)
+
+    def delete(self, params: QueryParams) -> bool:
+        return self.execute(params)
+
+    def update(self, params: QueryParams) -> bool:
+        return self.execute(params)
 
     @abc.abstractmethod
-    def cursor(self): ...
+    def select(self, params: QueryParams) -> Union[Dict[str, Any], List[Dict[str, Any]]]: ...
 
     @abc.abstractmethod
-    def execute(
-        self,
-        query: str,
-        params: Union[Tuple[str, int, float, ...], Dict[str, Union[str, int, float]]],
-        *args,
-        **kwargs,
-    ) -> Union[List[List[Any]], Tuple[Tuple[Any, ...], ...]]: ...
+    def multiple(self, params: List[QueryParams]) -> bool: ...
+    
+    # TODO: execute many
