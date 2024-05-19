@@ -3,5 +3,6 @@ build
 dist
 PyFairylandFuture.egg-info
 conf/pypi/.pypirc
-#temp
 log[s]
+conf/case
+#temp
