@@ -13,8 +13,3 @@ from fairylandfuture.models.dataclasses.datasource import SQLStruct
 
 # log level
 TypeLogLevel = Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"]
-
-SQLStructList = Union[
-    Tuple[SQLStruct, ...],
-    List[SQLStruct]
-]

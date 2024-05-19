@@ -7,16 +7,17 @@
 @since: 2024-05-12 23:11:45 UTC+8
 """
 
-from typing import Union, Tuple, Dict, List, Any
+from typing import Union, Tuple, Dict, List, Any, Iterable
 
 import pymysql
 from pymysql.cursors import DictCursor
 
-from fairylandfuture.constants.typed import SQLStructList
-from fairylandfuture.models.dataclasses.datasource import SQLStruct
+from fairylandfuture.core.abstracts.datasource import GenericDataSource
+from fairylandfuture.models.dataclasses.datasource import QueryParams
 
 
-class MySQLDataSource:
+class MySQLDataSource(GenericDataSource):
+
     def __init__(self, host, port, user, password, database):
         self._connection = pymysql.connect(
             host=host,
@@ -28,64 +29,39 @@ class MySQLDataSource:
         )
         self._cursor = self._connection.cursor()
 
-    def insert(self, sql, params=None):
+    def execute(self, params: QueryParams):
         try:
-            self._cursor.execute(sql, params)
+            self._cursor.execute(params.expression, params.params)
             self._connection.commit()
+            return True
         except Exception as err:
             self._connection.rollback()
             raise err
 
-    def delete(self, sql, params=None):
+    def select(self, params: QueryParams) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         try:
-            self._cursor.execute(sql, params)
-            self._connection.commit()
-        except Exception as err:
-            self._connection.rollback()
-            raise err
-
-    def update(self, sql, params=None):
-        self.cursor.execute(sql, params)
-        self.connection.commit()
-        try:
-            self._cursor.execute(sql, params)
-            self._connection.commit()
-        except Exception as err:
-            self._connection.rollback()
-            raise err
-
-    def select(self, sql, params=None):
-        try:
-            self._cursor.execute(sql, params)
+            self._cursor.execute(params.expression, params.params)
             result = self._cursor.fetchall()
             if len(result) == 1:
-                return result.__getitem__(0)
-            return result
+                return result.__getitem__(0)  # type: Dict[str ,Any]
+            return result  # type: List[Dict[str, Any]]
         except Exception as err:
             raise err
 
-    def batch_insert(self, sql, param_list):
+    def insertmany(self, sql, params):
         try:
-            self._cursor.executemany(sql, param_list)
+            self._cursor.executemany(sql, params)
             self._connection.commit()
         except Exception as err:
             self._connection.rollback()
             raise err
 
-    def multiple_execute(self, multi: SQLStructList):
+    def multiple(self, params: Iterable[QueryParams]) -> bool:
         try:
-            for sql_struct in multi:
-                self._cursor.execute(sql_struct.get("sql"), sql_struct.get("params"))
-            self.connection.commit()
-        except Exception as err:
-            self.connection.rollback()
-            raise err
-
-    def execute(self, sql, params=None):
-        try:
-            self._cursor.execute(sql, params)
+            for param in params:
+                self._cursor.execute(param.expression, param.params)
             self._connection.commit()
-            return None
+            return True
         except Exception as err:
             self._connection.rollback()
             raise err
