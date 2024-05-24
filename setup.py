@@ -157,7 +157,17 @@ class PackageInfo(object):
 
     @property
     def keywords(self):
-        return ["fairyland", "Fairyland", "pyfairyland", "PyFairyland", "fairy", "Fairy"]
+        return [
+            "fairyland",
+            "Fairyland",
+            "pyfairyland",
+            "PyFairyland",
+            "fairy",
+            "Fairy",
+            "fairylandfuture",
+            "PyFairylandFuture",
+            "FairylandFuture",
+        ]
 
     @property
     def include_package_data(self):
@@ -203,6 +213,9 @@ class PackageInfo(object):
     def install_requires(self):
         results = [
             "loguru",
+            "python-dateutil",
+            "requests",
+            "pymysql"
             # "pip-review",
             # "pip-autoremove",
             # "black",
@@ -280,6 +293,3 @@ setuptools.setup(
     install_requires=package.install_requires,
     cmdclass=package.cmdclass,
 )
-
-if __name__ == "__main__":
-    print(package.version)

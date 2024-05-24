@@ -1,0 +1,5 @@
+setuptools
+loguru
+python-dateutil
+requests
+pymysql

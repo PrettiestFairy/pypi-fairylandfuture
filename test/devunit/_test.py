@@ -7,12 +7,12 @@
 @since: 2024-05-12 12:34:53 UTC+8
 """
 
-from fairylandfuture.modules.decorators import TimingDecorator
+from fairylandfuture.modules.decorators import TryCatchDecorator
 
 
 class TestBase:
     @classmethod
-    @TimingDecorator
+    @TryCatchDecorator
     def run(cls):
         method_list = [func for func in dir(cls) if callable(getattr(cls, func)) and not func.startswith("__")]
         for method in method_list:
