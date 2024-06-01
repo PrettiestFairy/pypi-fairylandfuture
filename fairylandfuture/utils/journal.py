@@ -7,12 +7,13 @@
 @since: 2024-05-12 14:44:33 UTC+8
 """
 
-from typing import Literal
+from typing import Optional
 
 import os.path
 import sys
 
 from loguru import logger
+from importlib.resources import read_text
 
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 from fairylandfuture.constants.typed import TypeLogLevel
@@ -84,7 +85,7 @@ class Journal(metaclass=SingletonMeta):
         debug: bool = False,
         rotation: str = "20 MB",
         retention: str = "180 days",
-        format: Literal[str] = None,
+        format: Optional[str] = None,
         compression: str = "gz",
         encoding: str = EncodingEnum.UTF_8.value,
         level: TypeLogLevel = LogLevelEnum.INFO.value,
@@ -95,7 +96,7 @@ class Journal(metaclass=SingletonMeta):
         serialize: bool = False,
         console: bool = True,
         console_level: TypeLogLevel = LogLevelEnum.TRACE.value,
-        console_format: Literal[str] = None,
+        console_format: Optional[str] = None,
         console_colorize: bool = True,
         console_enqueue: bool = True,
     ):
@@ -123,14 +124,7 @@ class Journal(metaclass=SingletonMeta):
         self.__console_colorize = console_colorize
         self.__console_enqueue = console_enqueue
 
-        self.__logo = """
-                                     _____       _               _                    _     _____        _                      
-                                    |  ___|__ _ (_) _ __  _   _ | |  __ _  _ __    __| |   |  ___|_   _ | |_  _   _  _ __  ___  
-                                    | |_  / _` || || '__|| | | || | / _` || '_ \  / _` |   | |_  | | | || __|| | | || '__|/ _ \ 
-                                    |  _|| (_| || || |   | |_| || || (_| || | | || (_| |   |  _| | |_| || |_ | |_| || |  |  __/ 
-                                    |_|   \__,_||_||_|    \__, ||_| \__,_||_| |_| \__,_|   |_|    \__,_| \__| \__,_||_|   \___| 
-                                                          |___/                                                                 
-"""
+        self.__logo = self.load_logo()
 
         self.__name, extension = os.path.splitext(self.__name)
 
@@ -181,9 +175,7 @@ class Journal(metaclass=SingletonMeta):
         if self.__console:
             if not self.__console_format:
                 self.__console_format = (
-                    "<level>"
-                    "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
-                    "</level>"
+                    "<level>" "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}" "</level>"
                 )
 
             logger.add(
@@ -195,6 +187,12 @@ class Journal(metaclass=SingletonMeta):
             )
 
             print(self.__logo)
+
+    @staticmethod
+    def load_logo():
+        logo_text = read_text("fairylandfuture.conf", "logo")
+
+        return logo_text
 
     def __write_logo(self, sink: str):
         """

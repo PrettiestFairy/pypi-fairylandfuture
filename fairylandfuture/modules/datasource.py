@@ -7,29 +7,22 @@
 @since: 2024-05-12 23:11:45 UTC+8
 """
 
-from typing import Union, Tuple, Dict, List, Any, Iterable
+from typing import Union, Dict, List, Any, Iterable
 
 import pymysql
 from pymysql.cursors import DictCursor
 
-from fairylandfuture.core.abstracts.datasource import GenericDataSource
-from fairylandfuture.models.dataclasses.datasource import QueryParams
+from fairylandfuture.core.abstracts.datasource import AbstractDataSource
+from fairylandfuture.models.dataclasses.datasource import ExecuteParams, InsertManyParams
 
 
-class MySQLDataSource(GenericDataSource):
+class MySQLDataSource(AbstractDataSource):
 
     def __init__(self, host, port, user, password, database):
-        self._connection = pymysql.connect(
-            host=host,
-            port=port,
-            user=user,
-            password=password,
-            database=database,
-            cursorclass=DictCursor
-        )
+        self._connection = pymysql.connect(host=host, port=port, user=user, password=password, database=database, cursorclass=DictCursor)
         self._cursor = self._connection.cursor()
 
-    def execute(self, params: QueryParams):
+    def execute(self, params: ExecuteParams):
         try:
             self._cursor.execute(params.expression, params.params)
             self._connection.commit()
@@ -38,7 +31,7 @@ class MySQLDataSource(GenericDataSource):
             self._connection.rollback()
             raise err
 
-    def select(self, params: QueryParams) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    def select(self, params: ExecuteParams) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
         try:
             self._cursor.execute(params.expression, params.params)
             result = self._cursor.fetchall()
@@ -48,20 +41,20 @@ class MySQLDataSource(GenericDataSource):
         except Exception as err:
             raise err
 
-    def insertmany(self, sql, params):
-        try:
-            self._cursor.executemany(sql, params)
-            self._connection.commit()
-        except Exception as err:
-            self._connection.rollback()
-            raise err
-
-    def multiple(self, params: Iterable[QueryParams]) -> bool:
+    def multiple(self, params: Iterable[ExecuteParams]) -> bool:
         try:
             for param in params:
                 self._cursor.execute(param.expression, param.params)
             self._connection.commit()
             return True
+        except Exception as err:
+            self._connection.rollback()
+            raise err
+
+    def insertmany(self, params: InsertManyParams) -> bool:
+        try:
+            self._cursor.executemany(params.expression, params.params)
+            self._connection.commit()
         except Exception as err:
             self._connection.rollback()
             raise err
