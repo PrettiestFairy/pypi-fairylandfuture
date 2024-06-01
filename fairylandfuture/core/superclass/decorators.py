@@ -10,25 +10,25 @@
 from functools import wraps
 from typing import Any, Callable, TypeVar, Generic, Type
 
-_T = TypeVar('_T', bound=Callable[..., Any])
+_T = TypeVar("_T", bound=Callable[..., Any])
 
 
 class BaseDecorator(Generic[_T]):
     """
     Base decorator class
-    
+
     :param func: decorated function
     :type func: Callable[..., Any]
     :return: decorated function
     :rtype: Callable[..., Any]
-    
+
     Usage:
         >>> @BaseDecorator
         >>> def my_decorator(func):
         >>>     @wraps(func)
         >>>     def wrapper(*args, **kwargs):
         >>>         return func(*args, **kwargs)
-        >>>     return wrapper    
+        >>>     return wrapper
         >>> @my_decorator
         >>> def my_func():
         >>>     pass
@@ -53,19 +53,19 @@ class BaseDecorator(Generic[_T]):
 class BaseParamsDecorator(Generic[_T]):
     """
     Base decorator class with parameters
-    
+
     :param func: decorated function
     :type func: Callable[..., Any]
     :return: decorated function
     :rtype: Callable[..., Any]
-    
+
     Usage:
         >>> @BaseParamsDecorator(1, 2, 3)
         >>> def my_decorator(func):
         >>>     @wraps(func)
         >>>     def wrapper(*args, **kwargs):
         >>>         return func(*args, **kwargs)
-        >>>     return wrapper    
+        >>>     return wrapper
         >>> @my_decorator
         >>> def my_func():
         >>>     pass

@@ -22,7 +22,7 @@ _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _MAJOR = 1
 _SUB = 0
 _STAGE = 0
-_MARK = "alpha"
+_MARK: _MARK_TYPE = "alpha"
 
 if sys.version_info < (3, 7):
     sys.exit("Python 3.7 or higher is required.")
@@ -127,8 +127,7 @@ class PackageInfo(object):
 
     @property
     def packages_include(self):
-        include = ("fairylandfuture",)
-        # include = ("fairylandfuture/conf/publish/gitcommitrc",)
+        include = ("fairylandfuture", "fairylandfuture.*")
 
         return include
 
@@ -148,12 +147,18 @@ class PackageInfo(object):
         return exclude
 
     @property
+    def packages_data(self):
+        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["fairylandfuture/conf/*"]}
+
+        return data
+
+    @property
     def fullname(self):
         return self.name + self.version
 
     @property
     def python_requires(self):
-        return ">=3.7"
+        return ">=3.8"
 
     @property
     def keywords(self):
@@ -177,7 +182,6 @@ class PackageInfo(object):
     def classifiers(self):
         results = [
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.7",
             "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
@@ -212,15 +216,15 @@ class PackageInfo(object):
     @property
     def install_requires(self):
         results = [
+            "setuptools",
+            "black",
             "loguru",
             "python-dateutil",
             "requests",
             "pymysql",
             "pyyaml",
-            
             # "pip-review",
             # "pip-autoremove",
-            # "black",
             # "python-dotenv",
             # "psycopg2-binary",
             # "fake-useragent",
@@ -253,9 +257,7 @@ class PackageInfo(object):
         # with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
         #     commit_count = FileIO.read()
         # return int(commit_count)
-        url = (
-            "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
-        )
+        url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
         response = requests.get(url)
         if response.status_code == 200:
             commit_count = int(response.text)
@@ -286,6 +288,7 @@ setuptools.setup(
     # license="AGPLv3+",
     # packages=setuptools.find_packages(include=package.packages_include, exclude=package.packages_exclude),
     packages=setuptools.find_packages(exclude=package.packages_exclude),
+    package_data=package.packages_data,
     include_package_data=package.include_package_data,
     classifiers=package.classifiers,
     python_requires=package.python_requires,
