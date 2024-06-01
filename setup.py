@@ -252,24 +252,28 @@ class PackageInfo(object):
         return param
 
     @staticmethod
-    def __get_github_commit_count():
-        # Fixed, Package error
-        # with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
-        #     commit_count = FileIO.read()
-        # return int(commit_count)
-        url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
-        response = requests.get(url)
-        if response.status_code == 200:
-            commit_count = int(response.text)
-            return commit_count
-        else:
-            try:
-                with open(os.path.join(_ROOT_PATH, "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
-                    commit_count = FileIO.read()
-                return int(commit_count)
-            except Exception as err:
-                print(f"Error: {err}")
-                return 0
+    def __get_local_gitcommitcr():
+        try:
+            with open(os.path.join(_ROOT_PATH, "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
+                commit_count = FileIO.read()
+            return int(commit_count)
+        except Exception as err:
+            print(f"Error: {err}")
+            return 0
+
+    @classmethod
+    def __get_github_commit_count(cls):
+        try:
+            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
+            response = requests.get(url)
+            if response.status_code == 200:
+                commit_count = int(response.text)
+                return commit_count
+            else:
+                return cls.__get_local_gitcommitcr()
+        except Exception as err:
+            print(err)
+            return cls.__get_local_gitcommitcr()
 
 
 package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
