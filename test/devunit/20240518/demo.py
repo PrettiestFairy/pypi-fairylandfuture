@@ -46,28 +46,29 @@ class Person:
     def update_name(self, name):
         self.name = name
         return self.name
-    
+
     @classmethod
     @CustomAction(action="类方法: 获取 me")
     def get_me(cls):
         return cls.me
-    
+
     @staticmethod
     @CustomAction(action="静态方法: 获取实参")
     def get_(aa):
         return aa
-    
+
     @staticmethod
     @CustomAction(action="静态方法: 无形参")
     def get__():
         return "123123"
-    
+
+
 @CustomAction(action="普通函数: 无参数")
 def test_1():
     return "test_1"
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     alice = Person("alice", 11)
     jack = Person("jack", 12)
     journal.debug(alice is jack)
@@ -79,7 +80,5 @@ if __name__ == '__main__':
     journal.debug(alice.get_(aa="123123123"))
     journal.debug(alice.get__())
     journal.debug(alice.get_me())
-    
+
     journal.debug(test_1())
-    
-    

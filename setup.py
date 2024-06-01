@@ -24,8 +24,8 @@ _SUB = 0
 _STAGE = 0
 _MARK: _MARK_TYPE = "alpha"
 
-if sys.version_info < (3, 7):
-    sys.exit("Python 3.7 or higher is required.")
+if sys.version_info < (3, 8):
+    sys.exit("Python 3.8 or higher is required.")
 
 
 class InstallDependenciesCommand(setuptools.Command):
@@ -148,7 +148,7 @@ class PackageInfo(object):
 
     @property
     def packages_data(self):
-        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["fairylandfuture/conf/*"]}
+        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["conf/*"]}
 
         return data
 
