@@ -9,7 +9,5 @@
 
 from typing import Literal, Union, Tuple, List, Dict
 
-from fairylandfuture.models.dataclasses.datasource import SQLStruct
-
 # log level
 TypeLogLevel = Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"]
