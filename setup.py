@@ -223,6 +223,7 @@ class PackageInfo(object):
             "requests",
             "pymysql",
             "pyyaml",
+            "netifaces",
             # "pip-review",
             # "pip-autoremove",
             # "python-dotenv",

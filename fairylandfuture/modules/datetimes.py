@@ -14,7 +14,7 @@ from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.constants.enums import DateTimeEnum
 from fairylandfuture.core.superclass.metaclass import SingletonMeta
-from fairylandfuture.utils.verifies.validate import ParamTypeValidator
+from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 
 class DateTimeModule(SingletonMeta):
@@ -66,7 +66,7 @@ class DateTimeModule(SingletonMeta):
         :return: Current timestamp.
         :rtype: int
         """
-        validator = ParamTypeValidator({"millisecond": bool, "n": (int, type(None))})
+        validator = ParamTypeValidatorUtils({"millisecond": bool, "n": (int, type(None))})
         validator.validate({"millisecond": millisecond, "n": n})
 
         if millisecond:
@@ -88,7 +88,7 @@ class DateTimeModule(SingletonMeta):
         :return: Formatted datetime_str string.
         :rtype: str
         """
-        validator = ParamTypeValidator({"timestamp": (int, float)})
+        validator = ParamTypeValidatorUtils({"timestamp": (int, float)})
         validator.validate({"timestamp": timestamp})
 
         if len(str(int(timestamp))) == 13:
@@ -118,7 +118,7 @@ class DateTimeModule(SingletonMeta):
         :rtype: int
         """
         validator_expected_types = {"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str}
-        validator = ParamTypeValidator(validator_expected_types)
+        validator = ParamTypeValidatorUtils(validator_expected_types)
         validator.validate({"datetime_string": datetime_string, "millisecond": millisecond, "n": n, "_format": _format})
 
         dt = datetime.strptime(datetime_string, _format)

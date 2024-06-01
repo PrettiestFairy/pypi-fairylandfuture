@@ -10,3 +10,7 @@
 from fairylandfuture.utils.journal import journal
 
 journal.debug("测试DEBUG日志")
+
+from fairylandfuture.utils.networks.local import LocalNetworkUtils
+
+journal.debug(LocalNetworkUtils.default_ip_address())
