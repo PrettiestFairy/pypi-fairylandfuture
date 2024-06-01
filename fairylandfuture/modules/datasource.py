@@ -7,7 +7,7 @@
 @since: 2024-05-12 23:11:45 UTC+8
 """
 
-from typing import Union,  Dict, List, Any, Iterable
+from typing import Union, Dict, List, Any, Iterable
 
 import pymysql
 from pymysql.cursors import DictCursor
@@ -19,14 +19,7 @@ from fairylandfuture.models.dataclasses.datasource import ExecuteParams, InsertM
 class MySQLDataSource(AbstractDataSource):
 
     def __init__(self, host, port, user, password, database):
-        self._connection = pymysql.connect(
-            host=host,
-            port=port,
-            user=user,
-            password=password,
-            database=database,
-            cursorclass=DictCursor
-        )
+        self._connection = pymysql.connect(host=host, port=port, user=user, password=password, database=database, cursorclass=DictCursor)
         self._cursor = self._connection.cursor()
 
     def execute(self, params: ExecuteParams):

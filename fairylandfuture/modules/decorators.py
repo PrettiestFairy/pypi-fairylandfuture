@@ -10,7 +10,7 @@
 import time
 
 from functools import wraps
-from typing import Literal, Type, TypeVar, Generic
+from typing import Optional, Type, TypeVar, Generic
 
 from fairylandfuture.core.superclass.decorators import BaseDecorator, BaseParamsDecorator
 
@@ -20,7 +20,7 @@ _T = TypeVar("_T")
 class SingletonDecorator(Generic[_T]):
     """
     Singleton decorator.
-    
+
     Usage:
         >>> @SingletonDecorator
         >>> class MyClass:
@@ -49,7 +49,7 @@ class SingletonDecorator(Generic[_T]):
 class TimingDecorator(BaseDecorator):
     """
     Timing decorator.
-    
+
     Usage:
         >>> @TimingDecorator
         >>> def my_func():
@@ -83,7 +83,7 @@ class TimingDecorator(BaseDecorator):
         """
         Output message.
             rewrote this method to print message to console instead of logging.
-        
+
         :param msg: Message to output.
         :type msg: str
         :return: ...
@@ -95,7 +95,7 @@ class TimingDecorator(BaseDecorator):
 class ActionDecorator(BaseParamsDecorator):
     """
     Action decorator.
-    
+
     Usage:
         >>> @ActionDecorator(action="my_action")
         >>> def my_func():
@@ -132,7 +132,7 @@ class ActionDecorator(BaseParamsDecorator):
         """
         Output message.
             rewrote this method to print message to console instead of logging.
-        
+
         :param msg: Message to output.
         :type msg: str
         :return: ...
@@ -144,7 +144,7 @@ class ActionDecorator(BaseParamsDecorator):
 class TryCatchDecorator(BaseDecorator):
     """
     Try-catch decorator.
-    
+
     Usage:
         >>> @TryCatchDecorator
         >>> def my_func():
@@ -164,7 +164,7 @@ class TryCatchDecorator(BaseDecorator):
 class TipsDecorator(BaseParamsDecorator):
     """
     Tips decorator.
-    
+
     Usage:
         >>> @TipsDecorator(tips="This is a tips.")
         >>> def my_func():
@@ -174,7 +174,7 @@ class TipsDecorator(BaseParamsDecorator):
         Running tips: my_func.
     """
 
-    def __init__(self, tips: Literal[str] = None):
+    def __init__(self, tips: Optional[str] = None):
         super().__init__()
         self.tips = tips
 
@@ -197,7 +197,7 @@ class TipsDecorator(BaseParamsDecorator):
         """
         Output message.
             rewrote this method to print message to console instead of logging.
-        
+
         :param msg: Message to output.
         :type msg: str
         :return: ...
