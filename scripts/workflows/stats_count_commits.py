@@ -13,7 +13,8 @@ import os
 
 def count_commits(token):
     url = "https://api.github.com/repos/PrettiestFairy/pypi-fairylandfuture/commits"
-    headers = {"Authorization": f"token {token}"}
+    # headers = {"Authorization": f"Token {token}"}
+    headers = {"Authorization": f"Bearer {token}"}
     # response = requests.get(url, headers=headers)
     # try:
     #     if response.status_code == 200:
