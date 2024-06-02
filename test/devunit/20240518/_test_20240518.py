@@ -14,7 +14,7 @@ from typing import Callable, TypeVar, Generic, Type, Literal, Any, Optional
 from functools import wraps
 import time
 
-_T = TypeVar('_T', bound=Callable[..., Any])
+_T = TypeVar("_T", bound=Callable[..., Any])
 
 
 class CustomTiming(TimingDecorator):
@@ -35,35 +35,36 @@ class CustomTips(TipsDecorator):
         journal.debug(msg)
 
 
-# 
-# 
+#
+#
 # class A:
-# 
+#
 #     def __init__(self, a):
 #         self.a = a
-# 
+#
 #     def out(self):
 #         print(self.a)
-# 
-# 
+#
+#
 # class B:
-# 
+#
 #     def __init__(self, b):
 #         self.b = b
-# 
+#
 #     @ActionDecorator(action="out")
 #     def out(self):
 #         print(self.b)
-# 
-# 
+#
+#
 # @CustomTips(tips="函数aa")
 # def aa(a):
 #     print(a)
-# 
-# 
+#
+#
 # @CustomAction(action="函数bb")
 # def bb(b):
 #     print(b)
+
 
 @CustomTiming
 @CustomAction(action="无参数的普通函数")
@@ -121,7 +122,7 @@ class TestFunc:
         time.sleep(0.2)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     func1()
     print("-" * 50)
     func2(1, 1)

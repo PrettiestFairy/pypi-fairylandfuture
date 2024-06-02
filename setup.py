@@ -24,8 +24,8 @@ _SUB = 0
 _STAGE = 0
 _MARK: _MARK_TYPE = "alpha"
 
-if sys.version_info < (3, 7):
-    sys.exit("Python 3.7 or higher is required.")
+if sys.version_info < (3, 8):
+    sys.exit("Python 3.8 or higher is required.")
 
 
 class InstallDependenciesCommand(setuptools.Command):
@@ -87,11 +87,12 @@ class PackageInfo(object):
 
     @property
     def version(self):
-        if len(self.__revise.__str__()) < 5:
-            nbit = 5 - len(self.__revise.__str__())
-            self.__revise = "".join((("0" * nbit), self.__revise.__str__()))
-        else:
-            self.__revise = self.__revise.__str__()
+        # if len(self.__revise.__str__()) < 5:
+        #     nbit = 5 - len(self.__revise.__str__())
+        #     self.__revise = "".join((("0" * nbit), self.__revise.__str__()))
+        # else:
+        #     self.__revise = self.__revise.__str__()
+        self.__revise = self.__revise.__str__()
 
         date_str = datetime.now().date().__str__().replace("-", "")
         revise_after = "-".join((self.__revise.__str__(), date_str))
@@ -100,13 +101,13 @@ class PackageInfo(object):
         if self.__mark == "release":
             version = release_version
         elif self.__mark == "test":
-            version = ".".join((release_version, "".join(("rc", revise_after))))
+            version = ".".join((release_version, "".join(("rc.", revise_after))))
         elif self.__mark == "alpha":
-            version = ".".join((release_version, "".join(("alpha", revise_after))))
+            version = ".".join((release_version, "".join(("alpha.", revise_after))))
         elif self.__mark == "beta":
-            version = ".".join((release_version, "".join(("beta", revise_after))))
+            version = ".".join((release_version, "".join(("beta.", revise_after))))
         else:
-            version = ".".join((release_version, "".join(("rc", revise_after))))
+            version = ".".join((release_version, "".join(("rc.", revise_after))))
 
         return version
 
@@ -148,7 +149,7 @@ class PackageInfo(object):
 
     @property
     def packages_data(self):
-        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["fairylandfuture/conf/*"]}
+        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["conf/*"]}
 
         return data
 
@@ -223,6 +224,7 @@ class PackageInfo(object):
             "requests",
             "pymysql",
             "pyyaml",
+            "netifaces",
             # "pip-review",
             # "pip-autoremove",
             # "python-dotenv",
@@ -252,24 +254,28 @@ class PackageInfo(object):
         return param
 
     @staticmethod
-    def __get_github_commit_count():
-        # Fixed, Package error
-        # with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
-        #     commit_count = FileIO.read()
-        # return int(commit_count)
-        url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
-        response = requests.get(url)
-        if response.status_code == 200:
-            commit_count = int(response.text)
-            return commit_count
-        else:
-            try:
-                with open(os.path.join(_ROOT_PATH, "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
-                    commit_count = FileIO.read()
-                return int(commit_count)
-            except Exception as err:
-                print(f"Error: {err}")
-                return 0
+    def __get_local_gitcommitcr():
+        try:
+            with open(os.path.join(_ROOT_PATH, "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
+                commit_count = FileIO.read()
+            return int(commit_count)
+        except Exception as err:
+            print(f"Error: {err}")
+            return 0
+
+    @classmethod
+    def __get_github_commit_count(cls):
+        try:
+            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
+            response = requests.get(url)
+            if response.status_code == 200:
+                commit_count = int(response.text)
+                return commit_count
+            else:
+                return cls.__get_local_gitcommitcr()
+        except Exception as err:
+            print(err)
+            return cls.__get_local_gitcommitcr()
 
 
 package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
