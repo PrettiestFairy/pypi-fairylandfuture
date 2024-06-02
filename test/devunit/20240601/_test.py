@@ -8,9 +8,12 @@
 """
 
 from fairylandfuture.utils.journal import journal
+from fairylandfuture.utils.networking.local import LocalNetworkUtils
+from fairylandfuture.modules.datetimes import DateTimeModule
+from fairylandfuture.constants.enums import DateTimeEnum
+
+ts = DateTimeModule.datetime_to_timestamp("2024-06-03", _format=DateTimeEnum.DATE)
 
 journal.debug("测试DEBUG日志")
-
-from fairylandfuture.utils.networks.local import LocalNetworkUtils
-
+journal.debug(str(ts))
 journal.debug(LocalNetworkUtils.default_ip_address())
