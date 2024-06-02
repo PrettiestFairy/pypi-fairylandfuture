@@ -32,17 +32,17 @@ class SingletonDecorator(Generic[_T]):
         True
     """
 
-    _instance = None
+    _instances = {}
 
-    def __init__(self, cls: Type):
+    def __init__(self, cls: Type[_T]):
         self._cls = cls
 
-    def __call__(self, *args, **kwargs):
-        if not self._instance:
-            self._instance = self._cls(*args, **kwargs)
-        return self._instance
+    def __call__(self, *args, **kwargs) -> _T:
+        if self._cls not in self._instances:
+            self._instances[self._cls] = self._cls(*args, **kwargs)
+        return self._instances[self._cls]
 
-    def __instancecheck__(self, instance):
+    def __instancecheck__(self, instance: object) -> bool:
         return isinstance(instance, self._cls)
 
 

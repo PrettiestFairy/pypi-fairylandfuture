@@ -1,6 +1,8 @@
 setuptools
+black
 loguru
 python-dateutil
 requests
 pymysql
 pyyaml
+netifaces

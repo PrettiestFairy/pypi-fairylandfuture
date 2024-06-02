@@ -12,7 +12,7 @@ from typing import Dict, Type, Union, Tuple
 from fairylandfuture.modules.exceptions import ParameterTypeError, ParameterError
 
 
-class ParamTypeValidator:
+class ParamTypeValidatorUtils:
     """
     Argument type validators.
 
