@@ -87,11 +87,12 @@ class PackageInfo(object):
 
     @property
     def version(self):
-        if len(self.__revise.__str__()) < 5:
-            nbit = 5 - len(self.__revise.__str__())
-            self.__revise = "".join((("0" * nbit), self.__revise.__str__()))
-        else:
-            self.__revise = self.__revise.__str__()
+        # if len(self.__revise.__str__()) < 5:
+        #     nbit = 5 - len(self.__revise.__str__())
+        #     self.__revise = "".join((("0" * nbit), self.__revise.__str__()))
+        # else:
+        #     self.__revise = self.__revise.__str__()
+        self.__revise = self.__revise.__str__()
 
         date_str = datetime.now().date().__str__().replace("-", "")
         revise_after = "-".join((self.__revise.__str__(), date_str))
@@ -100,13 +101,13 @@ class PackageInfo(object):
         if self.__mark == "release":
             version = release_version
         elif self.__mark == "test":
-            version = ".".join((release_version, "".join(("rc", revise_after))))
+            version = ".".join((release_version, "".join(("rc.", revise_after))))
         elif self.__mark == "alpha":
-            version = ".".join((release_version, "".join(("alpha", revise_after))))
+            version = ".".join((release_version, "".join(("alpha.", revise_after))))
         elif self.__mark == "beta":
-            version = ".".join((release_version, "".join(("beta", revise_after))))
+            version = ".".join((release_version, "".join(("beta.", revise_after))))
         else:
-            version = ".".join((release_version, "".join(("rc", revise_after))))
+            version = ".".join((release_version, "".join(("rc.", revise_after))))
 
         return version
 
