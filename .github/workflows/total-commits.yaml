@@ -4,7 +4,7 @@
 # @organization: https://github.com/FairylandFuture
 # @since: 05 11, 2024
 ---
-name: Stats Commit Count
+name: Count Commits
 
 on:
   workflow_dispatch:
@@ -32,13 +32,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Count commits and write to file
+      - name: Start counting
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          python scripts/workflows/stats_count_commits.py
+          python scripts/workflows/total_commits.py
 
-      - name: Commit and push changes
+      - name: Commit and push
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
