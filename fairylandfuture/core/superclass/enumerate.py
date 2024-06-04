@@ -9,10 +9,10 @@
 from enum import Enum
 from typing import Tuple, Any, Union, List, TypeVar, Set
 
-_TypeEnumBase = TypeVar("_TypeEnumBase", bound="EnumBase")
+_TypeEnumBase = TypeVar("_TypeBaseEnum", bound="BaseEnum")
 
 
-class EnumBase(Enum):
+class BaseEnum(Enum):
     """
     Enum Base Class.
     """
@@ -95,14 +95,14 @@ class EnumBase(Enum):
         return cls.members(exclude_enums, True)
 
 
-class StringEnum(str, EnumBase):
+class StringEnum(str, BaseEnum):
 
     @classmethod
     def values(cls, exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None) -> Tuple[str, ...]:
         return cls.members(exclude_enums, True)
 
 
-class IntegerEnum(int, EnumBase):
+class IntegerEnum(int, BaseEnum):
 
     @classmethod
     def values(cls, exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None) -> Tuple[int, ...]:
