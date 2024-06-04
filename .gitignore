@@ -1,8 +1,14 @@
+# public
 .idea
+log[s]
+
+# dev
+
+# build
 build
 dist
 PyFairylandFuture.egg-info
+
+# example config
+conf/case/config.yaml
 conf/pypi/.pypirc
-log[s]
-conf/case
-#temp
