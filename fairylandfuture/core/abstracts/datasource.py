@@ -11,7 +11,7 @@ from typing import List
 
 import abc
 
-from fairylandfuture.models.dataclasses.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
 
 
 class AbstractDataSource(abc.ABC):
