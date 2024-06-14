@@ -79,9 +79,16 @@ class TestDataTime:
         print(DateTimeModule.timestamp_to_datetime(DateTimeModule.timestamp(), _format="%B %d, %Y %I:%M %p"))
         print(DateTimeModule.timestamp_to_datetime(timestamp=1717430250))
         print(DateTimeModule.timestamp_to_datetime(timestamp=1717431007265, _format="%Y-%b-%d %I:%M:%S"))
-        # print(DateTimeModule.timestamp_to_datetime(timestamp=9466560600, n=11, _format="%Y-%b-%d %I:%M:%S"))
-        print(DateTimeModule.timestamp_to_datetime(DateTimeModule.datetime_to_timestamp(datetime_string="2000-01-01 00:01:00", n=11), _format="%Y-%b-%d %I:%M:%S"))
-        print(DateTimeModule.datetime_to_timestamp(datetime_string="2000-01-01 00:01:00", n=11))
+        print("=======================")
+
+    @classmethod
+    def test_009(cls):
+        print("时间戳转日期时间字符串")
+        print(DateTimeModule.daysdelta(dt1="2010-10-14", dt2="2010-10-12"))
+        print(DateTimeModule.daysdelta(dt1="2010-10-14", dt2="2010-10-12", _format="%Y-%m-%d"))
+        print(DateTimeModule.daysdelta(dt1="2010-10-14", dt2="2010-10-16", _format="%Y-%m-%d"))
+        print(DateTimeModule.daysdelta(dt1=1717329938, dt2=1717430250, timestamp=True))
+        print(DateTimeModule.daysdelta(dt1=1717329938000, dt2=1717502738878, timestamp=True, millisecond=True))
         print("=======================")
 
 
