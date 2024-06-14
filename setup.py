@@ -22,7 +22,7 @@ _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _MAJOR = 1
 _SUB = 0
 _STAGE = 0
-_MARK: _MARK_TYPE = "alpha"
+_MARK: _MARK_TYPE = "release"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
@@ -218,13 +218,13 @@ class PackageInfo(object):
     def install_requires(self):
         results = [
             "setuptools",
-            "black",
             "loguru",
             "python-dateutil",
             "requests",
             "pymysql",
             "pyyaml",
             "netifaces",
+            "cryptography",
             # "pip-review",
             # "pip-autoremove",
             # "python-dotenv",
