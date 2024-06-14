@@ -13,7 +13,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.datasource import AbstractDataSource
-from fairylandfuture.models.dataclasses.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
 
 
 class MySQLDataSource(AbstractDataSource):

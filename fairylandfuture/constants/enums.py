@@ -7,7 +7,7 @@
 @since: 2024-05-10 10:45:41 UTC+8
 """
 
-from fairylandfuture.core.superclass.enumerate import EnumBase
+from fairylandfuture.core.superclass.enumerate import BaseEnum
 from fairylandfuture.core.superclass.enumerate import StringEnum
 
 
@@ -33,7 +33,7 @@ class DateTimeEnum(StringEnum):
         return cls.DATETIME_CN.value
 
 
-class EncodingEnum(EnumBase):
+class EncodingEnum(BaseEnum):
     """
     Encoding enum.
     """
@@ -48,7 +48,7 @@ class EncodingEnum(EnumBase):
         return cls.UTF_8.value
 
 
-class LogLevelEnum(EnumBase):
+class LogLevelEnum(BaseEnum):
     """
     Log level Enum.
     """
