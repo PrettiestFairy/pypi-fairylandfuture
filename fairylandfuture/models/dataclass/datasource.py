@@ -21,7 +21,7 @@ class ExecuteParams:
         expression: The SQL expression to execute.
         params: The parameters to substitute into the expression.
     Usage:
-        >>> from fairylandfuture.models.dataclasses.datasource import ExecuteParams
+        >>> from fairylandfuture.models.dataclass.datasource import ExecuteParams
         >>> ExecuteParams(expression="select * from table where id = %s", params=[1])
         QueryParams(expression='select * from table where id = %s', params=[1])
     Note:
@@ -43,7 +43,7 @@ class InsertManyParams:
         expression: The SQL expression to execute.
         params: The parameters to substitute into the expression.
     Usage:
-        >>> from fairylandfuture.models.dataclasses.datasource import InsertManyParams
+        >>> from fairylandfuture.models.dataclass.datasource import InsertManyParams
         >>> parasm = [
         >>>     ("郝淑慧", 18),
         >>>     ("李雪琴", 19)

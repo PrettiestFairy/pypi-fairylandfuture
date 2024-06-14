@@ -17,7 +17,7 @@ from datetime import datetime
 
 from bin.generate import DEV_CASE_CONFIG_FILE_PATH
 from fairylandfuture.constants.enums import EncodingEnum
-from fairylandfuture.models.dataclasses.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
 from fairylandfuture.modules.datasource import MySQLDataSource
 from fairylandfuture.constants.enums import DateTimeEnum
 
