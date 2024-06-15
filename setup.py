@@ -215,29 +215,10 @@ class PackageInfo(object):
         return results
 
     @property
-    def install_requires(self):
-        results = [
-            "setuptools",
-            "loguru",
-            "python-dateutil",
-            "requests",
-            "pymysql",
-            "pyyaml",
-            "netifaces",
-            "cryptography",
-            # "pip-review",
-            # "pip-autoremove",
-            # "python-dotenv",
-            # "psycopg2-binary",
-            # "fake-useragent",
-            # "tornado",
-            # "pandas",
-            # "django",
-            # "django-stubs",
-            # "djangorestframework",
-            # "django-cors-headers",
-        ]
-        return results
+    def  install_requires(self):
+        with open(os.path.join(_ROOT_PATH, "requirements.in"), "r", encoding="UTF-8") as stream:
+            requirements_text = stream.read()
+        return requirements_text.split()
 
     @property
     def cmdclass(self):
