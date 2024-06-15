@@ -21,8 +21,8 @@ _MARK_TYPE = Literal["release", "test", "alpha", "beta"]
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _MAJOR = 1
 _SUB = 0
-_STAGE = 0
-_MARK: _MARK_TYPE = "release"
+_STAGE = 1
+_MARK: _MARK_TYPE = "alpha"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
