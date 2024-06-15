@@ -7,8 +7,9 @@
 @since: 2024-05-11 17:02:12 UTC+8
 """
 
-import requests
 import os
+
+import requests
 
 
 def count_commits(token):

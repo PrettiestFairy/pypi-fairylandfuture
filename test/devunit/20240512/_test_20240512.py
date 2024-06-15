@@ -8,16 +8,17 @@
 """
 
 import os
-
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
-
-from fairylandfuture.modules.datetimes import DateTimeModule
-from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.utils.journal import journal
-from fairylandfuture.modules.decorators import TipsDecorator, SingletonDecorator, TimingDecorator, ActionDecorator
 
 from _test import TestBase
+from dateutil.relativedelta import relativedelta
+
+from fairylandfuture.constants.enums import DateTimeEnum
+from fairylandfuture.modules.datetimes import DateTimeModule
+from fairylandfuture.modules.decorators import (ActionDecorator,
+                                                SingletonDecorator,
+                                                TimingDecorator, TipsDecorator)
+from fairylandfuture.utils.journal import journal
 
 
 class CustomizeTimingDecorator(TimingDecorator):

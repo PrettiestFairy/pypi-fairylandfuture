@@ -7,9 +7,9 @@
 @since: 2024-06-02 02:42:14 UTC+8
 """
 
+import socket
 from typing import Dict
 
-import socket
 import netifaces
 
 

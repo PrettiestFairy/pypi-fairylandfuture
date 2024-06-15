@@ -7,7 +7,7 @@
 @since: 2024-05-10 10:27:11 UTC+8
 """
 
-from typing import Dict, List, Tuple, Any, Set
+from typing import Any, Dict, List, Set, Tuple
 
 
 class DefaultConstantUtils:

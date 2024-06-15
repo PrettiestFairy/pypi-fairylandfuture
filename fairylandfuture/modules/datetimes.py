@@ -9,7 +9,8 @@
 
 import time
 from datetime import datetime, timedelta
-from typing import Union, Optional, Any
+from typing import Any, Optional, Union
+
 from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.constants.enums import DateTimeEnum

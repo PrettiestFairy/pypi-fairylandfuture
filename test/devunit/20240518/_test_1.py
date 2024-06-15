@@ -9,7 +9,6 @@
 
 from fairylandfuture.modules.datasource import MySQLDataSource
 
-
 mysql = MySQLDataSource(
     _HOST,
     _PORT,

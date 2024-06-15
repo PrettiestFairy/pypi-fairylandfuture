@@ -7,8 +7,8 @@
 @since: 2024-05-19 下午2:15:55 UTC+8
 """
 
-from pathlib import Path
 import os
+from pathlib import Path
 
 ROOT_PATH = Path(__file__).resolve().parent.parent
 

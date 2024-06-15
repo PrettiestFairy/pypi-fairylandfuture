@@ -7,13 +7,14 @@
 @since: 2024-05-12 23:11:45 UTC+8
 """
 
-from typing import Union, Dict, List, Any, Iterable
+from typing import Any, Dict, Iterable, List, Union
 
 import pymysql
 from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.datasource import AbstractDataSource
-from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.models.dataclass.datasource import (ExecuteParams,
+                                                         InsertManyParams)
 
 
 class MySQLDataSource(AbstractDataSource):

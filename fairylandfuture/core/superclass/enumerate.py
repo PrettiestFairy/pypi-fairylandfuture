@@ -7,7 +7,7 @@
 @since: 2024-05-10 10:46:52 UTC+8
 """
 from enum import Enum
-from typing import Tuple, Any, Union, List, TypeVar, Set
+from typing import Any, List, Set, Tuple, TypeVar, Union
 
 _TypeEnumBase = TypeVar("_TypeBaseEnum", bound="BaseEnum")
 

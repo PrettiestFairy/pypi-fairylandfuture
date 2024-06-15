@@ -9,10 +9,10 @@
 
 import binascii
 
-from fairylandfuture.utils.cryptos.cipher import UserPasswordEncryption, PasswordEncryption, Cipher
-from fairylandfuture.utils.cryptos.encoder import Base64Encryption
-
 from fairylandfuture.constants.enums import EncodingEnum
+from fairylandfuture.utils.cryptos.cipher import (Cipher, PasswordEncryption,
+                                                  UserPasswordEncryption)
+from fairylandfuture.utils.cryptos.encoder import Base64Encryption
 
 if __name__ == '__main__':
     password = "123456"

@@ -7,12 +7,14 @@
 @since: 2024-05-18 上午10:52:17 UTC+8
 """
 
-from fairylandfuture.modules.decorators import TimingDecorator, ActionDecorator, TryCatchDecorator, TipsDecorator
-from fairylandfuture.utils.journal import journal
-
-from typing import Callable, TypeVar, Generic, Type, Literal, Any, Optional
-from functools import wraps
 import time
+from functools import wraps
+from typing import Any, Callable, Generic, Literal, Optional, Type, TypeVar
+
+from fairylandfuture.modules.decorators import (ActionDecorator,
+                                                TimingDecorator, TipsDecorator,
+                                                TryCatchDecorator)
+from fairylandfuture.utils.journal import journal
 
 _T = TypeVar("_T", bound=Callable[..., Any])
 

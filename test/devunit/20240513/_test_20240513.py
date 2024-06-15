@@ -7,12 +7,13 @@
 @since: 2024-05-13 13:23:18 UTC+8
 """
 
+from typing import Any, Dict, List, Tuple, Union
+
+import pymysql
 from _test import TestBase
 
 # from fairylandfuture.modules.datasource import MySQLDataSource
 
-from typing import Union, Tuple, Dict, List, Any
-import pymysql
 
 
 def handle_connection(func):

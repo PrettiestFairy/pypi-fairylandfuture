@@ -8,13 +8,13 @@
 """
 
 import os.path
-import setuptools
-import sys
-import requests
-
-from typing import Literal
 import subprocess
+import sys
 from datetime import datetime
+from typing import Literal
+
+import requests
+import setuptools
 
 _MARK_TYPE = Literal["release", "test", "alpha", "beta"]
 

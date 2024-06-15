@@ -7,19 +7,18 @@
 @since: 2024-05-19 上午11:26:00 UTC+8
 """
 
-from typing import Dict, Any
-
 import os
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict
+
 import yaml
 
-from pathlib import Path
-from datetime import datetime
-
 from bin.generate import DEV_CASE_CONFIG_FILE_PATH
-from fairylandfuture.constants.enums import EncodingEnum
-from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.constants.enums import DateTimeEnum, EncodingEnum
+from fairylandfuture.models.dataclass.datasource import (ExecuteParams,
+                                                         InsertManyParams)
 from fairylandfuture.modules.datasource import MySQLDataSource
-from fairylandfuture.constants.enums import DateTimeEnum
 
 with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.UTF_8.value) as stream:
     case_conf: Dict[str, Dict[str, Any]] = yaml.safe_load(stream)
