@@ -12,4 +12,4 @@ import os
 
 ROOT_PATH = Path(__file__).resolve().parent.parent
 
-DEV_CASE_CONFIG_FILE_PATH = os.path.join(ROOT_PATH, "conf", "case", "dev.config.yaml")
+DEV_CONFIG_FILE_PATH = os.path.join(ROOT_PATH, "conf", "dev", "dev.config.yaml")
