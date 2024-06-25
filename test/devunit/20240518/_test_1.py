@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -8,7 +8,6 @@
 """
 
 from fairylandfuture.modules.datasource import MySQLDataSource
-
 
 mysql = MySQLDataSource(
     _HOST,

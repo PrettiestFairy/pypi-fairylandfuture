@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,7 +7,7 @@
 @since: 2024-05-10 11:27:49 UTC+8
 """
 
-from typing import Literal, Union, Tuple, List, Dict
+from typing import Dict, List, Literal, Tuple, Union
 
 # log level
 TypeLogLevel = Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"]

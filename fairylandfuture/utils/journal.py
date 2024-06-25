@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,13 +7,12 @@
 @since: 2024-05-12 14:44:33 UTC+8
 """
 
-from typing import Optional
-
 import os.path
 import sys
+from importlib.resources import read_text
+from typing import Optional
 
 from loguru import logger
-from importlib.resources import read_text
 
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 from fairylandfuture.constants.typed import TypeLogLevel

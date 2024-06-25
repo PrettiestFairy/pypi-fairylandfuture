@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -8,8 +8,7 @@
 """
 
 import json
-
-from dataclasses import dataclass, asdict
+from dataclasses import asdict, dataclass
 
 
 @dataclass(frozen=True)

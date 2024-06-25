@@ -10,6 +10,8 @@ autopep8
 pylama
 pigar
 pipdeptree
+pip-review
+pip-autoremove
 
 setuptools
 loguru
@@ -19,3 +21,4 @@ pymysql
 pyyaml
 netifaces
 cryptography
+python-dotenv

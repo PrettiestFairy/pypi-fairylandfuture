@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -11,11 +11,12 @@
 
 # 常量
 
+# 时间模块
+from fairylandfuture.modules.datetimes import DateTimeModule
+# 注解
+from fairylandfuture.modules.decorators import ActionDecorator, TimingDecorator
 # 日志
 from fairylandfuture.modules.journal import journal
-
-# 注解
-from fairylandfuture.modules.decorators import TimingDecorator, ActionDecorator
 
 # 抽象类 - 枚举
 
@@ -23,8 +24,6 @@ from fairylandfuture.modules.decorators import TimingDecorator, ActionDecorator
 
 # 类型标识
 
-# 时间模块
-from fairylandfuture.modules.datetimes import DateTimeModule
 
 
 class TestDateTimeModule:

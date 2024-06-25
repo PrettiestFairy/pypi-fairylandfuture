@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,8 +7,7 @@
 @since: 2024-05-10 10:45:41 UTC+8
 """
 
-from fairylandfuture.core.superclass.enumerate import BaseEnum
-from fairylandfuture.core.superclass.enumerate import StringEnum
+from fairylandfuture.core.superclass.enumerate import BaseEnum, StringEnum
 
 
 class DateTimeEnum(StringEnum):

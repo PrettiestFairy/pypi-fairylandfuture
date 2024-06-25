@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -9,10 +9,10 @@
 
 import hashlib
 import os
-import string
 import random
+import string
+from typing import Optional, Tuple
 
-from typing import Tuple, Optional
 from cryptography.fernet import Fernet
 
 from fairylandfuture.constants.enums import EncodingEnum

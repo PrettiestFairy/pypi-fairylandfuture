@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,11 +7,11 @@
 @since: 2024-05-12 22:23:51 UTC+8
 """
 
+import abc
 from typing import List
 
-import abc
-
-from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.models.dataclass.datasource import (ExecuteParams,
+                                                         InsertManyParams)
 
 
 class AbstractDataSource(abc.ABC):
