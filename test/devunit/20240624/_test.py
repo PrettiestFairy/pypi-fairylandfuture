@@ -1,0 +1,42 @@
+# coding: utf-8
+""" 
+@software: PyCharm
+@author: Lionel Johnson
+@contact: https://fairy.host
+@organization: https://github.com/FairylandFuture
+@since: 2024-06-24 12:31:33 UTC+8
+"""
+
+import os.path
+
+from fairylandfuture.modules.datasource import MySQLConnector
+
+from test.utils.config import TestConfig
+from test.devunit._test import BASE_PATH
+
+if __name__ == "__main__":
+    config_instance = TestConfig(os.path.join(BASE_PATH, "conf", "dev", "config.yaml"))
+    config = config_instance.config
+    mysql_config = config.get("mysql")
+
+    connection = MySQLConnector(
+        mysql_config.get("host"),
+        mysql_config.get("port"),
+        mysql_config.get("user"),
+        mysql_config.get("password"),
+        mysql_config.get("database"),
+    )
+
+    print(connection.host)
+    print(connection.post)
+    print(connection.user)
+    print(connection.database)
+
+    connect = connection.connect()
+    cursor = connect.cursor()
+
+    cursor.execute("select mysql.user.host, mysql.user.user from mysql.user;")
+    data = cursor.fetchall()
+    print(data)
+    cursor.close()
+    connect.close()
