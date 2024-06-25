@@ -216,11 +216,9 @@ class PackageInfo(object):
 
     @property
     def install_requires(self):
-        with open("requirements.in", mode="r", encoding="UTF-8") as stream:
-            content = stream.read()
-        results = content.split()
-
-        return results
+        with open(os.path.join(_ROOT_PATH, "requirements.in"), "r", encoding="UTF-8") as stream:
+            requirements_text = stream.read()
+        return requirements_text.split()
 
     @property
     def cmdclass(self):
