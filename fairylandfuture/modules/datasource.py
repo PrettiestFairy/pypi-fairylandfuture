@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -14,6 +14,58 @@ from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.datasource import AbstractDataSource
 from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.constants.enums import EncodingEnum
+
+
+class MySQLConnector:
+
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, charset: str = "utf8mb4"):
+        self.__host = host
+        self.__port = port
+        self.__user = user
+        self.__password = password
+        self.__database = database
+        self.__charset = charset
+        # self.connect: pymysql.connections.Connection = self.__connect_mysql()
+        # self.cursor: DictCursor = self.connection.cursor()
+
+    def __connect_mysql(self):
+        connection = pymysql.connect(
+            host=self.__host,
+            port=self.__port,
+            user=self.__user,
+            password=self.__password,
+            database=self.__database,
+            charset=self.__charset,
+            cursorclass=DictCursor,
+        )
+        return connection
+
+    def connect(self):
+        return self.__connect_mysql()
+
+    @property
+    def host(self) -> str:
+        return self.__host
+
+    @property
+    def post(self) -> int:
+        return self.__port
+
+    @property
+    def user(self) -> str:
+        return self.__user
+
+    @property
+    def database(self) -> str:
+        return self.__database
+
+    @property
+    def charset(self) -> str:
+        return self.__charset
+
+    # def __del__(self):
+    #     self.connect.close()
 
 
 class MySQLDataSource(AbstractDataSource):

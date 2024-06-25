@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -216,27 +216,10 @@ class PackageInfo(object):
 
     @property
     def install_requires(self):
-        results = [
-            "setuptools",
-            "loguru",
-            "python-dateutil",
-            "requests",
-            "pymysql",
-            "pyyaml",
-            "netifaces",
-            "cryptography",
-            # "pip-review",
-            # "pip-autoremove",
-            # "python-dotenv",
-            # "psycopg2-binary",
-            # "fake-useragent",
-            # "tornado",
-            # "pandas",
-            # "django",
-            # "django-stubs",
-            # "djangorestframework",
-            # "django-cors-headers",
-        ]
+        with open("requirements.in", mode="r", encoding="UTF-8") as stream:
+            content = stream.read()
+        results = content.split()
+
         return results
 
     @property
@@ -244,6 +227,7 @@ class PackageInfo(object):
         results = {
             "install_dependencies": InstallDependenciesCommand,
         }
+
         return results
 
     @staticmethod
@@ -266,7 +250,7 @@ class PackageInfo(object):
     @classmethod
     def __get_github_commit_count(cls):
         try:
-            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
+            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/fairylandfuture/conf/release/commit-version"
             response = requests.get(url)
             if response.status_code == 200:
                 commit_count = int(response.text)
