@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,9 +7,9 @@
 @since: 2024-06-04 下午12:08:02 UTC+8
 """
 
-from fairylandfuture.modules.datetimes import DateTimeModule
 # from fairylandfuture.utils.journal import journal
 from fairylandfuture.core.superclass.enumerate import BaseEnum
+from fairylandfuture.modules.datetimes import DateTimeModule
 
 
 class DepartmemtEnum(BaseEnum):

@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,9 +7,10 @@
 @since: 2024-05-10 18:56:45 UTC+8
 """
 
-from typing import Dict, Type, Union, Tuple
+from typing import Dict, Tuple, Type, Union
 
-from fairylandfuture.modules.exceptions import ParameterTypeError, ParameterError
+from fairylandfuture.modules.exceptions import (ParameterError,
+                                                ParameterTypeError)
 
 
 class ParamTypeValidatorUtils:

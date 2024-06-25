@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -9,8 +9,11 @@
 
 import time
 
+from fairylandfuture.modules.decorators import (ActionDecorator,
+                                                SingletonDecorator,
+                                                TimingDecorator, TipsDecorator,
+                                                TryCatchDecorator)
 from fairylandfuture.utils.journal import journal
-from fairylandfuture.modules.decorators import SingletonDecorator, TimingDecorator, TipsDecorator, ActionDecorator, TryCatchDecorator
 
 
 class CustomTiming(TimingDecorator):

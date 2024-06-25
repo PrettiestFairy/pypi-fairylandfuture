@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,9 +7,8 @@
 @since: 2024-05-18 下午6:44:40 UTC+8
 """
 
-from typing import Tuple, Optional, Any, Union, List, Dict
-
 from dataclasses import dataclass, field
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 
 @dataclass

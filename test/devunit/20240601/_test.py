@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,10 +7,10 @@
 @since: 2024-06-02 上午12:02:50 UTC+8
 """
 
+from fairylandfuture.constants.enums import DateTimeEnum
+from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.utils.journal import journal
 from fairylandfuture.utils.networking.local import LocalNetworkUtils
-from fairylandfuture.modules.datetimes import DateTimeModule
-from fairylandfuture.constants.enums import DateTimeEnum
 
 ts = DateTimeModule.datetime_to_timestamp("2024-06-03", _format=DateTimeEnum.DATE)
 

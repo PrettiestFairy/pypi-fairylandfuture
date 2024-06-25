@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -8,7 +8,7 @@
 """
 
 from functools import wraps
-from typing import Any, Callable, TypeVar, Generic, Type
+from typing import Any, Callable, Generic, Type, TypeVar
 
 _T = TypeVar("_T", bound=Callable[..., Any])
 

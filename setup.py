@@ -8,21 +8,21 @@
 """
 
 import os.path
-import setuptools
-import sys
-import requests
-
-from typing import Literal
 import subprocess
+import sys
 from datetime import datetime
+from typing import Literal
+
+import requests
+import setuptools
 
 _MARK_TYPE = Literal["release", "test", "alpha", "beta"]
 
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _MAJOR = 1
 _SUB = 0
-_STAGE = 0
-_MARK: _MARK_TYPE = "release"
+_STAGE = 1
+_MARK: _MARK_TYPE = "alpha"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
@@ -215,29 +215,10 @@ class PackageInfo(object):
         return results
 
     @property
-    def install_requires(self):
-        results = [
-            "setuptools",
-            "loguru",
-            "python-dateutil",
-            "requests",
-            "pymysql",
-            "pyyaml",
-            "netifaces",
-            "cryptography",
-            # "pip-review",
-            # "pip-autoremove",
-            # "python-dotenv",
-            # "psycopg2-binary",
-            # "fake-useragent",
-            # "tornado",
-            # "pandas",
-            # "django",
-            # "django-stubs",
-            # "djangorestframework",
-            # "django-cors-headers",
-        ]
-        return results
+    def  install_requires(self):
+        with open(os.path.join(_ROOT_PATH, "requirements.in"), "r", encoding="UTF-8") as stream:
+            requirements_text = stream.read()
+        return requirements_text.split()
 
     @property
     def cmdclass(self):

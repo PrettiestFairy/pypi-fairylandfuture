@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """ 
 @software: PyCharm
 @author: Lionel Johnson
@@ -7,14 +7,12 @@
 @since: 2024-05-11 13:53:27 UTC+8
 """
 
-# 日志
-from fairylandfuture.modules.journal import journal
-
 # 时间模块
 from fairylandfuture.modules.datetimes import DateTimeModule
-
 # 注解
 from fairylandfuture.modules.decorators import ActionDecorator, TimingDecorator
+# 日志
+from fairylandfuture.modules.journal import journal
 
 # 枚举
 

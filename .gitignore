@@ -10,5 +10,5 @@ dist
 PyFairylandFuture.egg-info
 
 # example config
-conf/case/config.yaml
+conf/dev/config.yaml
 conf/pypi/.pypirc
