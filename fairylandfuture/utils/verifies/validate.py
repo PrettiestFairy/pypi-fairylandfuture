@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -9,8 +9,7 @@
 
 from typing import Dict, Tuple, Type, Union
 
-from fairylandfuture.modules.exceptions import (ParameterError,
-                                                ParameterTypeError)
+from fairylandfuture.modules.exceptions import ParameterError, ParameterTypeError
 
 
 class ParamTypeValidatorUtils:

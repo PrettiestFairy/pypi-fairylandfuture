@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -18,6 +18,3 @@ mysql = MySQLDataSource(
 )
 
 print(mysql.select("select now();"))
-
-
-

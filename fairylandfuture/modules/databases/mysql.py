@@ -1,20 +1,19 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-12 23:11:45 UTC+8
+@since: 2024-06-26 23:16:19 UTC+8
 """
 
-from typing import Union, Dict, List, Any, Iterable
+from typing import Union, Dict, Tuple, Any, Iterable
 
 import pymysql
 from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.datasource import AbstractDataSource
-from fairylandfuture.models.dataclass.datasource import ExecuteParams, InsertManyParams
-from fairylandfuture.constants.enums import EncodingEnum
+from fairylandfuture.structures.dataclass.datasource import ExecuteParams, InsertManyParams
 
 
 class MySQLConnector:
@@ -83,13 +82,13 @@ class MySQLDataSource(AbstractDataSource):
             self._connection.rollback()
             raise err
 
-    def select(self, params: ExecuteParams) -> Union[Dict[str, Any], List[Dict[str, Any]]]:
+    def select(self, params: ExecuteParams) -> Union[Dict[str, Any], Tuple[Dict[str, Any]], ...]:
         try:
             self._cursor.execute(params.expression, params.params)
             result = self._cursor.fetchall()
             if len(result) == 1:
-                return result.__getitem__(0)  # type: Dict[str ,Any]
-            return result  # type: List[Dict[str, Any]]
+                return result.__getitem__(0)
+            return result
         except Exception as err:
             raise err
 
@@ -107,6 +106,7 @@ class MySQLDataSource(AbstractDataSource):
         try:
             self._cursor.executemany(params.expression, params.params)
             self._connection.commit()
+            return True
         except Exception as err:
             self._connection.rollback()
             raise err
