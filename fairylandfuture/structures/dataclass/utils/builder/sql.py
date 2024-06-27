@@ -37,3 +37,40 @@ class StructureFilterOption:
 
     def __str__(self):
         return f" {self.option} ".join([str(element) for element in self.filter_field])
+
+
+@dataclass(frozen=True)
+class StructureJoinCondition:
+    table1: str
+    field1: str
+    table2: str
+    field2: str
+
+    def __str__(self):
+        return f"{self.table1}.{self.field1} = {self.table2}.{self.field2}"
+
+
+@dataclass(frozen=True)
+class StructureJoinLogic:
+    type: str
+    table: str
+    condition: StructureJoinCondition
+
+    def __str__(self):
+        return f"{self.type} {self.table} on {self.condition}"
+
+
+@dataclass(frozen=True)
+class StructureJoinOption:
+    option: Sequence[StructureJoinLogic]
+
+    def __str__(self):
+        return " ".join([str(element) for element in self.option])
+
+
+@dataclass(frozen=True)
+class StructureGroupByOption:
+    field_list: Sequence[str]
+
+    def __str__(self):
+        return ", ".join(self.field_list)
