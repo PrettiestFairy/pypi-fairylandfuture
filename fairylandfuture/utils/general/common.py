@@ -18,7 +18,7 @@ class OSPlatform:
     """
 
     @staticmethod
-    def get_os_platform():
+    def platform():
         """
         Get OS Platform
         :return: OS Platform
@@ -26,7 +26,7 @@ class OSPlatform:
         return platform.system()
 
     @staticmethod
-    def get_os_uid():
+    def uid():
         """
         Get OS UID
         :return: OS UID
@@ -34,7 +34,7 @@ class OSPlatform:
         return os.getuid()
 
     @staticmethod
-    def get_os_gid():
+    def gid():
         """
         Get OS PID
         :return: OS PID
@@ -42,7 +42,7 @@ class OSPlatform:
         return os.getgid()
 
     @staticmethod
-    def get_os_username():
+    def username():
         """
         Get OS Username
         :return: OS Username
@@ -50,7 +50,7 @@ class OSPlatform:
         return os.getlogin()
 
     @staticmethod
-    def get_os_version():
+    def version():
         """
         Get OS Version
         :return: OS Version
@@ -58,9 +58,17 @@ class OSPlatform:
         return platform.version()
 
     @staticmethod
-    def get_os_architecture():
+    def architecture():
         """
         Get OS Architecture
         :return: OS Architecture
         """
         return platform.machine()
+
+    @staticmethod
+    def python_version():
+        """
+        Get Python Version
+        :return: Python Version
+        """
+        return f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"

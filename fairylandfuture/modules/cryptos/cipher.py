@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -24,20 +24,20 @@ class Cipher:
     def generate_salt(cls, length: int = 16) -> str:
         """
         Generate a random salt.
-        
+
         :param length: Length of the salt.
         :type length: int
         :return: Salt.
         :rtype: str
         """
         chars = string.ascii_letters + string.digits + string.punctuation
-        return ''.join(random.choice(chars) for _ in range(length))
+        return "".join(random.choice(chars) for _ in range(length))
 
     @classmethod
     def generate_key(cls) -> bytes:
         """
         Generate a random key.
-        
+
         :return: Key.
         :rtype: bytes
         """
@@ -50,7 +50,7 @@ class UserPasswordEncryption(Cipher):
     def encrypt(cls, password: str, salt: Optional[str] = None) -> Tuple[str, str]:
         """
         Use MD5 to encrypt the password.
-        
+
         :param password: Required. The password to be encrypted.
         :type password: str
         :param salt: Salt to be used for encryption. If not provided, a random salt will be generated.
@@ -71,7 +71,7 @@ class UserPasswordEncryption(Cipher):
     def verify(cls, password: str, hashed_password: str, salt: str) -> bool:
         """
         Verify the password with the hashed password and salt.
-        
+
         :param password: Required. The password to be verified.
         :type password: str
         :param hashed_password: Required. The hashed password to be verified.
@@ -94,7 +94,7 @@ class PasswordEncryption(Cipher):
     def encrypt(cls, password: str, key: bytes) -> Tuple[str, str]:
         """
         Encrypt the password using Fernet.
-        
+
         :param password: Required. The password to be encrypted.
         :type password: str
         :param key: Key to be used for encryption. If not provided, a random key will be generated.
@@ -111,7 +111,7 @@ class PasswordEncryption(Cipher):
     def decrypt(cls, encrypted_password, key):
         """
         Decrypt the encrypted password using Fernet.
-        
+
         :param encrypted_password: Required. The encrypted password to be decrypted.
         :type encrypted_password: str
         :param key: Required. The key to be used for decryption.
@@ -123,4 +123,3 @@ class PasswordEncryption(Cipher):
         encrypted_password = encrypted_password.encode(EncodingEnum.UTF_8.value)
         decrypted_password = fernet.decrypt(encrypted_password)
         return decrypted_password.decode(EncodingEnum.UTF_8.value)
-

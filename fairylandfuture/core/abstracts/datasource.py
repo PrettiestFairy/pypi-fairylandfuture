@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -10,8 +10,7 @@
 import abc
 from typing import List
 
-from fairylandfuture.models.dataclass.datasource import (ExecuteParams,
-                                                         InsertManyParams)
+from fairylandfuture.structures.dataclass.datasource import ExecuteParams, InsertManyParams
 
 
 class AbstractDataSource(abc.ABC):

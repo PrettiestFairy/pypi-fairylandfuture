@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -10,9 +10,8 @@
 import binascii
 
 from fairylandfuture.constants.enums import EncodingEnum
-from fairylandfuture.utils.cryptos.cipher import (Cipher, PasswordEncryption,
-                                                  UserPasswordEncryption)
-from fairylandfuture.utils.cryptos.encoder import Base64Encryption
+from fairylandfuture.modules.cryptos import (UserPasswordEncryption)
+from fairylandfuture.modules.cryptos import Base64Encryption
 
 if __name__ == '__main__':
     password = "123456"

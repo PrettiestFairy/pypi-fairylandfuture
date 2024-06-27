@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -23,6 +23,9 @@ print(platform.system())
 print(platform.node())
 
 print(OSPlatform.get_os_platform())
+print(sys.version)
+print(sys.version_info.major, sys.version_info.minor)
+print(sys.version.split()[0])
 
 # print(os.getgid())
 # print(os.getgid())

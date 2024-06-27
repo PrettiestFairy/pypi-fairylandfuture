@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -7,17 +7,15 @@
 @since: 2024-05-19 上午11:26:00 UTC+8
 """
 
-import os
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict
 
 import yaml
 
 from bin.generate import DEV_CASE_CONFIG_FILE_PATH
 from fairylandfuture.constants.enums import DateTimeEnum, EncodingEnum
-from fairylandfuture.models.dataclass.datasource import (ExecuteParams,
-                                                         InsertManyParams)
+from fairylandfuture.structures.dataclass.datasource import (ExecuteParams,
+                                                  InsertManyParams)
 from fairylandfuture.modules.datasource import MySQLDataSource
 
 with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.UTF_8.value) as stream:
