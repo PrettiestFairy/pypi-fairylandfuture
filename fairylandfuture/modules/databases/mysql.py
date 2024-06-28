@@ -13,7 +13,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.datasource import AbstractDataSource
-from fairylandfuture.structures.builder.expression import StructureSQLStructureSQLExecuteParams, StructureSQLStructureSQLInsertManyParams
+from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 
 
 class MySQLConnector:
@@ -25,23 +25,6 @@ class MySQLConnector:
         self.__password = password
         self.__database = database
         self.__charset = charset
-        # self.connect: pymysql.connections.Connection = self.__connect_mysql()
-        # self.cursor: DictCursor = self.connection.cursor()
-
-    def __connect_mysql(self):
-        connection = pymysql.connect(
-            host=self.__host,
-            port=self.__port,
-            user=self.__user,
-            password=self.__password,
-            database=self.__database,
-            charset=self.__charset,
-            cursorclass=DictCursor,
-        )
-        return connection
-
-    def connect(self):
-        return self.__connect_mysql()
 
     @property
     def host(self) -> str:
@@ -63,31 +46,56 @@ class MySQLConnector:
     def charset(self) -> str:
         return self.__charset
 
-    # def __del__(self):
-    #     self.connect.close()
+    def __connect_mysql(self) -> pymysql.connections.Connection:
+        connection = pymysql.connect(
+            host=self.__host,
+            port=self.__port,
+            user=self.__user,
+            password=self.__password,
+            database=self.__database,
+            charset=self.__charset,
+            cursorclass=DictCursor,
+        )
+        return connection
+
+    @property
+    def connect(self) -> pymysql.connections.Connection:
+        return self.__connect_mysql()
+
+    @property
+    def cursor(self) -> DictCursor:
+        return self.connect.cursor()
+
+    def close(self) -> None:
+        self.connect.close()
+        self.cursor.close()
+
+    def __del__(self):
+        self.close()
 
 
-class MySQLDataSource(AbstractDataSource):
+class MySQLDataSource(AbstractDataSource, MySQLConnector):
 
     def __init__(self, host, port, user, password, database):
-        self._connection = pymysql.connect(host=host, port=port, user=user, password=password, database=database, cursorclass=DictCursor)
-        self._cursor = self._connection.cursor()
+        super().__init__(host=host, port=port, user=user, password=password, database=database)
+        # self._connection = pymysql.connect(host=host, port=port, user=user, password=password, database=database, cursorclass=DictCursor)
+        # self._cursor = self._connection.cursor()
 
     def execute(self, params: StructureSQLExecuteParams):
         try:
-            self._cursor.execute(params.expression, params.params)
-            self._connection.commit()
+            self.cursor.execute(params.expression, params.params)
+            self.connect.commit()
             return True
         except Exception as err:
-            self._connection.rollback()
+            self.connect.rollback()
             raise err
 
     def select(self, params: StructureSQLExecuteParams) -> Union[Dict[str, Any], Tuple[Dict[str, Any]], ...]:
         try:
-            self._cursor.execute(params.expression, params.params)
-            result = self._cursor.fetchall()
+            self.cursor.execute(params.expression, params.params)
+            result = self.cursor.fetchall()
             if len(result) == 1:
-                return result.__getitem__(0)
+                return result[0]
             return result
         except Exception as err:
             raise err
@@ -95,20 +103,20 @@ class MySQLDataSource(AbstractDataSource):
     def multiple(self, params: Iterable[StructureSQLExecuteParams]) -> bool:
         try:
             for param in params:
-                self._cursor.execute(param.expression, param.params)
-            self._connection.commit()
+                self.cursor.execute(param.expression, param.params)
+            self.connect.commit()
             return True
         except Exception as err:
-            self._connection.rollback()
+            self.connect.rollback()
             raise err
 
     def insertmany(self, params: StructureSQLInsertManyParams) -> bool:
         try:
-            self._cursor.executemany(params.expression, params.params)
-            self._connection.commit()
+            self.cursor.executemany(params.expression, params.params)
+            self.connect.commit()
             return True
         except Exception as err:
-            self._connection.rollback()
+            self.connect.rollback()
             raise err
 
     def __del__(self):

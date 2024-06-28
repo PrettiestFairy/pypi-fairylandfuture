@@ -22,7 +22,7 @@ class StructureSQLExecuteParams:
         expression: The SQL expression to execute.
         params: The parameters to substitute into the expression.
     Usage:
-        >>> from fairylandfuture.structures.builder.expression import ExecuteParams
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams
         >>> ExecuteParams(expression="select * from table where id = %s", params=[1])
         QueryParams(expression='select * from table where id = %s', params=[1])
     Note:
@@ -44,7 +44,7 @@ class StructureSQLInsertManyParams:
         expression: The SQL expression to execute.
         params: The parameters to substitute into the expression.
     Usage:
-        >>> from fairylandfuture.structures.builder.expression import InsertManyParams
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLInsertManyParams
         >>> parasm = [
         >>>     ("郝淑慧", 18),
         >>>     ("李雪琴", 19)

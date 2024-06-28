@@ -28,7 +28,7 @@ class BaseBuilderSQL:
 class QueryBuilderSQL(BaseBuilderSQL):
 
     def __init__(self, table: str, fields: Sequence[str]):
-        super().__init__(table)
+        super().__init__(table=table)
         self.fields = fields
         self.__sql = " ".join(("select", ", ".join(fields), "from", self.table)) + ";"
 
