@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -11,10 +11,10 @@
 class ProgramError(Exception):
 
     def __init__(self, message: str = "Internal program error."):
-        self.__prompt = f"{self.__class__.__name__}: {message}"
+        self.err_msg = f"{self.__class__.__name__}: {message}"
 
     def __str__(self) -> str:
-        return self.__prompt
+        return self.err_msg
 
 
 class ParameterError(ProgramError):
@@ -50,4 +50,10 @@ class ConfigReadError(ProgramError):
 class SQLExecutionError(ProgramError):
 
     def __init__(self, message: str = "SQL execution error."):
+        super().__init__(message=message)
+
+
+class SQLSyntaxError(ProgramError):
+
+    def __init__(self, message: str = "SQL syntax error."):
         super().__init__(message=message)

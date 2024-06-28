@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -11,8 +11,7 @@ import time
 from functools import wraps
 from typing import Generic, Optional, Type, TypeVar
 
-from fairylandfuture.core.superclass.decorators import (BaseDecorator,
-                                                        BaseParamsDecorator)
+from fairylandfuture.core.superclass.decorators import BaseDecorator, BaseParamsDecorator
 
 _T = TypeVar("_T")
 
