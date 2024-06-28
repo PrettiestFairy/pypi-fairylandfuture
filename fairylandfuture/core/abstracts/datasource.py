@@ -10,28 +10,28 @@
 import abc
 from typing import List
 
-from fairylandfuture.structures.dataclass.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLStructureSQLInsertManyParams
 
 
 class AbstractDataSource(abc.ABC):
 
     @abc.abstractmethod
-    def execute(self, params: ExecuteParams) -> bool: ...
+    def execute(self, params: StructureSQLExecuteParams) -> bool: ...
 
-    def insert(self, params: ExecuteParams) -> bool:
+    def insert(self, params: StructureSQLExecuteParams) -> bool:
         return self.execute(params)
 
-    def delete(self, params: ExecuteParams) -> bool:
+    def delete(self, params: StructureSQLExecuteParams) -> bool:
         return self.execute(params)
 
-    def update(self, params: ExecuteParams) -> bool:
+    def update(self, params: StructureSQLExecuteParams) -> bool:
         return self.execute(params)
 
     @abc.abstractmethod
-    def select(self, params: ExecuteParams): ...
+    def select(self, params: StructureSQLExecuteParams): ...
 
     @abc.abstractmethod
-    def multiple(self, params: List[ExecuteParams]) -> bool: ...
+    def multiple(self, params: List[StructureSQLExecuteParams]) -> bool: ...
 
     @abc.abstractmethod
-    def insertmany(self, params: InsertManyParams) -> bool: ...
+    def insertmany(self, params: StructureSQLInsertManyParams) -> bool: ...

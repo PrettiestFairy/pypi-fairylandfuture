@@ -13,7 +13,7 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.datasource import AbstractDataSource
-from fairylandfuture.structures.dataclass.datasource import ExecuteParams, InsertManyParams
+from fairylandfuture.structures.builder.expression import StructureSQLStructureSQLExecuteParams, StructureSQLStructureSQLInsertManyParams
 
 
 class MySQLConnector:
@@ -73,7 +73,7 @@ class MySQLDataSource(AbstractDataSource):
         self._connection = pymysql.connect(host=host, port=port, user=user, password=password, database=database, cursorclass=DictCursor)
         self._cursor = self._connection.cursor()
 
-    def execute(self, params: ExecuteParams):
+    def execute(self, params: StructureSQLExecuteParams):
         try:
             self._cursor.execute(params.expression, params.params)
             self._connection.commit()
@@ -82,7 +82,7 @@ class MySQLDataSource(AbstractDataSource):
             self._connection.rollback()
             raise err
 
-    def select(self, params: ExecuteParams) -> Union[Dict[str, Any], Tuple[Dict[str, Any]], ...]:
+    def select(self, params: StructureSQLExecuteParams) -> Union[Dict[str, Any], Tuple[Dict[str, Any]], ...]:
         try:
             self._cursor.execute(params.expression, params.params)
             result = self._cursor.fetchall()
@@ -92,7 +92,7 @@ class MySQLDataSource(AbstractDataSource):
         except Exception as err:
             raise err
 
-    def multiple(self, params: Iterable[ExecuteParams]) -> bool:
+    def multiple(self, params: Iterable[StructureSQLExecuteParams]) -> bool:
         try:
             for param in params:
                 self._cursor.execute(param.expression, param.params)
@@ -102,7 +102,7 @@ class MySQLDataSource(AbstractDataSource):
             self._connection.rollback()
             raise err
 
-    def insertmany(self, params: InsertManyParams) -> bool:
+    def insertmany(self, params: StructureSQLInsertManyParams) -> bool:
         try:
             self._cursor.executemany(params.expression, params.params)
             self._connection.commit()

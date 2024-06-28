@@ -9,7 +9,14 @@
 
 from typing import Optional, Sequence
 
-from fairylandfuture.structures.dataclass.utils.builder.sql import StructureFilterOption, StructureJoinOption, StructureGroupByOption
+from fairylandfuture.structures.builder.expression import (
+    StructureSQLFilterOption,
+    StructureSQLJoinOption,
+    StructureSQLGroupByOption,
+    StructureSQLOrderByOption,
+    StructureSQLLimitOption,
+)
+from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
 class BaseBuilderSQL:
@@ -27,64 +34,65 @@ class QueryBuilderSQL(BaseBuilderSQL):
 
     def operation(
         self,
-        join: Optional[StructureJoinOption] = None,
-        where: Optional[StructureFilterOption] = None,
-        group_by: Optional[StructureGroupByOption] = None,
-        order_by=None,
-        limit=None,
+        join: Optional[StructureSQLJoinOption] = None,
+        where: Optional[StructureSQLFilterOption] = None,
+        group_by: Optional[StructureSQLGroupByOption] = None,
+        order_by: Optional[StructureSQLOrderByOption] = None,
+        limit: Optional[StructureSQLLimitOption] = None,
     ):
+        join = f"{join}" if join else ""
+        where = f"where {where}" if where else ""
         if group_by:
-            group_by_field_list = group_by.field_list
-            if group_by_field_list == self.fields:
-                group_by = f"group_by {group_by}"
-            elif [item.rsplit(".")[1] for item in group_by_field_list] == [item.rsplit(".")[1] for item in self.fields]:
+            if group_by.field_list == self.fields:
                 group_by = f"group_by {group_by}"
             else:
-                raise 
-        where = f"where {where}" if where else ""
-        join = f"{join}" if join else ""
-        
-        return " ".join((self.__sql.rstrip(";"), join, where, group_by)) + ";"
+                raise SQLSyntaxError("group_by fields must be in select fields.")
+        else:
+            group_by = ""
+        order_by = f"order_by {order_by}" if order_by else ""
+        limit = f"limit {limit}" if limit else ""
+        sql = " ".join((self.__sql.rstrip(";"), join, where, group_by, order_by, limit))
+
+        return " ".join(sql.split()) + ";"
 
     def __str__(self):
         return self.__sql
 
 
 if __name__ == "__main__":
-
-    # print(QueryBuilderSQL(database, table_name))
-    from fairylandfuture.structures.dataclass.utils.builder.sql import (
-        StructureFilterLogic,
-        StructureFilterOption,
-        StructureJoinCondition,
-        StructureJoinLogic,
-        StructureJoinOption,
-        StructureGroupByOption,
+    from fairylandfuture.structures.builder.expression import (
+        StructureSQLFilterLogic,
+        StructureSQLFilterOption,
+        StructureSQLJoinCondition,
+        StructureSQLJoinLogic,
+        StructureSQLJoinOption,
+        StructureSQLGroupByOption,
+        StructureSQLOrderByOption,
     )
 
     database = "mysql"
     table_name = ("mysql.user", "mysql.host", "postgresql.id", "mog.name")
 
     leftjoin_table1 = "postgresql"
-    leftjoin_condition1 = StructureJoinCondition("mysql", "user_id", "postgresql", "id")
+    leftjoin_condition1 = StructureSQLJoinCondition("mysql", "user_id", "postgresql", "id")
     leftjoin_table2 = "mog"
-    leftjoin_condition2 = StructureJoinCondition("mysql", "user_id", "mog", "id")
+    leftjoin_condition2 = StructureSQLJoinCondition("mysql", "user_id", "mog", "id")
 
-    join_postgresql = StructureJoinLogic("left join", leftjoin_table1, leftjoin_condition1)
-    join_mog = StructureJoinLogic("left join", leftjoin_table2, leftjoin_condition2)
+    join_postgresql = StructureSQLJoinLogic("left join", leftjoin_table1, leftjoin_condition1)
+    join_mog = StructureSQLJoinLogic("left join", leftjoin_table2, leftjoin_condition2)
 
-    where_add1 = StructureFilterLogic("name", "=")
-    where_add2 = StructureFilterLogic("age", "!=")
-    where_or1 = StructureFilterLogic("c", "is")
-    where_or2 = StructureFilterLogic("d", "in")
-    where_or_option1 = StructureFilterOption("or", (where_or1, where_or2))
-    where_or_option2 = StructureFilterOption("and", (where_add1, where_add2))
+    where_add1 = StructureSQLFilterLogic("name", "=")
+    where_add2 = StructureSQLFilterLogic("age", "!=")
+    where_or1 = StructureSQLFilterLogic("c", "is")
+    where_or2 = StructureSQLFilterLogic("d", "in")
+    where_or_option1 = StructureSQLFilterOption("or", (where_or1, where_or2))
+    where_or_option2 = StructureSQLFilterOption("and", (where_add1, where_add2))
 
-    join_ = StructureJoinOption((join_postgresql, join_mog))
-    where_ = StructureFilterOption("or", (where_or_option1, where_or_option2))
-    group_ = StructureGroupByOption(("1", "2"))
-    sql = QueryBuilderSQL(database, table_name).operation(join_, where_, group_)
+    join_ = StructureSQLJoinOption((join_postgresql, join_mog))
+    where_ = StructureSQLFilterOption("or", (where_or_option1, where_or_option2))
+    group_ = StructureSQLGroupByOption(("mysql.user", "mysql.host"))
+    order_ = StructureSQLOrderByOption(("userid desc", "id"))
+    limit_ = StructureSQLLimitOption(limit=10)
+    sql = QueryBuilderSQL(database, table_name).operation(join=join_, where=where_, order_by=order_, limit=limit_)
 
-    print(join_)
-    print(where_, type(where_))
-    print(sql, type(sql))
+    print(repr(sql))
