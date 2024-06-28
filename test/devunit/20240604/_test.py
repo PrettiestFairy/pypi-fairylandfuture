@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -36,5 +36,3 @@ if __name__ == '__main__':
     # print(DepartmemtEnum.values())
     
     print(DepartmemtEnum.default())
-
-

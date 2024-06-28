@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -67,3 +67,13 @@ class LogLevelEnum(BaseEnum):
     @classmethod
     def default_debug(cls) -> str:
         return cls.TRACE.value
+
+
+class PlatformEnum(BaseEnum):
+    """
+    Platform enum.
+    """
+    WINDOWS = windows = "Windows"
+    LINUX = linux = "Linux"
+    MACOS = macos = "Darwin"
+    DARWIN = darwin = "Darwin"

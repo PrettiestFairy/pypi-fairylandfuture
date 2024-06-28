@@ -1,5 +1,5 @@
 # coding: utf-8
-""" 
+"""
 @software: PyCharm
 @author: Lionel Johnson
 @contact: https://fairy.host
@@ -7,17 +7,14 @@
 @since: 2024-05-19 上午11:26:00 UTC+8
 """
 
-import os
 from datetime import datetime
-from pathlib import Path
 from typing import Any, Dict
 
 import yaml
 
 from bin.generate import DEV_CASE_CONFIG_FILE_PATH
 from fairylandfuture.constants.enums import DateTimeEnum, EncodingEnum
-from fairylandfuture.models.dataclass.datasource import (ExecuteParams,
-                                                         InsertManyParams)
+from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 from fairylandfuture.modules.datasource import MySQLDataSource
 
 with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.UTF_8.value) as stream:
@@ -35,46 +32,20 @@ datasource = MySQLDataSource(
 
 query_now = ExecuteParams("select now() as now;")
 
-add_col_sql = (
-    "alter table tb_test "
-    "add age int  default 0 not null;"
-)
-update_age = (
-    "update tb_test "
-    "set age = 18 "
-    "where id = %(id)s"
-)
+add_col_sql = "alter table tb_test " "add age int  default 0 not null;"
+update_age = "update tb_test " "set age = 18 " "where id = %(id)s"
 
-query_name = (
-    "select id, name, age "
-    "from tb_test "
-    "where id = %(id)s;"
-)
+query_name = "select id, name, age " "from tb_test " "where id = %(id)s;"
 
-instermany = (
-    "insert into tb_test (name, age) "
-    "values (%(name)s, %(age)s) ;"
-)
+instermany = "insert into tb_test (name, age) " "values (%(name)s, %(age)s) ;"
 
-instermany_v = (
-    {
-        "name": "郭昕蕊",
-        "age": 51
-    },
-    {
-        "name": "董敏",
-        "age": 21
-    }
-)
+instermany_v = ({"name": "郭昕蕊", "age": 51}, {"name": "董敏", "age": 21})
 
 query_now_result = datasource.select(query_now)
 now: datetime = query_now_result.get("now")
 print(now.strftime(DateTimeEnum.DATETIME_CN))
 
-multiple_exec = (
-    ExecuteParams(add_col_sql),
-    ExecuteParams(update_age, {"id": 1})
-)
+multiple_exec = (ExecuteParams(add_col_sql), ExecuteParams(update_age, {"id": 1}))
 
 # print(datasource.multiple(multiple_exec))
 
