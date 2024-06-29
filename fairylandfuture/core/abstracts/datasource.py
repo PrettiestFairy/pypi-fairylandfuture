@@ -10,7 +10,7 @@
 import abc
 from typing import List
 
-from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLStructureSQLInsertManyParams
+from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 
 
 class AbstractDataSource(abc.ABC):

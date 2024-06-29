@@ -7,8 +7,9 @@
 @since: 2024-06-26 23:16:19 UTC+8
 """
 
-from typing import Union, Dict, Tuple, Any, Iterable
+from typing import Union, Dict, Tuple, Any, Iterable, Callable
 
+from functools import wraps
 import pymysql
 from pymysql.cursors import DictCursor
 
@@ -25,6 +26,8 @@ class MySQLConnector:
         self.__password = password
         self.__database = database
         self.__charset = charset
+        self.connect: pymysql.connections.Connection = self.__connect()
+        self.cursor: DictCursor = self.connect.cursor()
 
     @property
     def host(self) -> str:
@@ -46,7 +49,7 @@ class MySQLConnector:
     def charset(self) -> str:
         return self.__charset
 
-    def __connect_mysql(self) -> pymysql.connections.Connection:
+    def __connect(self) -> pymysql.connections.Connection:
         connection = pymysql.connect(
             host=self.__host,
             port=self.__port,
@@ -58,17 +61,30 @@ class MySQLConnector:
         )
         return connection
 
-    @property
-    def connect(self) -> pymysql.connections.Connection:
-        return self.__connect_mysql()
+    def reconnect(self) -> None:
+        # if not self.cursor:
+        #     self.cursor = self.connect.cursor()
+        # if not self.connect:
+        #     self.connect = self.__connect()
+        #     self.cursor = self.connect.cursor()
+        self.close()
+        self.connect = self.__connect()
+        self.cursor = self.connect.cursor()
 
-    @property
-    def cursor(self) -> DictCursor:
-        return self.connect.cursor()
+    @staticmethod
+    def reload(func):
+        @wraps(func)
+        def wrapper(self, *args, **kwargs):
+            self.reconnect()
+            return func(self, *args, **kwargs)
+
+        return wrapper
 
     def close(self) -> None:
-        self.connect.close()
-        self.cursor.close()
+        if self.cursor:
+            self.cursor.close()
+        if self.connect:
+            self.connect.close()
 
     def __del__(self):
         self.close()
@@ -78,8 +94,6 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
 
     def __init__(self, host, port, user, password, database):
         super().__init__(host=host, port=port, user=user, password=password, database=database)
-        # self._connection = pymysql.connect(host=host, port=port, user=user, password=password, database=database, cursorclass=DictCursor)
-        # self._cursor = self._connection.cursor()
 
     def execute(self, params: StructureSQLExecuteParams):
         try:
@@ -89,11 +103,16 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
         except Exception as err:
             self.connect.rollback()
             raise err
+        finally:
+            self.cursor.close()
 
+    @MySQLConnector.reload
     def select(self, params: StructureSQLExecuteParams) -> Union[Dict[str, Any], Tuple[Dict[str, Any]], ...]:
         try:
             self.cursor.execute(params.expression, params.params)
             result = self.cursor.fetchall()
+            if not result:
+                return None
             if len(result) == 1:
                 return result[0]
             return result
@@ -109,6 +128,8 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
         except Exception as err:
             self.connect.rollback()
             raise err
+        finally:
+            self.cursor.close()
 
     def insertmany(self, params: StructureSQLInsertManyParams) -> bool:
         try:
@@ -118,7 +139,5 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
         except Exception as err:
             self.connect.rollback()
             raise err
-
-    def __del__(self):
-        self._cursor.close()
-        self._connection.close()
+        finally:
+            self.cursor.close()
