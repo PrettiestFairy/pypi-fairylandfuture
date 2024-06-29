@@ -7,17 +7,73 @@
 @since: 2024-06-26 23:16:19 UTC+8
 """
 
+import functools
+import pymysql
+
 from typing import Union, Dict, Tuple, Any, Iterable, Callable
 
-from functools import wraps
-import pymysql
-from pymysql.cursors import DictCursor
-
-from fairylandfuture.core.abstracts.datasource import AbstractDataSource
+from fairylandfuture.core.abstracts.databases import AbstractMySQLDataBase, AbstractMySQLConnector
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 
 
-class MySQLConnector:
+class CustomMySQLConnect(pymysql.connections.Connection):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__exist = True
+
+    def close(self):
+        super().close()
+        self.__exist = False
+
+    @property
+    def exist(self):
+        return self.__exist
+
+
+class CustomMySQLCursor(pymysql.cursors.DictCursor):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__exist = True
+
+    def close(self):
+        super().close()
+        self.__exist = False
+
+    @property
+    def exist(self):
+        return self.__exist
+
+
+class MySQLConnector(AbstractMySQLConnector):
+    """
+    This class is used to connect to MySQL database and execute SQL statements.
+
+    It is a subclass of AbstractMySQLConnector and implements the methods of AbstractMySQLDataBase.
+
+    :param host: The host name of the MySQL server.
+    :type host: str
+    :param port: The port number of the MySQL server.
+    :type port: int
+    :param user: The user name used to connect to the MySQL server.
+    :type user: str
+    :param password: The password used to connect to the MySQL server.
+    :type password: str
+    :param database: The name of the database to connect to.
+    :type database: str
+    :param charset: The character set used to connect to the MySQL server.
+    :type charset: str, optional
+
+    Usage:
+        >>> from fairylandfuture.modules.databases.mysql import MySQLConnector
+        >>> connector = MySQLConnector(host="localhost", port=3306, user="root", password="password", database="test")
+        >>> connector.cursor.execute("SELECT * FROM users")
+        >>> result = connector.cursor.fetchall()
+        >>> print(result)
+        [{'id': 1, 'name': 'John', 'age': 25}, {'id': 2, 'name': 'Mary', 'age': 30}]
+        >>> connector.close()
+    """
 
     def __init__(self, host: str, port: int, user: str, password: str, database: str, charset: str = "utf8mb4"):
         self.__host = host
@@ -26,8 +82,8 @@ class MySQLConnector:
         self.__password = password
         self.__database = database
         self.__charset = charset
-        self.connect: pymysql.connections.Connection = self.__connect()
-        self.cursor: DictCursor = self.connect.cursor()
+        self.connect: CustomMySQLConnect = self.__connect()
+        self.cursor: CustomMySQLCursor = self.connect.cursor()
 
     @property
     def host(self) -> str:
@@ -49,31 +105,50 @@ class MySQLConnector:
     def charset(self) -> str:
         return self.__charset
 
-    def __connect(self) -> pymysql.connections.Connection:
-        connection = pymysql.connect(
+    def __connect(self) -> CustomMySQLConnect:
+        """
+        This method is used to connect to the MySQL server.
+
+        :return: Connection object.
+        :rtype: CustomMySQLConnect
+        """
+        connection = CustomMySQLConnect(
             host=self.__host,
             port=self.__port,
             user=self.__user,
             password=self.__password,
             database=self.__database,
             charset=self.__charset,
-            cursorclass=DictCursor,
+            cursorclass=CustomMySQLCursor,
         )
+
         return connection
 
     def reconnect(self) -> None:
-        # if not self.cursor:
-        #     self.cursor = self.connect.cursor()
-        # if not self.connect:
-        #     self.connect = self.__connect()
-        #     self.cursor = self.connect.cursor()
-        self.close()
-        self.connect = self.__connect()
-        self.cursor = self.connect.cursor()
+        """
+        This method is used to reconnect to the MySQL server.
+
+        :return: ...
+        :rtype: ...
+        """
+        if not self.connect or not self.connect.exist:
+            self.connect: CustomMySQLConnect = self.__connect()
+            self.cursor: CustomMySQLCursor = self.connect.cursor()
+        if not self.cursor or not self.cursor.exist:
+            self.cursor: CustomMySQLCursor = self.connect.cursor()
 
     @staticmethod
     def reload(func):
-        @wraps(func)
+        """
+        This method is used to reload the connection and cursor object if they are closed.
+
+        :param func: Decorated function.
+        :type func: MethodType
+        :return: ...
+        :rtype: ...
+        """
+
+        @functools.wraps(func)
         def wrapper(self, *args, **kwargs):
             self.reconnect()
             return func(self, *args, **kwargs)
@@ -81,21 +156,75 @@ class MySQLConnector:
         return wrapper
 
     def close(self) -> None:
-        if self.cursor:
+        """
+        This method is used to close the connection and cursor object.
+
+        :return: ...
+        :rtype: ...
+        """
+        try:
             self.cursor.close()
-        if self.connect:
+        except pymysql.err.Error:
+            ...
+        except AttributeError:
+            ...
+        finally:
+            self.cursor = None
+
+        try:
             self.connect.close()
+        except pymysql.err.Error:
+            ...
+        except AttributeError:
+            ...
+        finally:
+            self.connect = None
 
     def __del__(self):
         self.close()
 
 
-class MySQLDataSource(AbstractDataSource, MySQLConnector):
+class MySQLDatabase(AbstractMySQLDataBase, MySQLConnector):
+    """
+    This class is used to interact with MySQL database.
+
+    It is a subclass of AbstractMySQLDataBase and MySQLConnector and implements the methods of AbstractMySQLDataBase.
+
+    :param host: The host name of the MySQL server.
+    :type host: str
+    :param port: The port number of the MySQL server.
+    :type port: int
+    :param user: The user name used to connect to the MySQL server.
+    :type user: str
+    :param password: The password used to connect to the MySQL server.
+    :type password: str
+    :param database: The name of the database to connect to.
+    :type database: str
+
+    Usage:
+        >>> from fairylandfuture.modules.databases.mysql import MySQLDatabase
+        >>> db = MySQLDatabase(host="localhost", port=3306, user="root", password="password", database="test")
+        >>> db.execute(StructureSQLExecuteParams(expression="SELECT * FROM users"))
+        True
+        >>> result = db.select(StructureSQLExecuteParams(expression="SELECT * FROM users"))
+        >>> print(result)
+        [{'id': 1, 'name': 'John', 'age': 25}, {'id': 2, 'name': 'Mary', 'age': 30}]
+        >>> db.close()
+    """
 
     def __init__(self, host, port, user, password, database):
         super().__init__(host=host, port=port, user=user, password=password, database=database)
 
+    @MySQLConnector.reload
     def execute(self, params: StructureSQLExecuteParams):
+        """
+        This method is used to execute a SQL statement.
+
+        :param params: MySQL Execute parameters.
+        :type params: StructureSQLExecuteParams
+        :return: True if the execution is successful, otherwise False.
+        :rtype: bool
+        """
         try:
             self.cursor.execute(params.expression, params.params)
             self.connect.commit()
@@ -108,6 +237,14 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
 
     @MySQLConnector.reload
     def select(self, params: StructureSQLExecuteParams) -> Union[Dict[str, Any], Tuple[Dict[str, Any]], ...]:
+        """
+        This method is used to select data from the database.
+
+        :param params: MySQL Execute parameters.
+        :type params: StructureSQLExecuteParams
+        :return: MySQL Query result.
+        :rtype: dict or tuple
+        """
         try:
             self.cursor.execute(params.expression, params.params)
             result = self.cursor.fetchall()
@@ -118,8 +255,19 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
             return result
         except Exception as err:
             raise err
+        finally:
+            self.cursor.close()
 
+    @MySQLConnector.reload
     def multiple(self, params: Iterable[StructureSQLExecuteParams]) -> bool:
+        """
+        This method is used to execute multiple SQL statements.
+
+        :param params: MySQl Execute parameters list.
+        :type params: Iterable[StructureSQLExecuteParams]
+        :return: Execution status.
+        :rtype: bool
+        """
         try:
             for param in params:
                 self.cursor.execute(param.expression, param.params)
@@ -131,7 +279,16 @@ class MySQLDataSource(AbstractDataSource, MySQLConnector):
         finally:
             self.cursor.close()
 
+    @MySQLConnector.reload
     def insertmany(self, params: StructureSQLInsertManyParams) -> bool:
+        """
+        This method is used to insert multiple records into the database.
+
+        :param params: MySQL Insert Many parameters.
+        :type params: StructureSQLInsertManyParams
+        :return: Execution status.
+        :rtype: bool
+        """
         try:
             self.cursor.executemany(params.expression, params.params)
             self.connect.commit()

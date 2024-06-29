@@ -13,7 +13,13 @@ from typing import List
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 
 
-class AbstractDataSource(abc.ABC):
+class AbstractMySQLConnector(abc.ABC):
+
+    @abc.abstractmethod
+    def reconnect(self) -> None: ...
+
+
+class AbstractMySQLDataBase(abc.ABC):
 
     @abc.abstractmethod
     def execute(self, params: StructureSQLExecuteParams) -> bool: ...

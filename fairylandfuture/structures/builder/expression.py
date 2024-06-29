@@ -16,7 +16,13 @@ from dataclasses import dataclass, field
 @dataclass(frozen=True)
 class StructureSQLFilterLogic:
     """
-    SQL where clauses
+    SQL where clauses for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLFilterLogic
+        >>> filter_logic = StructureSQLFilterLogic(name="id", logic="=")
+        >>> str(filter_logic)
+        'id = %s'
     """
 
     name: str
@@ -32,6 +38,19 @@ class StructureSQLFilterLogic:
 
 @dataclass(frozen=True)
 class StructureSQLFilterOption:
+    """
+    SQL where clauses for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLFilterOption
+        >>> filter_option = StructureSQLFilterOption(option="and", filter_field=[
+        >>>     StructureSQLFilterLogic(name="id", logic="="),
+        >>>     StructureSQLFilterLogic(name="name", logic="="),
+        >>> ])
+        >>> str(filter_option)
+        'and id = %s and name = %s'
+    """
+
     option: Optional[str]
     filter_field: Union[Sequence[StructureSQLFilterLogic], Sequence[StructureSQLFilterOption]]
 
@@ -41,6 +60,16 @@ class StructureSQLFilterOption:
 
 @dataclass(frozen=True)
 class StructureSQLJoinCondition:
+    """
+    SQL join condition for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLJoinCondition
+        >>> join_condition = StructureSQLJoinCondition(table1="table1", field1="id", table2="table2", field2="id")
+        >>> str(join_condition)
+        'table1.id = table2.id'
+    """
+
     table1: str
     field1: str
     table2: str
@@ -52,6 +81,16 @@ class StructureSQLJoinCondition:
 
 @dataclass(frozen=True)
 class StructureSQLJoinLogic:
+    """
+    SQL join logic for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLJoinLogic, StructureSQLJoinCondition
+        >>> join_logic = StructureSQLJoinLogic(type="inner", table="table1", condition=StructureSQLJoinCondition(table1="table1", field1="id", table2="table2", field2="id"))
+        >>> str(join_logic)
+        'inner table1 on table1.id = table2.id'
+    """
+
     type: str
     table: str
     condition: StructureSQLJoinCondition
@@ -62,6 +101,19 @@ class StructureSQLJoinLogic:
 
 @dataclass(frozen=True)
 class StructureSQLJoinOption:
+    """
+    SQL join option for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLJoinOption, StructureSQLJoinLogic
+        >>> join_option = StructureSQLJoinOption(option=[
+        >>>     StructureSQLJoinLogic(type="inner", table="table1", condition=StructureSQLJoinCondition(table1="table1", field1="id", table2="table2", field2="id")),
+        >>>     StructureSQLJoinLogic(type="inner", table="table2", condition=StructureSQLJoinCondition(table1="table2", field1="id", table2="table3", field2="id")),
+        >>> ])
+        >>> str(join_option)
+        'inner table1 on table1.id = table2.id inner table2 on table2.id = table3.id'
+    """
+
     option: Sequence[StructureSQLJoinLogic]
 
     def __str__(self):
@@ -70,6 +122,16 @@ class StructureSQLJoinOption:
 
 @dataclass(frozen=True)
 class StructureSQLGroupByOption:
+    """
+    SQL group by option for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLGroupByOption
+        >>> group_by_option = StructureSQLGroupByOption(field_list=["id", "name"])
+        >>> str(group_by_option)
+        'id, name'
+    """
+
     field_list: Sequence[str]
 
     def __str__(self):
@@ -78,6 +140,16 @@ class StructureSQLGroupByOption:
 
 @dataclass(frozen=True)
 class StructureSQLOrderByOption:
+    """
+    SQL order by option for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLOrderByOption
+        >>> order_by_option = StructureSQLOrderByOption(field_list=["id", "name"])
+        >>> str(order_by_option)
+        'id, name'
+    """
+
     field_list: Sequence[str]
 
     def __str__(self):
@@ -86,6 +158,16 @@ class StructureSQLOrderByOption:
 
 @dataclass(frozen=True)
 class StructureSQLLimitOption:
+    """
+    SQL limit option for a data source.
+
+    Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLLimitOption
+        >>> limit_option = StructureSQLLimitOption(limit=10, offset=0)
+        >>> str(limit_option)
+        '10 offset 0'
+    """
+
     limit: int
     offset: int = field(default=0)
 

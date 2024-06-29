@@ -20,12 +20,44 @@ from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
 class BaseBuilderSQL:
+    """
+    Base class for SQL builders.
+
+    :param table: The table name.
+    :type table: str
+
+    Attributes:
+        table: The table name.
+    """
 
     def __init__(self, table):
         self.table = table
 
 
-class QueryBuilderSQL(BaseBuilderSQL):
+class QueryMySQLBuilder(BaseBuilderSQL):
+    """
+    MySQL query builder.
+
+    :param table: The table name.
+    :type table: str
+    :param fields: The fields to select.
+    :type fields: Optional[Sequence[str]]
+
+    Attributes:
+        table: The table name.
+        fields: The fields to select.
+        sql: The SQL query string.
+    Usage:
+        >>> builder = QueryMySQLBuilder(table="users", fields=["id", "name", "age"])
+        >>> builder.operation(where="id = 1")
+        "select id, name, age from users where id = 1;"
+        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]))
+        "select id, name, age from users where id = 1 group_by id, name;"
+        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]), order_by=StructureSQLOrderByOption(field_list=["id", "name"], order_list=["desc", "asc"]))
+        "select id, name, age from users where id = 1 group_by id, name order_by id desc, name asc;"
+        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]), order_by=StructureSQLOrderByOption(field_list=["id", "name"], order_list=["desc", "asc"]), limit=StructureSQLLimitOption(limit=10, offset=0))
+        "select id, name, age from users where id = 1 group_by id, name order_by id desc, name asc limit 10 offset 0;"
+    """
 
     def __init__(self, table: str, fields: Optional[Sequence[str]] = None):
         super().__init__(table=table)
@@ -42,7 +74,23 @@ class QueryBuilderSQL(BaseBuilderSQL):
         group_by: Optional[StructureSQLGroupByOption] = None,
         order_by: Optional[StructureSQLOrderByOption] = None,
         limit: Optional[StructureSQLLimitOption] = None,
-    ):
+    ) -> str:
+        """
+        Build the SQL query string.
+
+        :param join: MySQL join option.
+        :type join: StructureSQLJoinOption
+        :param where: MySQL filter option.
+        :type where: StructureSQLFilterOption
+        :param group_by: MySQL group by option.
+        :type group_by: StructureSQLGroupByOption
+        :param order_by: MySQL order by option.
+        :type order_by: StructureSQLOrderByOption
+        :param limit: MySQL limit option.
+        :type limit: StructureSQLLimitOption
+        :return: MySQL query string.
+        :rtype: str
+        """
         join = f"{join}" if join else ""
         where = f"where {where}" if where else ""
         if group_by:
@@ -58,22 +106,52 @@ class QueryBuilderSQL(BaseBuilderSQL):
 
         return " ".join(sql.split()) + ";"
 
-    def to_string(self):
+    def to_string(self) -> str:
+        """
+        Return the SQL query string.
+
+        :return: MySQL query string.
+        :rtype: str
+        """
         return self.sql
 
     def __str__(self):
         return self.sql
 
 
-class InsertBuilderSQL(BaseBuilderSQL):
+class InsertMySQLBuilder(BaseBuilderSQL):
+    """
+    MySQL insert builder.
+
+    :param table: The table name.
+    :type table: str
+    :param fields: The fields to insert.
+    :type fields: Sequence[str]
+
+    Attributes:
+        table: The table name.
+        fields: The fields to insert.
+        sql: The SQL query string.
+    Usage:
+        >>> builder = InsertMySQLBuilder(table="users", fields=["id", "name", "age"])
+        >>> builder.operation(values={"id": 1, "name": "John", "age": 25})
+        "insert into users (id, name, age) values (%(id)s, %(name)s, %(age)s);"
+        >>> builder.operation(values={"id": 2, "name": "Mary", "age": 30})
+        "insert into users (id, name, age) values (%(id)s, %(name)s, %(age)s);"
+    """
 
     def __init__(self, table: str, fields: Sequence[str]):
         super().__init__(table=table)
         self.fields = fields
         self.sql = f"insert into {self.table} ({', '.join(fields)}) values ({', '.join(['%({})s'.format(field) for field in fields])});"
-        # f"INSERT INTO {self.table} ({', '.join(fields)}) VALUES ({', '.join(['%(' + field + ')s' for field in fields])});"
 
     def to_string(self):
+        """
+        Return the SQL query string.
+
+        :return: MySQL insert string.
+        :rtype: str
+        """
         return self.sql
 
     def __str__(self):
