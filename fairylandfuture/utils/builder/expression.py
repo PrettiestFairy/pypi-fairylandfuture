@@ -9,6 +9,7 @@
 
 from typing import Optional, Sequence
 
+from fairylandfuture.core.superclass.builders import BaseBuilderMySQL
 from fairylandfuture.structures.builder.expression import (
     StructureSQLFilterOption,
     StructureSQLJoinOption,
@@ -19,18 +20,38 @@ from fairylandfuture.structures.builder.expression import (
 from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
-class BaseBuilderSQL:
+class QueryMySQLBuilder(BaseBuilderMySQL):
+    """
+    MySQL query builder.
 
-    def __init__(self, table):
-        self.table = table
+    :param table: The table name.
+    :type table: str
+    :param fields: The fields to select.
+    :type fields: Optional[Sequence[str]]
 
+    Attributes:
+        table: The table name.
+        fields: The fields to select.
+        sql: The SQL query string.
+    Usage:
+        >>> builder = QueryMySQLBuilder(table="users", fields=["id", "name", "age"])
+        >>> builder.operation(where="id = 1")
+        "select id, name, age from users where id = 1;"
+        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]))
+        "select id, name, age from users where id = 1 group_by id, name;"
+        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]), order_by=StructureSQLOrderByOption(field_list=["id", "name"], order_list=["desc", "asc"]))
+        "select id, name, age from users where id = 1 group_by id, name order_by id desc, name asc;"
+        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]), order_by=StructureSQLOrderByOption(field_list=["id", "name"], order_list=["desc", "asc"]), limit=StructureSQLLimitOption(limit=10, offset=0))
+        "select id, name, age from users where id = 1 group_by id, name order_by id desc, name asc limit 10 offset 0;"
+    """
 
-class QueryBuilderSQL(BaseBuilderSQL):
-
-    def __init__(self, table: str, fields: Sequence[str]):
+    def __init__(self, table: str, fields: Optional[Sequence[str]] = None):
         super().__init__(table=table)
         self.fields = fields
-        self.__sql = " ".join(("select", ", ".join(fields), "from", self.table)) + ";"
+        if not self.fields:
+            self.sql = f"select * from {self.table};"
+        else:
+            self.sql = f"select {', '.join(fields)} from {self.table};"
 
     def operation(
         self,
@@ -39,7 +60,23 @@ class QueryBuilderSQL(BaseBuilderSQL):
         group_by: Optional[StructureSQLGroupByOption] = None,
         order_by: Optional[StructureSQLOrderByOption] = None,
         limit: Optional[StructureSQLLimitOption] = None,
-    ):
+    ) -> str:
+        """
+        Build the SQL query string.
+
+        :param join: MySQL join option.
+        :type join: StructureSQLJoinOption
+        :param where: MySQL filter option.
+        :type where: StructureSQLFilterOption
+        :param group_by: MySQL group by option.
+        :type group_by: StructureSQLGroupByOption
+        :param order_by: MySQL order by option.
+        :type order_by: StructureSQLOrderByOption
+        :param limit: MySQL limit option.
+        :type limit: StructureSQLLimitOption
+        :return: MySQL query string.
+        :rtype: str
+        """
         join = f"{join}" if join else ""
         where = f"where {where}" if where else ""
         if group_by:
@@ -51,48 +88,57 @@ class QueryBuilderSQL(BaseBuilderSQL):
             group_by = ""
         order_by = f"order_by {order_by}" if order_by else ""
         limit = f"limit {limit}" if limit else ""
-        sql = " ".join((self.__sql.rstrip(";"), join, where, group_by, order_by, limit))
+        sql = " ".join((self.sql.rstrip(";"), join, where, group_by, order_by, limit))
 
         return " ".join(sql.split()) + ";"
 
+    def to_string(self) -> str:
+        """
+        Return the SQL query string.
+
+        :return: MySQL query string.
+        :rtype: str
+        """
+        return self.sql
+
     def __str__(self):
-        return self.__sql
+        return self.sql
 
 
-if __name__ == "__main__":
-    from fairylandfuture.structures.builder.expression import (
-        StructureSQLFilterLogic,
-        StructureSQLFilterOption,
-        StructureSQLJoinCondition,
-        StructureSQLJoinLogic,
-        StructureSQLJoinOption,
-        StructureSQLGroupByOption,
-        StructureSQLOrderByOption,
-    )
+class InsertMySQLBuilder(BaseBuilderMySQL):
+    """
+    MySQL insert builder.
 
-    database = "mysql"
-    table_name = ("mysql.user", "mysql.host", "postgresql.id", "mog.name")
+    :param table: The table name.
+    :type table: str
+    :param fields: The fields to insert.
+    :type fields: Sequence[str]
 
-    leftjoin_table1 = "postgresql"
-    leftjoin_condition1 = StructureSQLJoinCondition("mysql", "user_id", "postgresql", "id")
-    leftjoin_table2 = "mog"
-    leftjoin_condition2 = StructureSQLJoinCondition("mysql", "user_id", "mog", "id")
+    Attributes:
+        table: The table name.
+        fields: The fields to insert.
+        sql: The SQL query string.
+    Usage:
+        >>> builder = InsertMySQLBuilder(table="users", fields=["id", "name", "age"])
+        >>> builder.operation(values={"id": 1, "name": "John", "age": 25})
+        "insert into users (id, name, age) values (%(id)s, %(name)s, %(age)s);"
+        >>> builder.operation(values={"id": 2, "name": "Mary", "age": 30})
+        "insert into users (id, name, age) values (%(id)s, %(name)s, %(age)s);"
+    """
 
-    join_postgresql = StructureSQLJoinLogic("left join", leftjoin_table1, leftjoin_condition1)
-    join_mog = StructureSQLJoinLogic("left join", leftjoin_table2, leftjoin_condition2)
+    def __init__(self, table: str, fields: Sequence[str]):
+        super().__init__(table=table)
+        self.fields = fields
+        self.sql = f"insert into {self.table} ({', '.join(fields)}) values ({', '.join(['%({})s'.format(field) for field in fields])});"
 
-    where_add1 = StructureSQLFilterLogic("name", "=")
-    where_add2 = StructureSQLFilterLogic("age", "!=")
-    where_or1 = StructureSQLFilterLogic("c", "is")
-    where_or2 = StructureSQLFilterLogic("d", "in")
-    where_or_option1 = StructureSQLFilterOption("or", (where_or1, where_or2))
-    where_or_option2 = StructureSQLFilterOption("and", (where_add1, where_add2))
+    def to_string(self):
+        """
+        Return the SQL query string.
 
-    join_ = StructureSQLJoinOption((join_postgresql, join_mog))
-    where_ = StructureSQLFilterOption("or", (where_or_option1, where_or_option2))
-    group_ = StructureSQLGroupByOption(("mysql.user", "mysql.host"))
-    order_ = StructureSQLOrderByOption(("userid desc", "id"))
-    limit_ = StructureSQLLimitOption(limit=10)
-    sql = QueryBuilderSQL(database, table_name).operation(join=join_, where=where_, order_by=order_, limit=limit_)
+        :return: MySQL insert string.
+        :rtype: str
+        """
+        return self.sql
 
-    print(repr(sql))
+    def __str__(self):
+        return self.sql
