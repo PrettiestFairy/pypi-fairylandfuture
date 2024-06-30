@@ -73,6 +73,7 @@ class PlatformEnum(BaseEnum):
     """
     Platform enum.
     """
+
     WINDOWS = windows = "Windows"
     LINUX = linux = "Linux"
     MACOS = macos = "Darwin"
