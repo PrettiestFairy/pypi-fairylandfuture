@@ -35,28 +35,52 @@ Development Environment
 To install `PyFairylandFuture`, use the following command:
 
 ```shell
-pip install PyFairylandFuture
+pip install --no-cache-dir PyFairylandFuture
 ```
 
 # ✍ Document
 
 ## Using PyFairyland Library
 
-Tips: Wait fill up
+- [api](docs/en-US/manuals/api/README.md)
+- [common](docs/en-US/manuals/common/README.md)
+- [conf](docs/en-US/manuals/conf/README.md)
+- [constants](docs/en-US/manuals/constants/README.md)
+- [core](docs/en-US/manuals/core/README.md)
+- [helpers](docs/en-US/manuals/helpers/README.md)
+- [models](docs/en-US/manuals/models/README.md)
+- [modules](docs/en-US/manuals/modules/README.md)
+- [scripts](docs/en-US/manuals/scripts/README.md)
+- [structures](docs/en-US/manuals/structures/README.md)
+- [test](docs/en-US/manuals/test/README.md)
+- [utils](docs/en-US/manuals/utils/README.md)
 
-# 🎉 Further Information
+# 🎉 Plan & Further Information
 
-Tips: Wait fill up
+- [api](docs/en-US/fairylandfuture/api/README.md)
+- [common](docs/en-US/fairylandfuture/common/README.md)
+- [conf](docs/en-US/fairylandfuture/conf/README.md)
+- [constants](docs/en-US/fairylandfuture/constants/README.md)
+- [core](docs/en-US/fairylandfuture/core/README.md)
+- [helpers](docs/en-US/fairylandfuture/helpers/README.md)
+- [models](docs/en-US/fairylandfuture/models/README.md)
+- [modules](docs/en-US/fairylandfuture/modules/README.md)
+- [scripts](docs/en-US/fairylandfuture/scripts/README.md)
+- [structures](docs/en-US/fairylandfuture/structures/README.md)
+- [test](docs/en-US/fairylandfuture/test/README.md)
+- [utils](docs/en-US/fairylandfuture/utils/README.md)
 
 # 💚 Getting Support
 
-Tips: Wait fill up
+Please commit issue or send email
+
+E-mail: `fairylandfuture@outlook.com`
 
 # 🧑 Contributors
 
-![https://github.com/AustinFairyland/AustinFairylandRepository/graphs/contributors](https://contrib.rocks/image?repo=PrettiestFairy/pypi-fairylandfuture)
+![https://github.com/PrettiestFairy/pypi-fairylandfuture/graphs/contributors](https://contrib.rocks/image?repo=PrettiestFairy/pypi-fairylandfuture)
 
-[PrettiestFairy-Lionel Johnson(Admin)](https://github.com/PrettiestFairy) · [PrettiestFairy-Lionel Johnson(work)](https://github.com/AustinEngineer) · [duhuanzhuo](https://github.com/duhuanzhuo)
+[PrettiestFairy-Lionel Johnson(Admin)](https://github.com/PrettiestFairy) · [PrettiestFairy-Lionel Johnson(work)](https://github.com/WorkingFairy) · [duhuanzhuo](https://github.com/duhuanzhuo)
 
 Gitee:
 
@@ -64,7 +88,7 @@ Gitee:
 
 # 📖 License
 
-The `PyFairylandFuture` module was written by Lionel Johnson. Personal maintained.
+The `PyFairylandFuture` module was written by [Lionel Johnson](https://github.com/PrettiestFairy). Personal maintained.
 
 `PyFairylandFuture` is released under the AGPLv3+ license.
 
