@@ -9,6 +9,7 @@
 
 from typing import Optional, Sequence
 
+from fairylandfuture.core.superclass.builders import BaseBuilderMySQL
 from fairylandfuture.structures.builder.expression import (
     StructureSQLFilterOption,
     StructureSQLJoinOption,
@@ -19,22 +20,7 @@ from fairylandfuture.structures.builder.expression import (
 from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
-class BaseBuilderSQL:
-    """
-    Base class for SQL builders.
-
-    :param table: The table name.
-    :type table: str
-
-    Attributes:
-        table: The table name.
-    """
-
-    def __init__(self, table):
-        self.table = table
-
-
-class QueryMySQLBuilder(BaseBuilderSQL):
+class QueryMySQLBuilder(BaseBuilderMySQL):
     """
     MySQL query builder.
 
@@ -119,7 +105,7 @@ class QueryMySQLBuilder(BaseBuilderSQL):
         return self.sql
 
 
-class InsertMySQLBuilder(BaseBuilderSQL):
+class InsertMySQLBuilder(BaseBuilderMySQL):
     """
     MySQL insert builder.
 
