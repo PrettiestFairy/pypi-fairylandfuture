@@ -10,10 +10,16 @@
 import abc
 from typing import List
 
-from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLStructureSQLInsertManyParams
+from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 
 
-class AbstractDataSource(abc.ABC):
+class AbstractMySQLConnector(abc.ABC):
+
+    @abc.abstractmethod
+    def reconnect(self) -> None: ...
+
+
+class AbstractMySQLOperation(abc.ABC):
 
     @abc.abstractmethod
     def execute(self, params: StructureSQLExecuteParams) -> bool: ...

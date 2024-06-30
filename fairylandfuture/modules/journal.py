@@ -189,7 +189,7 @@ class Journal(metaclass=SingletonMeta):
 
     @staticmethod
     def load_logo():
-        logo_text = read_text("fairylandfuture.conf", "logo")
+        logo_text = read_text("fairylandfuture.conf.release", "logo")
 
         return logo_text
 

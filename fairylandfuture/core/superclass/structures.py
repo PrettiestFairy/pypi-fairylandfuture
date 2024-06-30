@@ -12,7 +12,7 @@ from dataclasses import asdict, dataclass
 
 
 @dataclass(frozen=True)
-class BaseData:
+class BaseStructure:
 
     @property
     def __dict__(self):

@@ -14,11 +14,10 @@ from typing import Any, Optional, Union
 from dateutil.relativedelta import relativedelta
 
 from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.core.superclass.metaclass import SingletonMeta
 from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 
-class DateTimeModule(SingletonMeta):
+class DateTimeModule:
     """
     Date time utils.
     """
