@@ -12,7 +12,7 @@ import pymysql
 
 from typing import Union, Dict, Tuple, Any, Iterable, Callable
 
-from fairylandfuture.core.abstracts.databases import AbstractMySQLDataBase, AbstractMySQLConnector
+from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation, AbstractMySQLConnector
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 
 
@@ -50,7 +50,7 @@ class MySQLConnector(AbstractMySQLConnector):
     """
     This class is used to connect to MySQL database and execute SQL statements.
 
-    It is a subclass of AbstractMySQLConnector and implements the methods of AbstractMySQLDataBase.
+    It is a subclass of AbstractMySQLConnector and implements the methods of AbstractMySQLOperation.
 
     :param host: The host name of the MySQL server.
     :type host: str
@@ -184,11 +184,11 @@ class MySQLConnector(AbstractMySQLConnector):
         self.close()
 
 
-class MySQLDatabase(AbstractMySQLDataBase, MySQLConnector):
+class MySQLDatabase(AbstractMySQLOperation, MySQLConnector):
     """
     This class is used to interact with MySQL database.
 
-    It is a subclass of AbstractMySQLDataBase and MySQLConnector and implements the methods of AbstractMySQLDataBase.
+    It is a subclass of AbstractMySQLOperation and MySQLConnector and implements the methods of AbstractMySQLOperation.
 
     :param host: The host name of the MySQL server.
     :type host: str

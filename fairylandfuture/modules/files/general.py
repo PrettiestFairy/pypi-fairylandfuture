@@ -7,4 +7,8 @@
 @since: 2024-06-30 14:20:28 UTC+8
 """
 
+from fairylandfuture.core.superclass.files import BaseTextFileMixin, BaseJsonFileMixin, BaseYamlFileMixin
 
+
+class File(BaseTextFileMixin, BaseJsonFileMixin, BaseYamlFileMixin):
+    pass

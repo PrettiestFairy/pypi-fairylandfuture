@@ -19,7 +19,7 @@ class AbstractMySQLConnector(abc.ABC):
     def reconnect(self) -> None: ...
 
 
-class AbstractMySQLDataBase(abc.ABC):
+class AbstractMySQLOperation(abc.ABC):
 
     @abc.abstractmethod
     def execute(self, params: StructureSQLExecuteParams) -> bool: ...
