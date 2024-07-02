@@ -42,14 +42,6 @@ class Journal(metaclass=SingletonMeta):
     :type encoding: str
     :param level: Logging level for the file handler.
     :type level: TypeLogLevel
-    :param enqueue: Flag to enable message queuing for logs.
-    :type enqueue: bool
-    :param colorize: Flag to enable log message colorization.
-    :type colorize: bool
-    :param backtrace: Include backtrace in log, useful for debugging.
-    :type backtrace: bool
-    :param diagnose: Include diagnostic info in logs.
-    :type diagnose: bool
     :param serialize: Serialize log messages to JSON format.
     :type serialize: bool
     :param console: Flag to enable logging to console.
@@ -58,19 +50,14 @@ class Journal(metaclass=SingletonMeta):
     :type console_level: TypeLogLevel
     :param console_format: Log message format for console.
     :type console_format: str or None
-    :param console_colorize: Flag to enable log message colorization on console.
-    :type console_colorize: bool
-    :param console_enqueue: Flag to enable message queuing for console logs.
-    :type console_enqueue: bool
 
     Usage::
-
-        # Create a journal instance
-        journal = Journal()
-
-        # Log messages
-        journal.info("This is an info message")
-        journal.error("This is an error message")
+        >>> # Create a journal instance
+        >>> journal = Journal()
+        >>> 
+        >>> # Log messages
+        >>> journal.info("This is an info message")
+        >>> journal.error("This is an error message")
 
     Note: This class uses `loguru` library for logging.
     The metaclass `SingletonMeta` ensures a single instance is used.
@@ -86,18 +73,12 @@ class Journal(metaclass=SingletonMeta):
         retention: str = "180 days",
         format: Optional[str] = None,
         compression: str = "gz",
-        encoding: str = EncodingEnum.UTF_8.value,
-        level: TypeLogLevel = LogLevelEnum.INFO.value,
-        enqueue: bool = True,
-        colorize: bool = False,
-        backtrace: bool = False,
-        diagnose: bool = True,
+        encoding: str = EncodingEnum.utf_8.value,
+        level: TypeLogLevel = LogLevelEnum.info.value,
         serialize: bool = False,
         console: bool = True,
-        console_level: TypeLogLevel = LogLevelEnum.TRACE.value,
+        console_level: TypeLogLevel = LogLevelEnum.trace.value,
         console_format: Optional[str] = None,
-        console_colorize: bool = True,
-        console_enqueue: bool = True,
     ):
         """
         Constructs all the necessary attributes for the Journal object.
@@ -112,16 +93,16 @@ class Journal(metaclass=SingletonMeta):
         self.__compression = compression
         self.__level = level
         self.__encoding = encoding
-        self.__enqueue = enqueue
-        self.__colorize = colorize
-        self.__backtrace = backtrace
-        self.__diagnose = diagnose
+        self.__enqueue = True
+        self.__colorize = False
+        self.__backtrace = True
+        self.__diagnose = True
         self.__serialize = serialize
         self.__console = console
         self.__console_level = console_level
         self.__console_format = console_format
-        self.__console_colorize = console_colorize
-        self.__console_enqueue = console_enqueue
+        self.__console_colorize = True
+        self.__console_enqueue = True
 
         self.__logo = self.load_logo()
 
@@ -129,7 +110,7 @@ class Journal(metaclass=SingletonMeta):
 
         if self.__debug:
             self.__name += f".debug{extension if extension else '.log'}"
-            self.__level = LogLevelEnum.DEBUG.value
+            self.__level = LogLevelEnum.debug.value
 
         if not self.__format:
             self.__format = "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
@@ -174,7 +155,7 @@ class Journal(metaclass=SingletonMeta):
         if self.__console:
             if not self.__console_format:
                 self.__console_format = (
-                    "<level>" "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}" "</level>"
+                    "<level> [{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message} </level>"
                 )
 
             logger.add(

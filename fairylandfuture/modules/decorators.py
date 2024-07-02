@@ -157,6 +157,7 @@ class TryCatchDecorator(BaseDecorator):
             results = self.func(*args, **kwargs)
             return results
         except Exception as err:
+            ...
             raise err
 
 
@@ -188,6 +189,7 @@ class TipsDecorator(BaseParamsDecorator):
                 results = self.func(*args, **kwargs)
                 return results
             except Exception as err:
+                ...
                 raise err
 
         return wrapper

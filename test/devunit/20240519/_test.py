@@ -17,7 +17,7 @@ from fairylandfuture.constants.enums import DateTimeEnum, EncodingEnum
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
 from fairylandfuture.modules.datasource import MySQLDataSource
 
-with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.UTF_8.value) as stream:
+with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.utf_8.value) as stream:
     case_conf: Dict[str, Dict[str, Any]] = yaml.safe_load(stream)
 
 MYSQL_CONFIG = case_conf.get("mysql")
@@ -43,7 +43,7 @@ instermany_v = ({"name": "郭昕蕊", "age": 51}, {"name": "董敏", "age": 21})
 
 query_now_result = datasource.select(query_now)
 now: datetime = query_now_result.get("now")
-print(now.strftime(DateTimeEnum.DATETIME_CN))
+print(now.strftime(DateTimeEnum.datetime_cn))
 
 multiple_exec = (ExecuteParams(add_col_sql), ExecuteParams(update_age, {"id": 1}))
 

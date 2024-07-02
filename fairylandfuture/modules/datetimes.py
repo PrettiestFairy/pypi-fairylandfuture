@@ -23,7 +23,7 @@ class DateTimeModule:
     """
 
     @classmethod
-    def date(cls, _format: str = DateTimeEnum.DATE.value) -> str:
+    def date(cls, _format: str = DateTimeEnum.date.value) -> str:
         """
         Get the current date.
 
@@ -35,7 +35,7 @@ class DateTimeModule:
         return datetime.now().date().strftime(_format)
 
     @classmethod
-    def time(cls, _fromat: str = DateTimeEnum.TIME.value) -> str:
+    def time(cls, _fromat: str = DateTimeEnum.time.value) -> str:
         """
         Get the current time.
 
@@ -47,7 +47,7 @@ class DateTimeModule:
         return datetime.now().time().strftime(_fromat)
 
     @classmethod
-    def datetime(cls, _format: str = DateTimeEnum.DATETIME.value) -> str:
+    def datetime(cls, _format: str = DateTimeEnum.datetime.value) -> str:
         """
         Get the current datetime_str.
 
@@ -77,7 +77,7 @@ class DateTimeModule:
         return int(round(time.time()))
 
     @classmethod
-    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: str = DateTimeEnum.DATETIME.value):
+    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: str = DateTimeEnum.datetime.value):
         """
         Convert timestamp to datetime_str.
 
@@ -101,7 +101,7 @@ class DateTimeModule:
         datetime_string: str,
         millisecond: bool = False,
         n: Optional[int] = None,
-        _format: str = DateTimeEnum.DATETIME.value,
+        _format: str = DateTimeEnum.datetime.value,
     ) -> int:
         """
         Convert datetime to timestamp.
@@ -132,7 +132,7 @@ class DateTimeModule:
         return int(timestamp)
 
     @classmethod
-    def yesterday(cls, _format: str = DateTimeEnum.DATE.value) -> str:
+    def yesterday(cls, _format: str = DateTimeEnum.date.value) -> str:
         """
         Get yesterday's date.
 
@@ -144,7 +144,7 @@ class DateTimeModule:
         return (datetime.now() - relativedelta(days=1)).strftime(_format)
 
     @classmethod
-    def tomorrow(cls, _format: str = DateTimeEnum.DATE.value) -> str:
+    def tomorrow(cls, _format: str = DateTimeEnum.date.value) -> str:
         """
         Get tomorrow's date.
 
@@ -162,7 +162,7 @@ class DateTimeModule:
         dt2: Union[str, int, float],
         timestamp: bool = False,
         millisecond: bool = False,
-        _format: str = DateTimeEnum.DATE.value,
+        _format: str = DateTimeEnum.date.value,
     ) -> int:
         """
         Calculate the number of days between two dates.

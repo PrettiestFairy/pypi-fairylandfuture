@@ -16,13 +16,11 @@ from typing import Literal
 import requests
 import setuptools
 
-_MARK_TYPE = Literal["release", "test", "alpha", "beta"]
-
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
-_MAJOR = 1
-_SUB = 0
-_STAGE = 1
-_MARK: _MARK_TYPE = "alpha"
+_major = 1
+_minor = 0
+_micro = 1
+releaselevel: Literal["release", "test", "alpha", "beta"] = "alpha"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
@@ -48,26 +46,26 @@ class PackageInfo(object):
 
     :param major: major num
     :type major: int
-    :param sub: sub num
-    :type sub: int
-    :param stage: stage num
-    :type stage: int
+    :param minor: minor num
+    :type minor: int
+    :param micro: stage num
+    :type micro: int
     :param revise: revise num
     :type revise: int
-    :param mark: version mark
-    :type mark: str
+    :param releaselevel: version mark
+    :type releaselevel: str
     """
 
-    def __init__(self, major: int, sub: int, stage: int, mark: _MARK_TYPE):
-        self.__major = self.__paramscheck(major, int)
-        self.__sub = self.__paramscheck(sub, int)
-        self.__stage = self.__paramscheck(stage, int)
-        self.__revise = self.__get_github_commit_count()
+    def __init__(self, major: int, minor: int, micro: int, releaselevel: Literal["release", "test", "alpha", "beta"]):
+        self.major = self.vaildate_param(major, int)
+        self.minor = self.vaildate_param(minor, int)
+        self.micro = self.vaildate_param(micro, int)
+        self.serial = self.get_github_serial()
 
-        if not mark.lower() in _MARK_TYPE.__args__:
-            raise TypeError(f"Param: mark type error, mark must in {_MARK_TYPE.__args__}.")
+        if releaselevel.lower() not in ("release", "test", "alpha", "beta"):
+            raise TypeError("Param: releaselevel type error, releaselevel must in [\"release\", \"test\", \"alpha\", \"beta\"].")
 
-        self.__mark = mark
+        self.releaselevel = releaselevel
 
     @property
     def name(self):
@@ -87,24 +85,24 @@ class PackageInfo(object):
 
     @property
     def version(self):
-        # if len(self.__revise.__str__()) < 5:
-        #     nbit = 5 - len(self.__revise.__str__())
-        #     self.__revise = "".join((("0" * nbit), self.__revise.__str__()))
+        # if len(self.serial.__str__()) < 5:
+        #     nbit = 5 - len(self.serial.__str__())
+        #     self.serial = "".join((("0" * nbit), self.serial.__str__()))
         # else:
-        #     self.__revise = self.__revise.__str__()
-        self.__revise = self.__revise.__str__()
+        #     self.serial = self.serial.__str__()
+        self.serial = self.serial.__str__()
 
         date_str = datetime.now().date().__str__().replace("-", "")
-        revise_after = "-".join((self.__revise.__str__(), date_str))
-        release_version = ".".join((self.__major.__str__(), self.__sub.__str__(), self.__stage.__str__()))
+        revise_after = "-".join((self.serial.__str__(), date_str))
+        release_version = ".".join((self.major.__str__(), self.minor.__str__(), self.micro.__str__()))
 
-        if self.__mark == "release":
+        if self.releaselevel == "release":
             version = release_version
-        elif self.__mark == "test":
+        elif self.releaselevel == "test":
             version = ".".join((release_version, "".join(("rc.", revise_after))))
-        elif self.__mark == "alpha":
+        elif self.releaselevel == "alpha":
             version = ".".join((release_version, "".join(("alpha.", revise_after))))
-        elif self.__mark == "beta":
+        elif self.releaselevel == "beta":
             version = ".".join((release_version, "".join(("beta.", revise_after))))
         else:
             version = ".".join((release_version, "".join(("rc.", revise_after))))
@@ -113,12 +111,12 @@ class PackageInfo(object):
 
     @property
     def description(self):
-        return "personally developed Python library."
+        return "Efficient developed Python library."
 
     @property
     def long_description(self):
-        with open(os.path.join(_ROOT_PATH, "README.md"), "r", encoding="UTF-8") as FileIO:
-            long_description = FileIO.read()
+        with open(os.path.join(_ROOT_PATH, "README.md"), "r", encoding="UTF-8") as stream:
+            long_description = stream.read()
 
         return long_description
 
@@ -191,9 +189,7 @@ class PackageInfo(object):
             "Programming Language :: Python :: Implementation :: CPython",
             "Programming Language :: Python :: Implementation :: PyPy",
             "Programming Language :: SQL",
-            "Framework :: Django :: 2",
-            "Framework :: Django :: 3",
-            "Framework :: Django :: 4",
+            "Framework :: Django :: 5",
             "Framework :: Flask",
             "Framework :: FastAPI",
             "Framework :: Flake8",
@@ -202,8 +198,8 @@ class PackageInfo(object):
             "Framework :: Scrapy",
             "Natural Language :: English",
             "Natural Language :: Chinese (Simplified)",
+            "Operating System :: Microsoft :: Windows :: Windows 10",
             "Operating System :: Microsoft :: Windows :: Windows 11",
-            "Operating System :: POSIX :: Linux",
             "Operating System :: POSIX :: Linux",
             "Topic :: Software Development :: Libraries :: Python Modules",
             "Topic :: Software Development :: Libraries :: Application Frameworks",
@@ -215,7 +211,7 @@ class PackageInfo(object):
         return results
 
     @property
-    def  install_requires(self):
+    def install_requires(self):
         with open(os.path.join(_ROOT_PATH, "requirements.in"), "r", encoding="UTF-8") as stream:
             requirements_text = stream.read()
         return requirements_text.split()
@@ -228,38 +224,38 @@ class PackageInfo(object):
         return results
 
     @staticmethod
-    def __paramscheck(param, _type):
+    def vaildate_param(param, _type):
         if not isinstance(param, _type):
             raise TypeError(f"{param} type error.")
 
         return param
 
     @staticmethod
-    def __get_local_gitcommitcr():
+    def get_local_serial():
         try:
-            with open(os.path.join(_ROOT_PATH, "conf", "publish", "gitcommitrc"), "r", encoding="UTF-8") as FileIO:
-                commit_count = FileIO.read()
+            with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "release", "commit-version"), "r", encoding="UTF-8") as stream:
+                commit_count = stream.read()
             return int(commit_count)
         except Exception as err:
-            print(f"Error: {err}")
+            print(f"Error: Getting build version {err}")
             return 0
 
     @classmethod
-    def __get_github_commit_count(cls):
+    def get_github_serial(cls):
         try:
-            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/Pre-release/conf/publish/gitcommitrc"
+            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/ReleaseMaster/fairylandfuture/conf/release/commit-version"
             response = requests.get(url)
             if response.status_code == 200:
                 commit_count = int(response.text)
                 return commit_count
             else:
-                return cls.__get_local_gitcommitcr()
+                return cls.get_local_serial()
         except Exception as err:
             print(err)
-            return cls.__get_local_gitcommitcr()
+            return cls.get_local_serial()
 
 
-package = PackageInfo(_MAJOR, _SUB, _STAGE, _MARK)
+package = PackageInfo(_major, _minor, _micro, releaselevel)
 
 setuptools.setup(
     name=package.name,
