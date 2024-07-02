@@ -15,7 +15,7 @@ from fairylandfuture.constants.enums import PlatformEnum
 
 from fairylandfuture.utils.general.common import OSPlatform
 
-print(PlatformEnum.WINDOWS.value)
+print(PlatformEnum.windows.value)
 
 print(sys.platform)
 print(platform.architecture())

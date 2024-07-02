@@ -7,29 +7,29 @@
 @since: 2024-05-10 10:45:41 UTC+8
 """
 
-from fairylandfuture.core.superclass.enumerate import BaseEnum, StringEnum
+from fairylandfuture.core.superclass.enumerate import BaseEnum
 
 
-class DateTimeEnum(StringEnum):
+class DateTimeEnum(BaseEnum):
     """
     Date time enum.
     """
 
-    DATE = date = "%Y-%m-%d"
-    TIME = time = "%H:%M:%S"
-    DATETIME = datetime = "%Y-%m-%d %H:%M:%S"
+    date = "%Y-%m-%d"
+    time = "%H:%M:%S"
+    datetime = "%Y-%m-%d %H:%M:%S"
 
-    DATE_CN = date_cn = "%Y年%m月%d日"
-    TIME_CN = time_cn = "%H时%M分%S秒"
-    DATETIME_CN = datetime_cn = "%Y年%m月%d日 %H时%M分%S秒"
+    date_cn = "%Y年%m月%d日"
+    time_cn = "%H时%M分%S秒"
+    datetime_cn = "%Y年%m月%d日 %H时%M分%S秒"
 
     @classmethod
     def default(cls) -> str:
-        return cls.DATETIME.value
+        return cls.datetime.value
 
     @classmethod
     def default_cn(cls) -> str:
-        return cls.DATETIME_CN.value
+        return cls.datetime_cn.value
 
 
 class EncodingEnum(BaseEnum):
@@ -37,14 +37,14 @@ class EncodingEnum(BaseEnum):
     Encoding enum.
     """
 
-    UTF_8 = utf_8 = "UTF-8"
-    GBK = gbk = "GBK"
-    GB2312 = gb2312 = "GB2312"
-    GB18030 = gb18030 = "GB18030"
+    utf_8 = "UTF-8"
+    gbk = "GBK"
+    gb2312 = "GB2312"
+    gb18030 = "GB18030"
 
     @classmethod
-    def default(cls) -> str:
-        return cls.UTF_8.value
+    def default(cls):
+        return cls.utf_8.value
 
 
 class LogLevelEnum(BaseEnum):
@@ -52,21 +52,21 @@ class LogLevelEnum(BaseEnum):
     Log level Enum.
     """
 
-    TRACE = trace = "TRACE"
-    DEBUG = debug = "DEBUG"
-    INFO = info = "INFO"
-    SUCCESS = success = "SUCCESS"
-    WARNING = warning = "WARNING"
-    ERROR = error = "ERROR"
-    CRITICAL = critical = "CRITICAL"
+    trace = "TRACE"
+    debug = "DEBUG"
+    info = "INFO"
+    success = "SUCCESS"
+    warning = "WARNING"
+    error = "ERROR"
+    critical = "CRITICAL"
 
     @classmethod
     def default(cls) -> str:
-        return cls.INFO.value
+        return cls.info.value
 
     @classmethod
     def default_debug(cls) -> str:
-        return cls.TRACE.value
+        return cls.trace.value
 
 
 class PlatformEnum(BaseEnum):
@@ -74,7 +74,11 @@ class PlatformEnum(BaseEnum):
     Platform enum.
     """
 
-    WINDOWS = windows = "Windows"
-    LINUX = linux = "Linux"
-    MACOS = macos = "Darwin"
-    DARWIN = darwin = "Darwin"
+    windows = "Windows"
+    linux = "Linux"
+    macos = "Darwin"
+    darwin = "Darwin"
+
+    @classmethod
+    def default(cls) -> str:
+        return cls.linux.value

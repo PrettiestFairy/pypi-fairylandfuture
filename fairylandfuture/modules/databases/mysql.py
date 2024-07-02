@@ -9,6 +9,7 @@
 
 import functools
 import pymysql
+from pymysql.cursors import DictCursor
 
 from typing import Union, Dict, Tuple, Any, Iterable, Callable
 
@@ -31,7 +32,7 @@ class CustomMySQLConnect(pymysql.connections.Connection):
         return self.__exist
 
 
-class CustomMySQLCursor(pymysql.cursors.DictCursor):
+class CustomMySQLCursor(DictCursor):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -254,6 +255,7 @@ class MySQLDatabase(AbstractMySQLOperation, MySQLConnector):
                 return result[0]
             return result
         except Exception as err:
+            ...
             raise err
         finally:
             self.cursor.close()

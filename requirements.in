@@ -22,3 +22,8 @@ pyyaml
 netifaces
 cryptography
 python-dotenv
+
+django
+djangorestframework
+markdown
+django-filter
