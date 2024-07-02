@@ -71,8 +71,7 @@ class BaseFile:
             raise ValueError("Path is a directory.")
         if not os.path.exists(path):
             if create:
-                with open(path, "w"):
-                    pass
+                open(path, "w").close()
             else:
                 raise FileNotFoundError("File not found.")
         self.path: Union[Path, str] = path
@@ -198,7 +197,7 @@ class BaseFile:
             def wrapper(self: BaseFile, *args, **kwargs):
                 if isinstance(exts, str):
                     if self.ext != exts:
-                        raise ValueError(f"File extension is not {ext}.")
+                        raise ValueError(f"File extension is not {exts}.")
                 else:
                     if self.ext not in exts:
                         raise ValueError(f"File extension is not in {exts}.")
@@ -209,9 +208,9 @@ class BaseFile:
         return decorator
 
 
-class BaseTextFileMixin(BaseFile):
+class BaseTextFile(BaseFile):
     """
-    Text file mixin.
+    Text file.
 
     :param path: file path.
     :type path: Union[Path, str]
@@ -219,7 +218,7 @@ class BaseTextFileMixin(BaseFile):
     :type create: bool
 
     Usage:
-        >>> file = TextFileMixin("path/to/file.txt")
+        >>> file = BaseTextFile("path/to/file.txt")
         >>> file.load_text()
         "Hello, world!"
         >>> file.save_text("Hello, world!")
@@ -254,9 +253,9 @@ class BaseTextFileMixin(BaseFile):
         return super().write_data("w", data)
 
 
-class BaseYamlFileMixin(BaseFile):
+class BaseYamlFile(BaseFile):
     """
-    Yaml file mixin.
+    Yaml file.
 
     :param path: file path.
     :type path: Union[Path, str]
@@ -264,7 +263,7 @@ class BaseYamlFileMixin(BaseFile):
     :type create: bool
 
     Usage:
-        >>> file = YamlFileMixin("path/to/file.yaml")
+        >>> file = BaseYamlFile("path/to/file.yaml")
         >>> file.load_yaml()
         {'key': 'value'}
         >>> file.save_yaml({'key': 'value'})
@@ -301,9 +300,9 @@ class BaseYamlFileMixin(BaseFile):
         return super().write_data("w", yaml_data)
 
 
-class BaseJsonFileMixin(BaseFile):
+class BaseJsonFile(BaseFile):
     """
-    Json file mixin.
+    Json file.
 
     :param path: file path.
     :type path: Union[Path, str]
@@ -311,7 +310,7 @@ class BaseJsonFileMixin(BaseFile):
     :type create: bool
 
     Usage:
-        >>> file = JsonFileMixin("path/to/file.json")
+        >>> file = BaseJsonFile("path/to/file.json")
         >>> file.load_json()
         {'key': 'value'}
         >>> file.save_json({'key': 'value'})

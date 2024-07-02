@@ -61,8 +61,8 @@ class UserPasswordEncryption(Cipher):
         if not salt:
             salt = os.urandom(16)
         else:
-            salt = salt.encode(EncodingEnum.UTF_8.value)
-        password = password.encode(EncodingEnum.UTF_8.value)
+            salt = salt.encode(EncodingEnum.utf_8.value)
+        password = password.encode(EncodingEnum.utf_8.value)
         salted_password = password + salt
         hashed_password = hashlib.md5(salted_password).hexdigest()
         return hashed_password, salt.hex()
@@ -82,7 +82,7 @@ class UserPasswordEncryption(Cipher):
         :rtype: bool
         """
         salt = bytes.fromhex(salt)
-        password = password.encode(EncodingEnum.UTF_8.value)
+        password = password.encode(EncodingEnum.utf_8.value)
         salted_password = password + salt
         hashed_password_to_verify = hashlib.md5(salted_password).hexdigest()
         return hashed_password_to_verify == hashed_password
@@ -103,9 +103,9 @@ class PasswordEncryption(Cipher):
         :rtype: tuple
         """
         fernet = Fernet(key)
-        password = password.encode(EncodingEnum.UTF_8.value)
+        password = password.encode(EncodingEnum.utf_8.value)
         encrypted_password = fernet.encrypt(password)
-        return encrypted_password.decode(EncodingEnum.UTF_8.value), key.decode(EncodingEnum.UTF_8.value)
+        return encrypted_password.decode(EncodingEnum.utf_8.value), key.decode(EncodingEnum.utf_8.value)
 
     @classmethod
     def decrypt(cls, encrypted_password, key):
@@ -120,6 +120,6 @@ class PasswordEncryption(Cipher):
         :rtype: str
         """
         fernet = Fernet(key)
-        encrypted_password = encrypted_password.encode(EncodingEnum.UTF_8.value)
+        encrypted_password = encrypted_password.encode(EncodingEnum.utf_8.value)
         decrypted_password = fernet.decrypt(encrypted_password)
-        return decrypted_password.decode(EncodingEnum.UTF_8.value)
+        return decrypted_password.decode(EncodingEnum.utf_8.value)
