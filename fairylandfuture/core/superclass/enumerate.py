@@ -6,6 +6,7 @@
 @organization: https://github.com/FairylandFuture
 @since: 2024-05-10 10:46:52 UTC+8
 """
+import abc
 from enum import Enum
 from typing import Any, List, Set, Tuple, TypeVar, Union
 
@@ -18,6 +19,7 @@ class BaseEnum(Enum):
     """
 
     @classmethod
+    @abc.abstractmethod
     def default(cls):
         """
         Abstract method to be implemented in subclasses.
@@ -92,18 +94,4 @@ class BaseEnum(Enum):
         :return: Tuple with the values of all members of the Enum.
         :rtype: tuple
         """
-        return cls.members(exclude_enums, True)
-
-
-class StringEnum(str, BaseEnum):
-
-    @classmethod
-    def values(cls, exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None) -> Tuple[str, ...]:
-        return cls.members(exclude_enums, True)
-
-
-class IntegerEnum(int, BaseEnum):
-
-    @classmethod
-    def values(cls, exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None) -> Tuple[int, ...]:
         return cls.members(exclude_enums, True)
