@@ -9,19 +9,18 @@
 
 from typing import Sequence
 
+from fairylandfuture.core.metaclasses.model import ModelMeta
 
-class BaseModel:
 
-    def __init__(self, table: str, fields: Sequence[str]):
-        self._table = table
-        self._fields = fields
+class BaseModel(metaclass=ModelMeta):
 
-    @property
-    def table(self):
-        return self._table
+    def __init__(self, *args, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
-    @property
-    def fields(self):
-        return self._fields
-    
-    def save(self, point): ...
+        super().__init__()
+
+    def save(self):
+        sql = f"insert into {self.table_name}({', '.join(self.fields)}) values ({', '.join(['%({})s'.format(field) for field in self.fields])})"
+        params = {field: getattr(self, field) for field in self.fields}
+        print(sql, params)
