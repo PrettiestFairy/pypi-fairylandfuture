@@ -7,7 +7,8 @@
 @since: 2024-05-18 下午5:21:05 UTC+8
 """
 
-import functools
+# import functools
+import threading
 from typing import Any
 
 
@@ -16,8 +17,11 @@ class SingletonMeta(type):
     Singleton pattern metaclass
     """
 
-    @functools.lru_cache(maxsize=0)
-    def __call__(cls, *args: Any, **kwargs: Any):
+    _instance = dict()
+    _lock: threading.Lock = threading.Lock()
+
+    # @functools.lru_cache(maxsize=0)
+    def __call__(cls, *args, **kwargs):
         """
         Singleton pattern metaclass
 
@@ -28,8 +32,14 @@ class SingletonMeta(type):
         :return: get instance
         :rtype: object
         """
-        if not hasattr(cls, "__instance"):
-            setattr(cls, "__instance", super().__call__(*args, **kwargs))
-            return getattr(cls, "__instance")
-        else:
-            return getattr(cls, "__instance")
+        # if not hasattr(cls, "_instance"):
+        #     setattr(cls, "_instance", super().__call__(*args, **kwargs))
+        #     return getattr(cls, "_instance")
+        # else:
+        #     return getattr(cls, "_instance")
+
+        with cls._lock:
+            if cls not in cls._instance:
+                instance = super().__call__(*args, **kwargs)
+                cls._instance.update({cls: instance})
+        return cls._instance.get(cls)
