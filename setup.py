@@ -7,16 +7,18 @@
 @since: 2024-05-09 16:38:27 UTC+8
 """
 
-import os.path
+import os
 import subprocess
 import sys
+import setuptools
+import requests
+
 from datetime import datetime
 from typing import Literal
 
-import requests
-import setuptools
 
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+_RELEASE_LEVEL = ["release", "test", "alpha", "beta"]
 _major = 1
 _minor = 0
 _micro = 1
@@ -56,7 +58,7 @@ class PackageInfo(object):
     :type releaselevel: str
     """
 
-    def __init__(self, major: int, minor: int, micro: int, releaselevel: Literal["release", "test", "alpha", "beta"]):
+    def __init__(self, major: int, minor: int, micro: int, releaselevel: str):
         self.major = self.vaildate_param(major, int)
         self.minor = self.vaildate_param(minor, int)
         self.micro = self.vaildate_param(micro, int)
@@ -85,11 +87,6 @@ class PackageInfo(object):
 
     @property
     def version(self):
-        # if len(self.serial.__str__()) < 5:
-        #     nbit = 5 - len(self.serial.__str__())
-        #     self.serial = "".join((("0" * nbit), self.serial.__str__()))
-        # else:
-        #     self.serial = self.serial.__str__()
         self.serial = self.serial.__str__()
 
         date_str = datetime.now().date().__str__().replace("-", "")
