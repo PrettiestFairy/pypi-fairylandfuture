@@ -34,15 +34,14 @@ class QueryMySQLBuilder(BaseBuilderMySQL):
         fields: The fields to select.
         sql: The SQL query string.
     Usage:
+        >>> from fairylandfuture.structures.builder.expression import StructureSQLFilterLogic
         >>> builder = QueryMySQLBuilder(table="users", fields=["id", "name", "age"])
-        >>> builder.operation(where="id = 1")
-        "select id, name, age from users where id = 1;"
-        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]))
-        "select id, name, age from users where id = 1 group_by id, name;"
-        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]), order_by=StructureSQLOrderByOption(field_list=["id", "name"], order_list=["desc", "asc"]))
-        "select id, name, age from users where id = 1 group_by id, name order_by id desc, name asc;"
-        >>> builder.operation(where="id = 1", group_by=StructureSQLGroupByOption(field_list=["id", "name"]), order_by=StructureSQLOrderByOption(field_list=["id", "name"], order_list=["desc", "asc"]), limit=StructureSQLLimitOption(limit=10, offset=0))
-        "select id, name, age from users where id = 1 group_by id, name order_by id desc, name asc limit 10 offset 0;"
+        >>> builder.operation()
+        "select * from users;"
+        >>> builder.operation(where=StructureSQLFilterOption("and", filter_field=(StructureSQLFilterLogic("id", "="))))
+        "select * from users where id = %(id)s;"
+        >>> builder.operation(where=StructureSQLFilterOption("or", filter_field=(StructureSQLFilterLogic("id", "="), StructureSQLFilterLogic("id", "in"))))
+        "select * from users where id = %(id)s or id in (%(id_1)s, %(id_2)s);"
     """
 
     def __init__(self, table: str, fields: Optional[Sequence[str]] = None):
