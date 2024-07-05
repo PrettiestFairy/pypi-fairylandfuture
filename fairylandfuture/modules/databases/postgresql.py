@@ -45,13 +45,18 @@ class CustomPostgreSQLCursor(NamedTupleCursor):
 
 class PostgreSQLConnector:
 
-    def __init__(self, host: str, port: int, user: str, password: str, database: str):
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, schema: str = None):
         self._host = host
         self._port = port
         self._user = user
         self._password = password
         self._database = database
+        self._schema = schema
         self._dsn = f"host={self._host} port={self._port} user={self._user} password={self._password} dbname={self._database}"
+        
+        if self._schema:
+            self._dsn += f" options='-c search_path={self._schema}'"
+            
         self.connect: CustomPostgreSQLConnect = self.__connect()
         self.cursor: CustomPostgreSQLCursor = self.connect.cursor()
 

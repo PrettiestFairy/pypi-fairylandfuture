@@ -31,18 +31,19 @@ pg = PostgreSQLConnector(
     user=config.get("user"),
     password=config.get("password"),
     database=config.get("database"),
+    schema="information_schema"
 )
 
-pg.cursor.execute("select * from information_schema.sql_features limit 10 offset 0;")
+pg.cursor.execute("select * from sql_features limit 10 offset 0;")
 data: List[SQLData] = pg.cursor.fetchall()
 pg.cursor.close()
 for i in data:
     print(i, i.feature_id)
-pg.reconnect()
-pg.cursor.execute("select * from information_schema.sql_features limit 10 offset 10;")
-data2 = pg.cursor.fetchall()
-pg.cursor.close()
-pg.close()
+# pg.reconnect()
+# pg.cursor.execute("select * from information_schema.sql_features limit 10 offset 10;")
+# data2 = pg.cursor.fetchall()
+# pg.cursor.close()
+# pg.close()
 
 
 from collections import namedtuple

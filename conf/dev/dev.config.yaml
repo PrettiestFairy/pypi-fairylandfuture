@@ -16,3 +16,4 @@ postgresql:
   user: postgres
   password: postgres
   database: postgres
+  schema: public
