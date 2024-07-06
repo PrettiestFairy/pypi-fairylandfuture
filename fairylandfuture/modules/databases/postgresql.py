@@ -53,10 +53,10 @@ class PostgreSQLConnector:
         self._database = database
         self._schema = schema
         self._dsn = f"host={self._host} port={self._port} user={self._user} password={self._password} dbname={self._database}"
-        
+
         if self._schema:
             self._dsn += f" options='-c search_path={self._schema}'"
-            
+
         self.connect: CustomPostgreSQLConnect = self.__connect()
         self.cursor: CustomPostgreSQLCursor = self.connect.cursor()
 
