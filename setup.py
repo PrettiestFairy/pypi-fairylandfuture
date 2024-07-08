@@ -15,6 +15,7 @@ import requests
 
 from datetime import datetime
 from typing import Literal
+from importlib.resources import read_text
 
 
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -144,7 +145,7 @@ class PackageInfo(object):
 
     @property
     def packages_data(self):
-        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["conf/*"]}
+        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["conf/**"]}
 
         return data
 
@@ -209,7 +210,7 @@ class PackageInfo(object):
 
     @property
     def install_requires(self):
-        with open(os.path.join(_ROOT_PATH, "requirements.in"), "r", encoding="UTF-8") as stream:
+        with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "requirements.in"), "r", encoding="UTF-8") as stream:
             requirements_text = stream.read()
         return requirements_text.split()
 
