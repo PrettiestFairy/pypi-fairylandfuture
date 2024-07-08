@@ -165,18 +165,14 @@ class MySQLConnector(AbstractMySQLConnector):
         """
         try:
             self.cursor.close()
-        except pymysql.err.Error:
-            ...
-        except AttributeError:
+        except Exception:
             ...
         finally:
             self.cursor = None
 
         try:
             self.connect.close()
-        except pymysql.err.Error:
-            ...
-        except AttributeError:
+        except Exception:
             ...
         finally:
             self.connect = None
