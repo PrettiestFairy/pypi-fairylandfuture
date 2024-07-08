@@ -21,8 +21,8 @@ _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _RELEASE_LEVEL = ["release", "test", "alpha", "beta"]
 _major = 1
 _minor = 0
-_micro = 1
-releaselevel: Literal["release", "test", "alpha", "beta"] = "alpha"
+_micro = 0
+releaselevel: Literal["release", "test", "alpha", "beta"] = "release"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
@@ -65,7 +65,7 @@ class PackageInfo(object):
         self.serial = self.get_github_serial()
 
         if releaselevel.lower() not in ("release", "test", "alpha", "beta"):
-            raise TypeError("Param: releaselevel type error, releaselevel must in [\"release\", \"test\", \"alpha\", \"beta\"].")
+            raise TypeError('Param: releaselevel type error, releaselevel must in ["release", "test", "alpha", "beta"].')
 
         self.releaselevel = releaselevel
 
