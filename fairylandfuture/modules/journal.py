@@ -54,7 +54,7 @@ class Journal(metaclass=SingletonMeta):
     Usage::
         >>> # Create a journal instance
         >>> journal = Journal()
-        >>> 
+        >>>
         >>> # Log messages
         >>> journal.info("This is an info message")
         >>> journal.error("This is an error message")
@@ -312,6 +312,3 @@ class Journal(metaclass=SingletonMeta):
         :rtype: Logger
         """
         return logger.exception(msg, *args, **kwargs)
-
-
-journal: Journal = Journal(debug=True, serialize=True)
