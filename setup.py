@@ -15,14 +15,15 @@ import requests
 
 from datetime import datetime
 from typing import Literal
+from importlib.resources import read_text
 
 
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _RELEASE_LEVEL = ["release", "test", "alpha", "beta"]
 _major = 1
 _minor = 0
-_micro = 1
-releaselevel: Literal["release", "test", "alpha", "beta"] = "alpha"
+_micro = 0
+releaselevel: Literal["release", "test", "alpha", "beta"] = "release"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
@@ -65,7 +66,7 @@ class PackageInfo(object):
         self.serial = self.get_github_serial()
 
         if releaselevel.lower() not in ("release", "test", "alpha", "beta"):
-            raise TypeError("Param: releaselevel type error, releaselevel must in [\"release\", \"test\", \"alpha\", \"beta\"].")
+            raise TypeError('Param: releaselevel type error, releaselevel must in ["release", "test", "alpha", "beta"].')
 
         self.releaselevel = releaselevel
 
@@ -144,7 +145,7 @@ class PackageInfo(object):
 
     @property
     def packages_data(self):
-        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["conf/*"]}
+        data = {"": ["*.txt", "*.rst", "*.md"], "fairylandfuture": ["conf/**"]}
 
         return data
 
@@ -209,7 +210,7 @@ class PackageInfo(object):
 
     @property
     def install_requires(self):
-        with open(os.path.join(_ROOT_PATH, "requirements.in"), "r", encoding="UTF-8") as stream:
+        with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "requirements.in"), "r", encoding="UTF-8") as stream:
             requirements_text = stream.read()
         return requirements_text.split()
 
