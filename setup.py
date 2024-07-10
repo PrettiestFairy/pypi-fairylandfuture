@@ -21,9 +21,9 @@ from importlib.resources import read_text
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _RELEASE_LEVEL = ["release", "test", "alpha", "beta"]
 _major = 1
-_minor = 0
-_micro = 0
-releaselevel: Literal["release", "test", "alpha", "beta"] = "release"
+_minor = 1
+_micro = 1
+releaselevel: Literal["release", "test", "alpha", "beta"] = "beta"
 
 if sys.version_info < (3, 8):
     sys.exit("Python 3.8 or higher is required.")
@@ -187,7 +187,7 @@ class PackageInfo(object):
             "Programming Language :: Python :: Implementation :: CPython",
             "Programming Language :: Python :: Implementation :: PyPy",
             "Programming Language :: SQL",
-            "Framework :: Django :: 5",
+            "Framework :: Django :: 4",
             "Framework :: Flask",
             "Framework :: FastAPI",
             "Framework :: Flake8",
@@ -266,9 +266,8 @@ setuptools.setup(
     long_description=package.long_description,
     long_description_content_type=package.long_description_content_type,
     url=package.url,
-    # license="AGPLv3+",
-    # packages=setuptools.find_packages(include=package.packages_include, exclude=package.packages_exclude),
-    packages=setuptools.find_packages(exclude=package.packages_exclude),
+    license="AGPLv3+",
+    packages=setuptools.find_packages(include=package.packages_include),
     package_data=package.packages_data,
     include_package_data=package.include_package_data,
     classifiers=package.classifiers,
