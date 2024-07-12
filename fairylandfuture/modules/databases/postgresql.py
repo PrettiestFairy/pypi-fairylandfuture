@@ -12,6 +12,8 @@ import psycopg2
 
 from psycopg2.extras import NamedTupleCursor
 
+from fairylandfuture.modules.exceptions import DatabaseConnectClosedError, DatabaseCursorClosedError
+
 
 class CustomPostgreSQLConnect(psycopg2.extensions.connection):
 
@@ -98,14 +100,14 @@ class PostgreSQLConnector:
     def close(self) -> None:
         try:
             self.cursor.close()
-        except Exception:
+        except DatabaseCursorClosedError:
             ...
         finally:
             self.cursor = None
 
         try:
             self.connect.close()
-        except Exception:
+        except DatabaseConnectClosedError:
             ...
         finally:
             self.connect = None
