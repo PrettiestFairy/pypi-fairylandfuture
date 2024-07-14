@@ -57,3 +57,15 @@ class SQLSyntaxError(ProgramError):
 
     def __init__(self, message: str = "SQL syntax error."):
         super().__init__(message=message)
+
+
+class DatabaseConnectClosedError(ProgramError):
+
+    def __init__(self, message: str = "Database connection closed error."):
+        super().__init__(message=message)
+
+
+class DatabaseCursorClosedError(ProgramError):
+
+    def __init__(self, message: str = "Database cursor closed error."):
+        super().__init__(message=message)
