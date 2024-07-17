@@ -60,7 +60,7 @@ class PostgreSQLConnector:
             self._dsn += f" options='-c search_path={self._schema}'"
 
         self.connect: CustomPostgreSQLConnect = self.__connect()
-        self.cursor: CustomPostgreSQLCursor = self.connect.cursor()
+        self.cursor: CustomPostgreSQLCursor = self.connect.cursor(cursor_factory=CustomPostgreSQLCursor)
 
     @property
     def host(self) -> str:
@@ -78,12 +78,12 @@ class PostgreSQLConnector:
     def database(self) -> str:
         return self._database
 
-    def __dsn_mark_password(self, dsn):
-        return re.sub(r"(password=)\S+", r"\1******", dsn)
+    def __dsn_mark_password(self):
+        return re.sub(r"(password=)\S+", r"\1******", self._dsn)
 
     @property
     def dsn(self) -> str:
-        return self.__dsn_mark_password(self._dsn)
+        return self.__dsn_mark_password()
 
     def __connect(self):
         connect = psycopg2.connect(dsn=self._dsn, connection_factory=CustomPostgreSQLConnect, cursor_factory=CustomPostgreSQLCursor)
@@ -93,9 +93,9 @@ class PostgreSQLConnector:
     def reconnect(self) -> None:
         if not self.connect or not self.connect.exist:
             self.connect: CustomPostgreSQLConnect = self.__connect()
-            self.cursor: CustomPostgreSQLCursor = self.connect.cursor()
+            self.cursor: CustomPostgreSQLCursor = self.connect.cursor(cursor_factory=CustomPostgreSQLCursor)
         if not self.cursor or not self.cursor.exist:
-            self.cursor: CustomPostgreSQLCursor = self.connect.cursor()
+            self.cursor: CustomPostgreSQLCursor = self.connect.cursor(cursor_factory=CustomPostgreSQLCursor)
 
     def close(self) -> None:
         try:
