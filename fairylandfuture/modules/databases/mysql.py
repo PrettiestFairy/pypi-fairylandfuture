@@ -15,6 +15,7 @@ from typing import Union, Dict, Tuple, Any, Iterable, Callable
 
 from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation, AbstractMySQLConnector
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
+from fairylandfuture.modules.exceptions import DatabaseConnectClosedError, DatabaseCursorClosedError
 
 
 class CustomMySQLConnect(pymysql.connections.Connection):
@@ -165,14 +166,16 @@ class MySQLConnector(AbstractMySQLConnector):
         """
         try:
             self.cursor.close()
-        except Exception:
+            raise DatabaseCursorClosedError
+        except DatabaseCursorClosedError:
             ...
         finally:
             self.cursor = None
 
         try:
             self.connect.close()
-        except Exception:
+            raise DatabaseConnectClosedError
+        except DatabaseConnectClosedError:
             ...
         finally:
             self.connect = None
