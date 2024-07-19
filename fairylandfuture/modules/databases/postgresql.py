@@ -9,10 +9,11 @@
 
 import re
 import psycopg2
+from typing import Optional
 
 from psycopg2.extras import NamedTupleCursor
 
-from fairylandfuture.modules.exceptions import DatabaseConnectClosedError, DatabaseCursorClosedError
+from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLConnector
 
 
 class CustomPostgreSQLConnect(psycopg2.extensions.connection):
@@ -45,9 +46,32 @@ class CustomPostgreSQLCursor(NamedTupleCursor):
         return self._exist
 
 
-class PostgreSQLConnector:
+class PostgreSQLConnector(AbstractPostgreSQLConnector):
+    """
+    PostgreSQLConnector is a class for connecting to PostgreSQL database.
 
-    def __init__(self, host: str, port: int, user: str, password: str, database: str, schema: str = None):
+    :param host: The host of PostgreSQL database.
+    :type host: str
+    :param port: The port of PostgreSQL database.
+    :type port: int
+    :param user: The user of PostgreSQL database.
+    :type user: str
+    :param password: The password of PostgreSQL database.
+    :type password: str
+    :param database: The name of PostgreSQL database.
+    :type database: str
+    :param schema: The schema of PostgreSQL database.
+    :type schema: str
+
+    Usage::
+        >>> from fairylandfuture.modules.databases.postgresql import PostgreSQLConnector
+        >>> connector = PostgreSQLConnector(host="localhost", port=5432, user="postgres", password="password", database="test")
+        >>> connector.cursor.execute("SELECT * FROM users")
+        >>> result = connector.cursor.fetchall()
+        >>> connector.close()
+    """
+
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, schema: Optional[str] = None):
         self._host = host
         self._port = port
         self._user = user
@@ -91,26 +115,18 @@ class PostgreSQLConnector:
         return connect
 
     def reconnect(self) -> None:
-        if not self.connect or not self.connect.exist:
+        if not self.connect.exist:
             self.connect: CustomPostgreSQLConnect = self.__connect()
             self.cursor: CustomPostgreSQLCursor = self.connect.cursor(cursor_factory=CustomPostgreSQLCursor)
-        if not self.cursor or not self.cursor.exist:
+        if not self.cursor.exist and self.connect.exist:
             self.cursor: CustomPostgreSQLCursor = self.connect.cursor(cursor_factory=CustomPostgreSQLCursor)
 
     def close(self) -> None:
-        try:
+        if self.cursor.exist:
             self.cursor.close()
-        except DatabaseCursorClosedError:
-            ...
-        finally:
-            self.cursor = None
 
-        try:
+        if self.connect.exist:
             self.connect.close()
-        except DatabaseConnectClosedError:
-            ...
-        finally:
-            self.connect = None
 
     def __del__(self):
         self.close()
