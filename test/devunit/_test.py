@@ -29,9 +29,7 @@ class TestBase:
                 getattr(cls, method)()
 
 
-
 BASE_PATH = Path(__file__).resolve().parent.parent.parent
-
 
 if __name__ == "__main__":
     print(BASE_PATH)

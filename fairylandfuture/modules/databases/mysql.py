@@ -133,10 +133,10 @@ class MySQLConnector(AbstractMySQLConnector):
         :return: ...
         :rtype: ...
         """
-        if not self.connect or not self.connect.exist:
+        if not self.connect.exist:
             self.connect: CustomMySQLConnect = self.__connect()
             self.cursor: CustomMySQLCursor = self.connect.cursor()
-        if not self.cursor or not self.cursor.exist:
+        if not self.cursor.exist and self.connect.exist:
             self.cursor: CustomMySQLCursor = self.connect.cursor()
 
     @staticmethod
@@ -164,21 +164,10 @@ class MySQLConnector(AbstractMySQLConnector):
         :return: ...
         :rtype: ...
         """
-        try:
+        if self.cursor.exist:
             self.cursor.close()
-            raise DatabaseCursorClosedError
-        except DatabaseCursorClosedError:
-            ...
-        finally:
-            self.cursor = None
-
-        try:
+        if self.connect.exist:
             self.connect.close()
-            raise DatabaseConnectClosedError
-        except DatabaseConnectClosedError:
-            ...
-        finally:
-            self.connect = None
 
     def __del__(self):
         self.close()

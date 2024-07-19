@@ -13,6 +13,7 @@ from pathlib import Path
 from test.utils.config import TestConfig
 from fairylandfuture.modules.databases.postgresql import PostgreSQLConnector
 
+
 class SQLData(NamedTuple):
     feature_id: str
     feature_name: str
@@ -21,6 +22,7 @@ class SQLData(NamedTuple):
     is_supported: str
     is_verified_by: str
     comments: str
+
 
 config: Dict[str, Any] = TestConfig(Path(r"C:\Lionel\Project\Github\pypi-fairylandfuture\conf\dev\config.yaml")).config.get("postgresql")
 print(repr(config))
@@ -48,12 +50,11 @@ for i in data:
 
 from collections import namedtuple
 
-
 column_name = ["a", "b", "c"]
-row_1_data = [1,2,3]
-row_2_data = [1,2,3]
+row_1_data = [1, 2, 3]
+row_2_data = [1, 2, 3]
 
-a = map(lambda x:namedtuple("Data", column_name)(*x), (row_1_data, row_2_data))
+a = map(lambda x: namedtuple("Data", column_name)(*x), (row_1_data, row_2_data))
 for i in a:
     print(i, i.a, i.b, i.c)
 
