@@ -9,7 +9,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Tuple, Union, Sequence
+from typing import Any, Dict, List, Optional, Tuple, Union, Sequence, MutableSequence, Mapping, MutableMapping
 from dataclasses import dataclass, field
 
 
@@ -194,7 +194,8 @@ class StructureSQLExecuteParams:
     """
 
     expression: str
-    params: Optional[Union[List[Any], Tuple[Any, ...], Dict[str, Any]]] = field(default=None)
+    # params: Optional[Union[List[Any], Tuple[Any, ...], Dict[str, Any]]] = field(default=None)
+    params: Optional[Union[Sequence, MutableSequence, Mapping, MutableMapping]] = field(default=None)
 
 
 @dataclass
@@ -216,4 +217,5 @@ class StructureSQLInsertManyParams:
     """
 
     expression: str
-    params: Union[List[Union[List[Any], Tuple[Any, ...], Dict[str, Any]]], Tuple[Union[List[Any], Tuple[Any, ...], Dict[str, Any]], ...]]
+    # params: Union[List[Union[List[Any], Tuple[Any, ...], Dict[str, Any]]], Tuple[Union[List[Any], Tuple[Any, ...], Dict[str, Any]], ...]]
+    params: Union[Sequence[Union[Sequence, MutableSequence, Mapping, MutableMapping]], MutableSequence[Union[Sequence, MutableSequence, Mapping, MutableMapping]]]
