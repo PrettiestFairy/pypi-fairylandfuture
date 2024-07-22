@@ -219,3 +219,9 @@ class StructureSQLInsertManyParams:
     expression: str
     # params: Union[List[Union[List[Any], Tuple[Any, ...], Dict[str, Any]]], Tuple[Union[List[Any], Tuple[Any, ...], Dict[str, Any]], ...]]
     params: Union[Sequence[Union[Sequence, MutableSequence, Mapping, MutableMapping]], MutableSequence[Union[Sequence, MutableSequence, Mapping, MutableMapping]]]
+
+
+@dataclass(frozen=True)
+class StructurePostgreSQLExecute:
+    query: str
+    vars: Optional[Union[Sequence, MutableSequence, Mapping, MutableMapping]] = field(default=None)

@@ -9,11 +9,14 @@
 
 import re
 import psycopg2
-from typing import Optional
+from typing import Optional, Sequence, List, Any
 
 from psycopg2.extras import NamedTupleCursor
 
 from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLConnector
+from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLOperation
+from fairylandfuture.modules.decorators import SingletonDecorator
+from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
 
 
 class CustomPostgreSQLConnect(psycopg2.extensions.connection):
@@ -130,3 +133,55 @@ class PostgreSQLConnector(AbstractPostgreSQLConnector):
 
     def __del__(self):
         self.close()
+
+
+@SingletonDecorator
+class PostgreSQLOperation(AbstractPostgreSQLOperation):
+
+    def __init__(self, connector: PostgreSQLConnector):
+        self.connector = connector
+
+    def execute(self, struct: StructurePostgreSQLExecute):
+        try:
+            self.connector.reconnect()
+            self.connector.cursor.execute(struct.query, struct.vars)
+            return True
+        except Exception as err:
+            raise err
+        finally:
+            self.connector.close()
+
+    def select(self, struct: StructurePostgreSQLExecute) -> List[Any]:
+        try:
+            self.connector.reconnect()
+            self.connector.cursor.execute(struct.query, struct.vars)
+            data = self.connector.cursor.fetchall()
+            return data
+        except Exception as err:
+            raise err
+        finally:
+            self.connector.close()
+
+    def mutable(self, structs: Sequence[StructurePostgreSQLExecute]):
+        try:
+            self.connector.reconnect()
+            for struct in structs:
+                self.connector.cursor.execute(struct.query, struct.vars)
+            self.connector.connect.commit()
+            return True
+        except Exception as err:
+            self.connector.connect.rollback()
+            raise err
+        finally:
+            self.connector.close()
+
+    def mutableinsert(self, struct: StructurePostgreSQLExecute):
+        try:
+            self.connector.reconnect()
+            self.connector.cursor.executemany(struct.query, struct.vars)
+            self.connector.connect.commit()
+            return True
+        except Exception as err:
+            raise err
+        finally:
+            self.connector.close()

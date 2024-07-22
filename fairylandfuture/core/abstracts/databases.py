@@ -8,9 +8,10 @@
 """
 
 import abc
-from typing import List
+from typing import List, Any
 
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
+from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
 
 
 class AbstractDatabase(abc.ABC):
@@ -62,3 +63,21 @@ class AbstractMySQLOperation(abc.ABC):
 
     @abc.abstractmethod
     def insertmany(self, params: StructureSQLInsertManyParams) -> bool: ...
+
+
+class AbstractPostgreSQLOperation(abc.ABC):
+
+    @abc.abstractmethod
+    def execute(self, struct: StructurePostgreSQLExecute) -> bool: ...
+
+    def insert(self, struct: StructurePostgreSQLExecute) -> bool:
+        return self.execute(struct)
+
+    def delete(self, struct: StructurePostgreSQLExecute) -> bool:
+        return self.execute(struct)
+
+    def update(self, struct: StructurePostgreSQLExecute) -> bool:
+        return self.execute(struct)
+
+    @abc.abstractmethod
+    def select(self, struct: StructurePostgreSQLExecute) -> List[Any]: ...
