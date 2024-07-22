@@ -162,7 +162,7 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         finally:
             self.connector.close()
 
-    def mutable(self, structs: Sequence[StructurePostgreSQLExecute]):
+    def multi(self, structs: Sequence[StructurePostgreSQLExecute]):
         try:
             self.connector.reconnect()
             for struct in structs:
@@ -175,7 +175,7 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         finally:
             self.connector.close()
 
-    def mutableinsert(self, struct: StructurePostgreSQLExecute):
+    def multiinsert(self, struct: StructurePostgreSQLExecute):
         try:
             self.connector.reconnect()
             self.connector.cursor.executemany(struct.query, struct.vars)
