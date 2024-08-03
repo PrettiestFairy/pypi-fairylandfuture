@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-10 10:46:52 UTC+8
+@since: 2024-05-10 10:46:52 UTC+08:00
 """
 import abc
 from enum import Enum

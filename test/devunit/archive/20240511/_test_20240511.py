@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-11 13:53:27 UTC+8
+@since: 2024-05-11 13:53:27 UTC+08:00
 """
 
 # 时间模块

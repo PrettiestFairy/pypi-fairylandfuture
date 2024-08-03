@@ -4,7 +4,7 @@
 > @author: [Lionel Johnson](https://fairy.host)  
 > @contact: [Blog](https://blog.fairy.host/) | [Github](https://github.com/PrettiestFairy) | [Telegram](https://t.me/FairylandFuture)  
 > @organization: [Github·FairylandFuture](https://github.com/FairylandFuture)  
-> @since: 2024-05-09 16:15:43 UTC+8
+> @since: 2024-05-09 16:15:43 UTC+08:00
 
 [![Author](https://img.shields.io/badge/Author-Lionel_Johnson-orange)](https://fairy.host) [![github](https://img.shields.io/badge/Github-Lionel_Johnson-green)](https://github.com/PrettiestFairy) [![GitBook](https://img.shields.io/badge/GitBook-Interesting-green)](https://interestingbooks.gitbook.io/) [![Editor](https://img.shields.io/badge/Editor-Typora-yellow)](https://github.com/PrettiestFairy) [![Language](https://img.shields.io/badge/Language-Markdown-orange)](https://github.com/PrettiestFairy) [![Version](https://img.shields.io/badge/Version-Release-blue)](https://github.com/PrettiestFairy) [![Docs](https://img.shields.io/badge/Docs-Passing-brightgreen)](https://github.com/PrettiestFairy) [![Type](https://img.shields.io/badge/Type-Document-blue)](https://github.com/PrettiestFairy) [![Wakatime](https://wakatime.com/badge/user/fa851759-c657-4b1e-8bcb-3ec3a693a2cd.svg)](https://wakatime.com/@fa851759-c657-4b1e-8bcb-3ec3a693a2cd) [![Sign](https://img.shields.io/badge/%E7%AD%89%E6%88%91%E4%BB%A3%E7%A0%81%E7%BC%96%E6%88%90-%E5%A8%B6%E4%BD%A0%E4%B8%BA%E5%A6%BB%E5%8F%AF%E5%A5%BD-red)](https://fairy.host)
 
@@ -97,4 +97,3 @@ See the file LICENSE for more details.
 ---
 
 [@HomePage](https://fairy.host) · [@Github](https://github.com/PrettiestFairy) · [@TelegramGroup]()
-

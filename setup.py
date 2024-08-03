@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-09 16:38:27 UTC+8
+@since: 2024-05-09 16:38:27 UTC+08:00
 """
 
 import os
@@ -17,7 +17,6 @@ from datetime import datetime
 from typing import Literal
 from importlib.resources import read_text
 
-
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 _RELEASE_LEVEL = ["release", "test", "alpha", "beta"]
 _major = 1
@@ -25,8 +24,8 @@ _minor = 1
 _micro = 1
 releaselevel: Literal["release", "test", "alpha", "beta"] = "beta"
 
-if sys.version_info < (3, 8):
-    sys.exit("Python 3.8 or higher is required.")
+if sys.version_info < (3, 9):
+    sys.exit("Python 3.9 or higher is required.")
 
 
 class InstallDependenciesCommand(setuptools.Command):
@@ -179,7 +178,6 @@ class PackageInfo(object):
     def classifiers(self):
         results = [
             "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.8",
             "Programming Language :: Python :: 3.9",
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
