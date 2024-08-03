@@ -33,7 +33,7 @@ if __name__ == "__main__":
     print(connection.user)
     print(connection.database)
 
-    connect = connection.connect()
+    connect = connection.__connect()
     cursor = connect.cursor()
 
     cursor.execute("select mysql.user.host, mysql.user.user from mysql.user;")
