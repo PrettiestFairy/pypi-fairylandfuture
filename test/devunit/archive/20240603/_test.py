@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-03 21:45:41 UTC+8
+@since: 2024-06-03 21:45:41 UTC+08:00
 """
 
 from fairylandfuture.modules.datetimes import DateTimeModule

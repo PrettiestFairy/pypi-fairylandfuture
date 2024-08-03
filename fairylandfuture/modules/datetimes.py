@@ -4,11 +4,11 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-10 12:34:34 UTC+8
+@since: 2024-05-10 12:34:34 UTC+08:00
 """
 
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Optional, Union
 
 from dateutil.relativedelta import relativedelta
@@ -35,6 +35,18 @@ class DateTimeModule:
         return datetime.now().date().strftime(_format)
 
     @classmethod
+    def date_beijing(cls, _format: str = DateTimeEnum.date.value) -> str:
+        """
+        Get the current date in Beijing time zone.
+
+        :param _format: Date format.
+        :type _format: str
+        :return: Current date in Beijing time zone.
+        :rtype: str
+        """
+        return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).date().strftime(_format)
+
+    @classmethod
     def time(cls, _fromat: str = DateTimeEnum.time.value) -> str:
         """
         Get the current time.
@@ -47,6 +59,18 @@ class DateTimeModule:
         return datetime.now().time().strftime(_fromat)
 
     @classmethod
+    def time_beijing(cls, _fromat: str = DateTimeEnum.time.value) -> str:
+        """
+        Get the current time in Beijing time zone.
+
+        :param _fromat: Time format.
+        :type _fromat: str
+        :return: Current time in Beijing time zone.
+        :rtype: str
+        """
+        return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).time().strftime(_fromat)
+
+    @classmethod
     def datetime(cls, _format: str = DateTimeEnum.datetime.value) -> str:
         """
         Get the current datetime_str.
@@ -57,6 +81,18 @@ class DateTimeModule:
         :rtype: str
         """
         return datetime.now().strftime(_format)
+
+    @classmethod
+    def datetime_beijing(cls, _format: str = DateTimeEnum.datetime.value) -> str:
+        """
+        Get the current datetime_str in Beijing time zone.
+
+        :param _format: Datetime format.
+        :type _format: str
+        :return: Current datetime_str in Beijing time zone.
+        :rtype: str
+        """
+        return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).strftime(_format)
 
     @classmethod
     def timestamp(cls, millisecond: bool = False, n: Optional[int] = None) -> int:
