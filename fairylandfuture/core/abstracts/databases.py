@@ -9,64 +9,49 @@
 
 import abc
 
-from typing import List, Tuple, NamedTuple, Union
+from typing import Tuple, NamedTuple, Union, Dict, Any
 
-from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
+from fairylandfuture.structures.builder.expression import StructureMySQLExecute
 from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
 from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
-class AbstractDatabase(abc.ABC):
-
-    @abc.abstractmethod
-    def close(self) -> None: ...
-
-    @abc.abstractmethod
-    def reconnect(self) -> None: ...
-
-
-class AbstractMySQLConnector(AbstractDatabase):
-
-    @abc.abstractmethod
-    def close(self) -> None: ...
-
-    @abc.abstractmethod
-    def reconnect(self) -> None: ...
-
-
-class AbstractPostgreSQLConnector(AbstractDatabase):
-
-    @abc.abstractmethod
-    def close(self) -> None: ...
-
-    @abc.abstractmethod
-    def reconnect(self) -> None: ...
-
-
 class AbstractMySQLOperation(abc.ABC):
-    # Fixme: Refactor AbstractMySQLOperation
+    """
+    This class is an abstract class for MySQL operations.
+
+    """
 
     @abc.abstractmethod
-    def execute(self, params: StructureSQLExecuteParams) -> bool: ...
+    def execute(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]: ...
 
-    def insert(self, params: StructureSQLExecuteParams) -> bool:
-        return self.execute(params)
+    def insert(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
+        if not struct.query.lower().startswith("insert"):
+            raise SQLSyntaxError("SQL syntax error. The query must be an insert statement.")
+        return self.execute(struct)
 
-    def delete(self, params: StructureSQLExecuteParams) -> bool:
-        return self.execute(params)
+    def delete(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
+        if not struct.query.lower().startswith("delete"):
+            raise SQLSyntaxError("SQL syntax error. The query must be a delete statement.")
+        return self.execute(struct)
 
-    def update(self, params: StructureSQLExecuteParams) -> bool:
-        return self.execute(params)
+    def update(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
+        if not struct.query.lower().startswith("update"):
+            raise SQLSyntaxError("SQL syntax error. The query must be an update statement.")
+        return self.execute(struct)
 
     @abc.abstractmethod
-    def select(self, params: StructureSQLExecuteParams): ...
+    def select(self, struct: StructureMySQLExecute, /) -> Tuple[Dict[str, Any], ...]: ...
 
 
 class AbstractPostgreSQLOperation(abc.ABC):
+    """
+    This class is an abstract class for PostgreSQL operations.
+
+    """
 
     @abc.abstractmethod
-    def execute(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]:
-        ...
+    def execute(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]: ...
 
     def insert(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]:
         if not struct.query.lower().startswith("insert"):
@@ -84,5 +69,4 @@ class AbstractPostgreSQLOperation(abc.ABC):
         return self.execute(struct)
 
     @abc.abstractmethod
-    def select(self, struct: StructurePostgreSQLExecute, /) -> Tuple[NamedTuple, ...]:
-        ...
+    def select(self, struct: StructurePostgreSQLExecute, /) -> Tuple[NamedTuple, ...]: ...
