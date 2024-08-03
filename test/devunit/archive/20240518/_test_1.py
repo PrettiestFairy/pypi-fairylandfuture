@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-18 下午7:21:31 UTC+8
+@since: 2024-05-18 19:21:31 UTC+08:00
 """
 
 from fairylandfuture.modules.datasource import MySQLDataSource

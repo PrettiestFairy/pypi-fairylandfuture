@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-30 15:02:13 UTC+8
+@since: 2024-06-30 15:02:13 UTC+08:00
 """
 
 import os

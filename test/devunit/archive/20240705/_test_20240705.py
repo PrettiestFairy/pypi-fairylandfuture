@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-07-05 12:43:37 UTC+8
+@since: 2024-07-05 12:43:37 UTC+08:00
 """
 
 from typing import Dict, Any, List, NamedTuple

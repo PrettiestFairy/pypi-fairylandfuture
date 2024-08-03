@@ -4,5 +4,5 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-10 16:41:00 UTC+8
+@since: 2024-05-10 16:41:00 UTC+08:00
 """

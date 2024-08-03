@@ -4,10 +4,12 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-26 23:16:19 UTC+8
+@since: 2024-06-26 23:16:19 UTC+08:00
 """
 
 import functools
+from abc import ABC
+
 import pymysql
 from pymysql.cursors import DictCursor
 
@@ -288,3 +290,16 @@ class MySQLDatabase(AbstractMySQLOperation, MySQLConnector):
             raise err
         finally:
             self.cursor.close()
+
+
+class MySQLOperation(AbstractMySQLOperation):
+
+    def __init__(self, connector: MySQLConnector):
+        self.connector = connector
+
+    def execute(self, params: StructureSQLExecuteParams) -> bool:
+        self.connector.cursor.execute(params.expression, params.params)
+        return True
+
+    def select(self, params: StructureSQLExecuteParams):
+        pass

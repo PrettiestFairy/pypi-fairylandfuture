@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-27 00:07:43 UTC+8
+@since: 2024-06-27 00:07:43 UTC+08:00
 """
 
 from __future__ import annotations
