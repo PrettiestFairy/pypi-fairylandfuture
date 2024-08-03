@@ -2,7 +2,7 @@
 # @author: Lionel Johnson
 # @contact: https://fairy.host
 # @organization: https://github.com/FairylandFuture
-# @since: 2024-05-09 16:38:27 UTC+8
+# @since: 2024-05-09 16:38:27 UTC+08:00
 
 # This script is used to build and upload a Python package to PyPI.
 # It assumes that the package has already been built and is located in the dist directory.

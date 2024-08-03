@@ -4,10 +4,12 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-26 23:16:19 UTC+8
+@since: 2024-06-26 23:16:19 UTC+08:00
 """
 
 import functools
+from abc import ABC
+
 import pymysql
 from pymysql.cursors import DictCursor
 
@@ -15,6 +17,7 @@ from typing import Union, Dict, Tuple, Any, Iterable, Callable
 
 from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation, AbstractMySQLConnector
 from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
+from fairylandfuture.modules.exceptions import DatabaseConnectClosedError, DatabaseCursorClosedError
 
 
 class CustomMySQLConnect(pymysql.connections.Connection):
@@ -132,10 +135,10 @@ class MySQLConnector(AbstractMySQLConnector):
         :return: ...
         :rtype: ...
         """
-        if not self.connect or not self.connect.exist:
+        if not self.connect.exist:
             self.connect: CustomMySQLConnect = self.__connect()
             self.cursor: CustomMySQLCursor = self.connect.cursor()
-        if not self.cursor or not self.cursor.exist:
+        if not self.cursor.exist and self.connect.exist:
             self.cursor: CustomMySQLCursor = self.connect.cursor()
 
     @staticmethod
@@ -163,19 +166,10 @@ class MySQLConnector(AbstractMySQLConnector):
         :return: ...
         :rtype: ...
         """
-        try:
+        if self.cursor.exist:
             self.cursor.close()
-        except Exception:
-            ...
-        finally:
-            self.cursor = None
-
-        try:
+        if self.connect.exist:
             self.connect.close()
-        except Exception:
-            ...
-        finally:
-            self.connect = None
 
     def __del__(self):
         self.close()
@@ -296,3 +290,16 @@ class MySQLDatabase(AbstractMySQLOperation, MySQLConnector):
             raise err
         finally:
             self.cursor.close()
+
+
+class MySQLOperation(AbstractMySQLOperation):
+
+    def __init__(self, connector: MySQLConnector):
+        self.connector = connector
+
+    def execute(self, params: StructureSQLExecuteParams) -> bool:
+        self.connector.cursor.execute(params.expression, params.params)
+        return True
+
+    def select(self, params: StructureSQLExecuteParams):
+        pass

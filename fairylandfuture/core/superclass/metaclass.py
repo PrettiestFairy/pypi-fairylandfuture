@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-18 下午5:21:05 UTC+8
+@since: 2024-05-18 17:21:05 UTC+08:00
 """
 
 # import functools

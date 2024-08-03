@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-10 10:20:53 UTC+8
+@since: 2024-05-10 10:20:53 UTC+08:00
 """
 
 import time
@@ -157,7 +157,6 @@ class TryCatchDecorator(BaseDecorator):
             results = self.func(*args, **kwargs)
             return results
         except Exception as err:
-            ...
             raise err
 
 
