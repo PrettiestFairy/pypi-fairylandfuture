@@ -16,6 +16,7 @@ from psycopg2.extras import NamedTupleCursor
 from fairylandfuture.modules.decorators import SingletonDecorator
 from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLOperation
 from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
+from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
 class CustomPostgreSQLConnection(psycopg2.extensions.connection):
@@ -210,6 +211,9 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         :return: Query result.
         :rtype: tuple
         """
+        if not struct.query.lower().startswith("select"):
+            raise SQLSyntaxError("The query must be a select statement.")
+
         try:
             return self.execute(struct)
         except Exception as err:

@@ -18,6 +18,7 @@ from typing import Union, Dict, Tuple, Any, Iterable, Callable
 from fairylandfuture.structures.builder.expression import StructureMySQLExecute
 from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation
 from fairylandfuture.modules.decorators import SingletonDecorator
+from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
 class CustomMySQLConnection(pymysql.connections.Connection):
@@ -94,7 +95,7 @@ class MySQLConnector:
         return self.__host
 
     @property
-    def post(self) -> int:
+    def port(self) -> int:
         return self.__port
 
     @property
@@ -201,6 +202,9 @@ class MySQLOperation(AbstractMySQLOperation):
             self.connector.close()
 
     def select(self, struct: StructureMySQLExecute, /) -> Tuple[Dict[str, Any], ...]:
+        if not struct.query.lower().startswith("select"):
+            raise SQLSyntaxError("The query must be a select statement.")
+
         try:
             return self.execute(struct)
         except Exception as err:
