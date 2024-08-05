@@ -9,4 +9,4 @@
 
 from fairylandfuture.modules.journal import Journal
 
-journal = Journal()
+journal = Journal(debug=True)

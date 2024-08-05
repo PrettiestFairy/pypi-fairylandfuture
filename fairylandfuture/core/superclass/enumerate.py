@@ -10,7 +10,7 @@ import abc
 from enum import Enum
 from typing import Any, List, Set, Tuple, TypeVar, Union
 
-_TypeEnumBase = TypeVar("_TypeBaseEnum", bound="BaseEnum")
+_TypeEnumBase = TypeVar("_TypeEnumBase", bound="BaseEnum")
 
 
 class BaseEnum(Enum):
