@@ -37,14 +37,14 @@ class EncodingEnum(BaseEnum):
     Encoding enum.
     """
 
-    utf_8 = "UTF-8"
+    utf8 = "UTF-8"
     gbk = "GBK"
     gb2312 = "GB2312"
     gb18030 = "GB18030"
 
     @classmethod
     def default(cls):
-        return cls.utf_8.value
+        return cls.utf8.value
 
 
 class LogLevelEnum(BaseEnum):

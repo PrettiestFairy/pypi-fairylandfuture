@@ -8,7 +8,7 @@
 """
 
 import time
-from functools import wraps
+import functools
 from typing import Generic, Optional, Type, TypeVar
 
 from fairylandfuture.core.superclass.decorators import BaseDecorator, BaseParamsDecorator
@@ -114,7 +114,7 @@ class ActionDecorator(BaseParamsDecorator):
             self.func: Type = args.__getitem__(0)
         action_name = self.action if self.action else self.func.__name__
 
-        @wraps(self.func)
+        @functools.wraps(self.func)
         def wrapper(*args, **kwargs):
             try:
                 self.output(msg=f"Running: {action_name}.")
@@ -181,14 +181,13 @@ class TipsDecorator(BaseParamsDecorator):
         if args and len(args) == 1 and callable(args.__getitem__(0)):
             self.func: Type = args.__getitem__(0)
 
-        @wraps(self.func)
+        @functools.wraps(self.func)
         def wrapper(*args, **kwargs):
             try:
                 self.output(f"Running tips: {self.tips if self.tips else self.func.__name__}")
                 results = self.func(*args, **kwargs)
                 return results
             except Exception as err:
-                ...
                 raise err
 
         return wrapper

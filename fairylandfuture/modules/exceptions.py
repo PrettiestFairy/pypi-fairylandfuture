@@ -11,10 +11,10 @@
 class ProgramError(Exception):
 
     def __init__(self, message: str = "Internal program error."):
-        self.err_msg = f"{self.__class__.__name__}: {message}"
+        self.message = f"{self.__class__.__name__}: {message}"
 
     def __str__(self) -> str:
-        return self.err_msg
+        return self.message
 
 
 class ParameterError(ProgramError):

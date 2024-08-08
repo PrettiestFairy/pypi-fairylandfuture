@@ -19,7 +19,7 @@ from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 class DateTimeModule:
     """
-    Date time utils.
+    Data and time module
     """
 
     @classmethod
@@ -113,7 +113,7 @@ class DateTimeModule:
         return int(round(time.time()))
 
     @classmethod
-    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: str = DateTimeEnum.datetime.value):
+    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: str = DateTimeEnum.datetime.value) -> str:
         """
         Convert timestamp to datetime_str.
 
@@ -228,3 +228,23 @@ class DateTimeModule:
             date2 = datetime.strptime(dt2, _format)
 
         return abs((date2 - date1).days)
+
+    @classmethod
+    def unzone_utc(cls) -> datetime:
+        """
+        Remove the timezone from the current datetime.
+
+        :return: Unzoned datetime.
+        :rtype: datetime
+        """
+        return datetime.now(timezone.utc).replace(tzinfo=None)
+
+    @classmethod
+    def unzone_cst(cls) -> datetime:
+        """
+        Remove the timezone from the current datetime in China.
+
+        :return: Unzoned datetime in China.
+        :rtype: datetime
+        """
+        return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).replace(tzinfo=None)

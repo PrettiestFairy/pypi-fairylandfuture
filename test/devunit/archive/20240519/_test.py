@@ -17,7 +17,7 @@ from fairylandfuture.constants.enums import DateTimeEnum, EncodingEnum
 from fairylandfuture.structures.builder.expression import StructureMySQLExecute, StructureSQLInsertManyParams
 from fairylandfuture.modules.datasource import MySQLDataSource
 
-with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.utf_8.value) as stream:
+with open(DEV_CASE_CONFIG_FILE_PATH, encoding=EncodingEnum.utf8.value) as stream:
     case_conf: Dict[str, Dict[str, Any]] = yaml.safe_load(stream)
 
 MYSQL_CONFIG = case_conf.get("mysql")
