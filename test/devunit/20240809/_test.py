@@ -11,3 +11,5 @@ from fairylandfuture.modules.datetimes import DateTimeModule
 
 print(DateTimeModule.unzone_utc())
 print(DateTimeModule.unzone_cst())
+
+print("aaa")
