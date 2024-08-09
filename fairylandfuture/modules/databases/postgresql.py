@@ -8,15 +8,15 @@
 """
 
 import re
-import psycopg2
+from typing import Optional, Sequence, Tuple, NamedTuple, Union
 
-from typing import Optional, Sequence, Tuple, Any, NamedTuple, Union
+import psycopg2
 from psycopg2.extras import NamedTupleCursor
 
-from fairylandfuture.modules.decorators import SingletonDecorator
 from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLOperation
+from fairylandfuture.modules.decorators import SingletonDecorator
+from fairylandfuture.modules.exceptions import SQLSyntaxException
 from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
-from fairylandfuture.modules.exceptions import SQLSyntaxError
 
 
 class CustomPostgreSQLConnection(psycopg2.extensions.connection):
@@ -212,7 +212,7 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         :rtype: tuple
         """
         if not struct.query.lower().startswith("select"):
-            raise SQLSyntaxError("The query must be a select statement.")
+            raise SQLSyntaxException("The query must be a select statement.")
 
         try:
             return self.execute(struct)

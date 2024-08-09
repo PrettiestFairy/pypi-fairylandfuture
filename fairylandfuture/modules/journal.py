@@ -16,7 +16,7 @@ from loguru import logger
 
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 from fairylandfuture.constants.typed import TypeLogLevel
-from fairylandfuture.core.superclass.metaclass import SingletonMeta
+from fairylandfuture.core.metaclasses.singleton import SingletonMeta
 
 
 class Journal(metaclass=SingletonMeta):
@@ -154,9 +154,7 @@ class Journal(metaclass=SingletonMeta):
 
         if self.__console:
             if not self.__console_format:
-                self.__console_format = (
-                    "<level> [{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message} </level>"
-                )
+                self.__console_format = "<level> [{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message} </level>"
 
             logger.add(
                 sink=sys.stdout,

@@ -8,17 +8,15 @@
 """
 
 import functools
-from abc import ABC
+from typing import Union, Dict, Tuple, Any
 
 import pymysql
 from pymysql.cursors import DictCursor
 
-from typing import Union, Dict, Tuple, Any, Iterable, Callable
-
-from fairylandfuture.structures.builder.expression import StructureMySQLExecute
 from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation
 from fairylandfuture.modules.decorators import SingletonDecorator
-from fairylandfuture.modules.exceptions import SQLSyntaxError
+from fairylandfuture.modules.exceptions import SQLSyntaxException
+from fairylandfuture.structures.builder.expression import StructureMySQLExecute
 
 
 class CustomMySQLConnection(pymysql.connections.Connection):
@@ -203,7 +201,7 @@ class MySQLOperation(AbstractMySQLOperation):
 
     def select(self, struct: StructureMySQLExecute, /) -> Tuple[Dict[str, Any], ...]:
         if not struct.query.lower().startswith("select"):
-            raise SQLSyntaxError("The query must be a select statement.")
+            raise SQLSyntaxException("The query must be a select statement.")
 
         try:
             return self.execute(struct)

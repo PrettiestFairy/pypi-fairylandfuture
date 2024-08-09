@@ -9,7 +9,7 @@
 
 import time
 from datetime import datetime, timedelta, timezone
-from typing import Any, Optional, Union
+from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -17,13 +17,13 @@ from fairylandfuture.constants.enums import DateTimeEnum
 from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 
-class DateTimeModule:
+class DatetimeModule:
     """
     Data and time module
     """
 
     @classmethod
-    def date(cls, _format: str = DateTimeEnum.date.value) -> str:
+    def date(cls, _format: Optional[str] = None) -> str:
         """
         Get the current date.
 
@@ -32,22 +32,28 @@ class DateTimeModule:
         :return: Current date
         :rtype: str
         """
+        if not _format:
+            _format = DateTimeEnum.date.value
+
         return datetime.now().date().strftime(_format)
 
     @classmethod
-    def date_beijing(cls, _format: str = DateTimeEnum.date.value) -> str:
+    def date_shanghai(cls, _format: Optional[str] = None) -> str:
         """
-        Get the current date in Beijing time zone.
+        Get the current date in shanghai time zone.
 
         :param _format: Date format.
         :type _format: str
-        :return: Current date in Beijing time zone.
+        :return: Current date in shanghai time zone.
         :rtype: str
         """
+        if not _format:
+            _format = DateTimeEnum.date.value
+
         return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).date().strftime(_format)
 
     @classmethod
-    def time(cls, _fromat: str = DateTimeEnum.time.value) -> str:
+    def time(cls, _fromat: Optional[str] = None) -> str:
         """
         Get the current time.
 
@@ -56,22 +62,28 @@ class DateTimeModule:
         :return: Current time
         :rtype: str
         """
+        if not _fromat:
+            _fromat = DateTimeEnum.time.value
+
         return datetime.now().time().strftime(_fromat)
 
     @classmethod
-    def time_beijing(cls, _fromat: str = DateTimeEnum.time.value) -> str:
+    def time_shanghai(cls, _fromat: Optional[str] = None) -> str:
         """
-        Get the current time in Beijing time zone.
+        Get the current time in shanghai time zone.
 
         :param _fromat: Time format.
         :type _fromat: str
-        :return: Current time in Beijing time zone.
+        :return: Current time in shanghai time zone.
         :rtype: str
         """
+        if not _fromat:
+            _fromat = DateTimeEnum.time.value
+
         return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).time().strftime(_fromat)
 
     @classmethod
-    def datetime(cls, _format: str = DateTimeEnum.datetime.value) -> str:
+    def datetime(cls, _format: Optional[str] = None) -> str:
         """
         Get the current datetime_str.
 
@@ -80,32 +92,38 @@ class DateTimeModule:
         :return: Current datetime_str
         :rtype: str
         """
+        if not _format:
+            _format = DateTimeEnum.datetime.value
+
         return datetime.now().strftime(_format)
 
     @classmethod
-    def datetime_beijing(cls, _format: str = DateTimeEnum.datetime.value) -> str:
+    def datetime_shanghai(cls, _format: Optional[str] = None) -> str:
         """
-        Get the current datetime_str in Beijing time zone.
+        Get the current datetime_str in shanghai time zone.
 
         :param _format: Datetime format.
         :type _format: str
-        :return: Current datetime_str in Beijing time zone.
+        :return: Current datetime_str in shanghai time zone.
         :rtype: str
         """
+        if not _format:
+            _format = DateTimeEnum.datetime.value
+
         return datetime.now(tz=timezone(timedelta(hours=8), name="Asia/Shanghai")).strftime(_format)
 
     @classmethod
-    def timestamp(cls, millisecond: bool = False, n: Optional[int] = None) -> int:
+    def timestamp(cls, ms: bool = False, n: Optional[int] = None) -> int:
         """
         Get the current timestamp.
 
         :return: Current timestamp.
         :rtype: int
         """
-        validator = ParamTypeValidatorUtils({"millisecond": bool, "n": (int, type(None))})
-        validator.validate({"millisecond": millisecond, "n": n})
+        validator = ParamTypeValidatorUtils({"ms": bool, "n": (int, type(None))})
+        validator.validate({"ms": ms, "n": n})
 
-        if millisecond:
+        if ms:
             return int(round(time.time()) * 1000)
         if n:
             return int(round(time.time()) * (10 ** (n - 10)))
@@ -113,7 +131,7 @@ class DateTimeModule:
         return int(round(time.time()))
 
     @classmethod
-    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: str = DateTimeEnum.datetime.value) -> str:
+    def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: Optional[str] = None) -> str:
         """
         Convert timestamp to datetime_str.
 
@@ -129,23 +147,21 @@ class DateTimeModule:
 
         if len(str(int(timestamp))) == 13:
             timestamp /= 1000
+
+        if not _format:
+            _format = DateTimeEnum.datetime.value
+
         return datetime.fromtimestamp(timestamp).strftime(_format)
 
     @classmethod
-    def datetime_to_timestamp(
-        cls,
-        datetime_string: str,
-        millisecond: bool = False,
-        n: Optional[int] = None,
-        _format: str = DateTimeEnum.datetime.value,
-    ) -> int:
+    def datetime_to_timestamp(cls, dt_string: str, ms: bool = False, n: Optional[int] = None, _format: Optional[str] = None) -> int:
         """
         Convert datetime to timestamp.
 
-        :param datetime_string: Datetime string.
-        :type datetime_string: str
-        :param millisecond: Whether to include milliseconds.
-        :type millisecond: bool
+        :param dt_string: Datetime string.
+        :type dt_string: str
+        :param ms: Whether to include mss.
+        :type ms: bool
         :param n: Number of decimal places for the timestamp.
         :type n: int or None
         :param _format: Datetime format.
@@ -153,14 +169,16 @@ class DateTimeModule:
         :return: Timestamp.
         :rtype: int
         """
-        validator_expected_types = {"datetime_string": str, "millisecond": bool, "n": (int, type(None)), "_format": str}
+        validator_expected_types = {"dt_string": str, "ms": bool, "n": (int, type(None)), "_format": str}
         validator = ParamTypeValidatorUtils(validator_expected_types)
-        validator.validate({"datetime_string": datetime_string, "millisecond": millisecond, "n": n, "_format": _format})
+        validator.validate({"dt_string": dt_string, "ms": ms, "n": n, "_format": _format})
 
-        dt = datetime.strptime(datetime_string, _format)
-        timestamp = dt.timestamp()
+        if not _format:
+            _format = DateTimeEnum.datetime.value
 
-        if millisecond:
+        timestamp = datetime.strptime(dt_string, _format).timestamp()
+
+        if ms:
             return int(timestamp * 1000)
         if n:
             return int(timestamp * (10 ** (n - 10)))
@@ -168,7 +186,7 @@ class DateTimeModule:
         return int(timestamp)
 
     @classmethod
-    def yesterday(cls, _format: str = DateTimeEnum.date.value) -> str:
+    def yesterday(cls, _format: Optional[str] = None) -> str:
         """
         Get yesterday's date.
 
@@ -177,10 +195,13 @@ class DateTimeModule:
         :return: Yesterday's date.
         :rtype: str
         """
+        if not _format:
+            _format = DateTimeEnum.date.value
+
         return (datetime.now() - relativedelta(days=1)).strftime(_format)
 
     @classmethod
-    def tomorrow(cls, _format: str = DateTimeEnum.date.value) -> str:
+    def tomorrow(cls, _format: Optional[str] = None) -> str:
         """
         Get tomorrow's date.
 
@@ -189,17 +210,13 @@ class DateTimeModule:
         :return: Tomorrow's date.
         :rtype: str
         """
+        if not _format:
+            _format = DateTimeEnum.date.value
+
         return (datetime.now() + relativedelta(days=1)).strftime(_format)
 
     @classmethod
-    def daysdelta(
-        cls,
-        dt1: Union[str, int, float],
-        dt2: Union[str, int, float],
-        timestamp: bool = False,
-        millisecond: bool = False,
-        _format: str = DateTimeEnum.date.value,
-    ) -> int:
+    def daysdelta(cls, dt1: Union[str, int, float], dt2: Union[str, int, float], timestamp: bool = False, ms: bool = False, _format: Optional[str] = None) -> int:
         """
         Calculate the number of days between two dates.
 
@@ -209,15 +226,18 @@ class DateTimeModule:
         :type dt2: str or int or float
         :param timestamp: Is timestamp or datetime_str.
         :type timestamp: bool
-        :param millisecond: Is millisecond or not.
-        :type millisecond: bool
+        :param ms: Is ms or not.
+        :type ms: bool
         :param _format: Datetime_str format.
         :type _format: str
         :return: Days delta.
         :rtype: int
         """
+        if not _format:
+            _format = DateTimeEnum.date.value
+
         if timestamp:
-            if millisecond:
+            if ms:
                 date1 = datetime.fromtimestamp(dt1 / 1000)
                 date2 = datetime.fromtimestamp(dt2 / 1000)
             else:

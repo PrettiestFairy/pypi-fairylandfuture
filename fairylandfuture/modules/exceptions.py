@@ -8,7 +8,7 @@
 """
 
 
-class ProgramError(Exception):
+class ProgramException(Exception):
 
     def __init__(self, message: str = "Internal program error."):
         self.message = f"{self.__class__.__name__}: {message}"
@@ -17,43 +17,43 @@ class ProgramError(Exception):
         return self.message
 
 
-class ParameterError(ProgramError):
+class InvalidParamsException(ProgramException):
 
     def __init__(self, message: str = "Parameter error."):
         super().__init__(message)
 
 
-class ParameterTypeError(ProgramError):
+class ParamsTypeException(ProgramException):
 
     def __init__(self, message: str = "Parameter type error."):
         super().__init__(message)
 
 
-class ParameterValueError(ProgramError):
+class ParamsValueException(ProgramException):
 
     def __init__(self, message: str = "Parameter value error."):
         super().__init__(message)
 
 
-class FileReadError(ProgramError):
+class FileReadException(ProgramException):
 
     def __init__(self, message: str = "File read error."):
         super().__init__(message=message)
 
 
-class ConfigReadError(ProgramError):
+class ConfigReadException(ProgramException):
 
     def __init__(self, message: str = "Config read error."):
         super().__init__(message=message)
 
 
-class SQLExecutionError(ProgramError):
+class SQLExecutionException(ProgramException):
 
     def __init__(self, message: str = "SQL execution error."):
         super().__init__(message=message)
 
 
-class SQLSyntaxError(ProgramError):
+class SQLSyntaxException(ProgramException):
 
     def __init__(self, message: str = "SQL syntax error."):
         super().__init__(message=message)
