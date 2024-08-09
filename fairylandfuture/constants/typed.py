@@ -7,7 +7,7 @@
 @since: 2024-05-10 11:27:49 UTC+08:00
 """
 
-from typing import Dict, List, Literal, Tuple, Union
+from typing import Literal
 
 # log level
 TypeLogLevel = Literal["TRACE", "DEBUG", "INFO", "SUCCESS", "WARNING", "ERROR", "CRITICAL"]

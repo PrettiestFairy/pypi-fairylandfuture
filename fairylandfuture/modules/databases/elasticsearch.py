@@ -7,6 +7,6 @@
 @since: 2024-07-17 10:42:19 UTC+08:00
 """
 
-from elasticsearch import Elasticsearch
+# from elasticsearch import Elasticsearch
 
 # es = Elasticsearch()

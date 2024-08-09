@@ -9,12 +9,17 @@
 
 from pathlib import Path
 
-from fairylandfuture.modules.decorators import TryCatchDecorator
+from fairylandfuture.modules.decorators import ActionDecorator
+
+# from test.utils.logger import journal
+from test.utils.config import TestConfig
+
+BASE_PATH = Path(__file__).resolve().parent.parent.parent
+CONFIG = TestConfig(Path(BASE_PATH, "conf", "dev", "config.yaml")).config
 
 
 class TestBase:
     @classmethod
-    @TryCatchDecorator
     def run(cls):
         """
         This method will run all test methods in the class.
@@ -27,9 +32,10 @@ class TestBase:
         for method in method_list:
             if method.startswith("test_"):
                 getattr(cls, method)()
+        # journal.success("All tests executed successfully.")
 
-
-BASE_PATH = Path(__file__).resolve().parent.parent.parent
 
 if __name__ == "__main__":
-    print(BASE_PATH)
+    # journal.info(f"ABS PATH: {BASE_PATH}")
+    # journal.debug(f"CONFIG: {CONFIG}")
+    TestBase.run()

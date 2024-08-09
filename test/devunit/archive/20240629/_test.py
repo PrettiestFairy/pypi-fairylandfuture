@@ -10,14 +10,14 @@
 from typing import Dict, Any
 from pathlib import Path
 
-from fairylandfuture.modules.journal import journal
-from fairylandfuture.modules.databases.mysql import MySQLDatabase, MySQLConnector
-from fairylandfuture.utils.builder.expression import QueryMySQLBuilder, InsertMySQLBuilder
-from fairylandfuture.structures.builder.expression import StructureSQLExecuteParams, StructureSQLInsertManyParams
+from fairylandfuture.modules.databases.mysql import MySQLOperation, MySQLConnector
+from fairylandfuture.structures.builder.expression import StructureMySQLExecute
 
 from test.utils.config import TestConfig
+from test.utils.logger import journal
 
-config: Dict[str, Any] = TestConfig(Path(r"C:\Lionel\Project\Github\pypi-fairylandfuture\conf\dev\config.yaml")).config.get("mysql")
+# config: Dict[str, Any] = TestConfig(Path(r"C:\Lionel\Project\Github\pypi-fairylandfuture\conf\dev\config.yaml")).config.get("mysql")
+config: Dict[str, Any] = TestConfig(Path(r"C:\Lionel\Project\Github\PrettiestFairy\pypi-fairylandfuture\conf\dev\config.yaml")).config.get("mysql")
 
 host = config.get("host")
 port = config.get("port")
@@ -26,25 +26,24 @@ password = config.get("password")
 database = config.get("database")
 table = "users"
 
-datasource = MySQLDatabase(host=host, port=port, user=user, password=password, database=database)
+datasource = MySQLOperation(MySQLConnector(host=host, port=port, user=user, password=password, database=database))
 print("第一次查询".center(50, "="))
-query_params = StructureSQLExecuteParams(QueryMySQLBuilder(table).to_string())
-print(f"SQL: {query_params.expression}, Params: {query_params.params}")
-data = datasource.select(query_params)
+query_1 = StructureMySQLExecute("select * from users;")
+print(f"SQL: {query_1.query}, Params: {query_1.args}")
+data = datasource.select(query_1)
 print(f"Results: {data}")
 print("第一次查询成功".center(50, "="))
-# insert_params = StructureSQLExecuteParams(InsertMySQLBuilder(table, ("user", "email")).to_string(), {"user": "李四", "email": "lisi@example.com"})
-# print(f"SQL: {insert_params.expression}, Params: {insert_params.params}")
-# datasource.insert(insert_params)
-# print("批量插入".center(50, "="))
-# muilt_insert_params = StructureSQLInsertManyParams(
-#     InsertMySQLBuilder(table, ("user", "email")).to_string(),
-#     ({"user": "王五", "email": "wangwu@example.com"}, {"user": "赵六", "email": "zhaoliu@exmaple.com"}),
-# )
-# datasource.insertmany(muilt_insert_params)
+
+insert_sql = StructureMySQLExecute("insert into users (user, email) values (%(user)s, %(email)s);", {"user": "Lionel", "email": "email@example.com"})
+print("第一次插入".center(50, "="))
+print(f"SQL: {insert_sql.query}, Params: {insert_sql.args}")
+data = datasource.execute(insert_sql)
+print(f"Results: {data}")
+print("第一次插入成功".center(50, "="))
+
 print("第二次查询".center(50, "="))
-query_params = StructureSQLExecuteParams(QueryMySQLBuilder(table).to_string())
-print(f"SQL: {query_params.expression}, Params: {query_params.params}")
-data = datasource.select(query_params)
+query_2 = StructureMySQLExecute("select * from users;")
+print(f"SQL: {query_2.query}, Params: {query_2.args}")
+data = datasource.select(query_2)
 print(f"Results: {data}")
 print("第二次查询成功".center(50, "="))

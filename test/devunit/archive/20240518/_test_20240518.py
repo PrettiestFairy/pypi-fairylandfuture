@@ -11,9 +11,10 @@ import time
 from functools import wraps
 from typing import Any, Callable, Generic, Literal, Optional, Type, TypeVar
 
-from fairylandfuture.modules.decorators import (ActionDecorator,
-                                                TimingDecorator, TipsDecorator,
-                                                TryCatchDecorator)
+from fairylandfuture.modules.decorators import ActionDecorator
+from fairylandfuture.modules.decorators import TimingDecorator
+from fairylandfuture.modules.decorators import TipsDecorator
+from fairylandfuture.modules.decorators import TryCatchDecorator
 from fairylandfuture.utils.journal import journal
 
 _T = TypeVar("_T", bound=Callable[..., Any])

@@ -7,7 +7,7 @@
 @since: 2024-05-12 14:44:33 UTC+08:00
 """
 
-import os.path
+import os
 import sys
 from importlib.resources import read_text
 from typing import Optional
@@ -16,7 +16,7 @@ from loguru import logger
 
 from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
 from fairylandfuture.constants.typed import TypeLogLevel
-from fairylandfuture.core.superclass.metaclass import SingletonMeta
+from fairylandfuture.core.metaclasses.singleton import SingletonMeta
 
 
 class Journal(metaclass=SingletonMeta):
@@ -34,8 +34,8 @@ class Journal(metaclass=SingletonMeta):
     :type rotation: str
     :param retention: Time period to retain old log files.
     :type retention: str
-    :param format: Log message format.
-    :type format: str or None
+    :param formatting: Log message format.
+    :type formatting: str or None
     :param compression: Compression format for rotated logs.
     :type compression: str
     :param encoding: Encoding for the log files.
@@ -71,12 +71,12 @@ class Journal(metaclass=SingletonMeta):
         debug: bool = False,
         rotation: str = "20 MB",
         retention: str = "180 days",
-        format: Optional[str] = None,
+        formatting: Optional[str] = None,
         compression: str = "gz",
-        encoding: str = EncodingEnum.utf_8.value,
+        encoding: str = EncodingEnum.utf8.value,
         level: TypeLogLevel = LogLevelEnum.info.value,
         serialize: bool = False,
-        console: bool = True,
+        console: bool = False,
         console_level: TypeLogLevel = LogLevelEnum.trace.value,
         console_format: Optional[str] = None,
     ):
@@ -89,7 +89,7 @@ class Journal(metaclass=SingletonMeta):
         self.__debug = debug
         self.__rotation = rotation
         self.__retention = retention
-        self.__format = format
+        self.__formatting = formatting
         self.__compression = compression
         self.__level = level
         self.__encoding = encoding
@@ -112,8 +112,8 @@ class Journal(metaclass=SingletonMeta):
             self.__name += f".debug{extension if extension else '.log'}"
             self.__level = LogLevelEnum.debug.value
 
-        if not self.__format:
-            self.__format = "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
+        if not self.__formatting:
+            self.__formatting = "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
 
         # Fixed: Remove the default console output.
         logger.remove()
@@ -122,7 +122,7 @@ class Journal(metaclass=SingletonMeta):
             sink=os.path.join(self.__path, self.__name),
             rotation=self.__rotation,
             retention=self.__retention,
-            format=self.__format,
+            format=self.__formatting,
             compression=self.__compression,
             encoding=self.__encoding,
             level=self.__level,
@@ -140,7 +140,7 @@ class Journal(metaclass=SingletonMeta):
                 sink=os.path.join(self.__path, __serialize_name),
                 rotation=self.__rotation,
                 retention=self.__retention,
-                format=self.__format,
+                format=self.__formatting,
                 compression=self.__compression,
                 encoding=self.__encoding,
                 level=self.__level,
@@ -154,9 +154,7 @@ class Journal(metaclass=SingletonMeta):
 
         if self.__console:
             if not self.__console_format:
-                self.__console_format = (
-                    "<level> [{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message} </level>"
-                )
+                self.__console_format = "<level> [{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message} </level>"
 
             logger.add(
                 sink=sys.stdout,

@@ -22,9 +22,9 @@ class LocalNetworkUtils:
 
         for interface in netifaces.interfaces():
             addr_list = netifaces.ifaddresses(interface)
-            for type in addr_list:
-                if type == netifaces.AF_INET:
-                    for info in addr_list.get(type):
+            for addr in addr_list:
+                if addr == netifaces.AF_INET:
+                    for info in addr_list.get(addr):
                         ip_dict.update({interface: info.get("addr")})
         return ip_dict
 

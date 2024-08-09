@@ -5,10 +5,11 @@
 # @since: 2024-07-01 16:50:49 UTC+08:00
 ---
 name: Qodana Scan
+
 on:
   workflow_dispatch:
   push:
-    branches: # Specify your branches here
+    branches:
       - "ReleaseMaster"
     paths:
       - "**"
