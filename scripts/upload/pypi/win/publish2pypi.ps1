@@ -20,14 +20,20 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
 $ProjectPyPIrcPath = "conf\pypi\.pypirc"
 $PyPIrcPath = "$HOME\.pypirc"
 
-if (-Not (Test-Path $PyPIrcPath)) {
-    if (-Not (Test-Path $ProjectPyPIrcPath)) {
+if (-Not (Test-Path $PyPIrcPath))
+{
+    if (-Not (Test-Path $ProjectPyPIrcPath))
+    {
         Write-Host "The file .pypirc does not exist"
         exit
-    } else {
+    }
+    else
+    {
         Copy-Item -Path $ProjectPyPIrcPath -Destination $PyPIrcPath -Force
     }
-} else {
+}
+else
+{
     Write-Host "The file .pypirc already exists in the home directory. No action taken."
 }
 

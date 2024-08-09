@@ -7,10 +7,8 @@
 @since: 2024-06-27 00:07:43 UTC+08:00
 """
 
-from __future__ import annotations
-
-from typing import Dict, List, Optional, Tuple, Union, Sequence, MutableSequence, Mapping, MutableMapping
 from dataclasses import dataclass, field
+from typing import Optional, Union, Sequence, MutableSequence, Mapping, MutableMapping
 
 
 @dataclass(frozen=True)

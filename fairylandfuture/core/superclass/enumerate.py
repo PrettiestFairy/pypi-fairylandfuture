@@ -8,7 +8,7 @@
 """
 import abc
 from enum import Enum
-from typing import Any, List, Set, Tuple, TypeVar, Union
+from typing import Any, List, Tuple, TypeVar, Union, Optional, Sequence
 
 _TypeEnumBase = TypeVar("_TypeEnumBase", bound="BaseEnum")
 
@@ -47,11 +47,7 @@ class BaseEnum(Enum):
         return value_object.value
 
     @classmethod
-    def members(
-        cls,
-        exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None,
-        only_value: bool = False,
-    ) -> Union[Tuple[_TypeEnumBase, ...], Tuple[Any, ...]]:
+    def members(cls, exclude_enums: Optional[Sequence[str]] = None, only_value: bool = False) -> Union[Tuple[_TypeEnumBase, ...], Tuple[Any, ...]]:
         """
         Returns a tuple with all members of the Enum.
 
@@ -85,7 +81,7 @@ class BaseEnum(Enum):
         return tuple(cls._member_names_)
 
     @classmethod
-    def values(cls, exclude_enums: Union[List[str], Tuple[str, ...], Set[str]] = None) -> Tuple[Any, ...]:
+    def values(cls, exclude_enums: Optional[Sequence] = None) -> Tuple[Any, ...]:
         """
         Returns a tuple with the values of all members of the Enum.
 
