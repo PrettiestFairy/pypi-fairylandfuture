@@ -8,7 +8,6 @@
 """
 
 import threading
-from typing import Any
 
 
 class SingletonMeta(type):

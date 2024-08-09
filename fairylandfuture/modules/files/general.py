@@ -11,20 +11,20 @@ from fairylandfuture.core.superclass.files import BaseFile, BaseTextFile, BaseYa
 
 
 class File(BaseFile):
-    ...
+    """Base File class."""
 
 
 class TextFile(BaseTextFile):
-    ...
+    """Base Text File class."""
 
 
 class YamlFile(BaseYamlFile):
-    ...
+    """Base YAML File class."""
 
 
 class JsonFile(BaseJsonFile):
-    ...
+    """Base JSON File class."""
 
 
 class OtherFile(BaseTextFile):
-    ...
+    """Other File class."""
