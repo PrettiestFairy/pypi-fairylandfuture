@@ -229,7 +229,7 @@ class PackageInfo(object):
     @staticmethod
     def get_local_serial():
         try:
-            with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "release", "commit-version"), "r", encoding="UTF-8") as stream:
+            with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "release", "buildversion"), "r", encoding="UTF-8") as stream:
                 commit_count = stream.read()
             return int(commit_count)
         except Exception as err:
@@ -239,7 +239,7 @@ class PackageInfo(object):
     @classmethod
     def get_github_serial(cls):
         try:
-            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/ReleaseMaster/fairylandfuture/conf/release/commit-version"
+            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/ReleaseMaster/fairylandfuture/conf/release/buildversion"
             response = requests.get(url)
             if response.status_code == 200:
                 commit_count = int(response.text)
