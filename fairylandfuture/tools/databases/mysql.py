@@ -14,9 +14,9 @@ import pymysql
 from pymysql.cursors import DictCursor
 
 from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation
-from fairylandfuture.modules.decorators import SingletonDecorator
-from fairylandfuture.modules.exceptions import SQLSyntaxException
-from fairylandfuture.structures.builder.expression import StructureMySQLExecute
+from fairylandfuture.utils.decorators import SingletonDecorator
+from fairylandfuture.exceptions.databases import SQLSyntaxException
+from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 
 
 class CustomMySQLConnection(pymysql.connections.Connection):

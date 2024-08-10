@@ -14,12 +14,12 @@ from typing import Optional
 
 from loguru import logger
 
-from fairylandfuture.constants.enums import EncodingEnum, LogLevelEnum
-from fairylandfuture.constants.typed import TypeLogLevel
+from fairylandfuture.const.enums import EncodingEnum, LogLevelEnum
+from fairylandfuture.const.typed import TypeLogLevel
 from fairylandfuture.core.metaclasses.singleton import SingletonMeta
 
 
-class Journal(metaclass=SingletonMeta):
+class JournalModule(metaclass=SingletonMeta):
     """
     A logging utility implemented as a singleton to ensure that only one instance
     handles logging across the application.
@@ -53,7 +53,7 @@ class Journal(metaclass=SingletonMeta):
 
     Usage::
         >>> # Create a journal instance
-        >>> journal = Journal()
+        >>> journal = JournalModule()
         >>>
         >>> # Log messages
         >>> journal.info("This is an info message")

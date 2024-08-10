@@ -11,7 +11,7 @@ from typing import Dict, Any
 from pathlib import Path
 
 from fairylandfuture.modules.databases.mysql import MySQLOperation, MySQLConnector
-from fairylandfuture.structures.builder.expression import StructureMySQLExecute
+from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 
 from test.utils.config import TestConfig
 from test.utils.logger import journal

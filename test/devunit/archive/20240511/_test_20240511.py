@@ -8,7 +8,7 @@
 """
 
 # 时间模块
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.modules.datetimes import DateTimeModule
 
 # 注解
 from fairylandfuture.modules.decorators import ActionDecorator, TimingDecorator
@@ -34,7 +34,7 @@ class TestDateTimeModule:
     def test_datetime_to_timestamp(cls):
         _date = "2024-05-11"
         _time = "13:53:27"
-        timestamp = DatetimeModule.datetime_to_timestamp(" ".join((_date, _time)))
+        timestamp = DateTimeModule.datetime_to_timestamp(" ".join((_date, _time)))
         journal.debug(timestamp)
 
 

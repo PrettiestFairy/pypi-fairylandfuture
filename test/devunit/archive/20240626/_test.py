@@ -11,7 +11,7 @@ import os
 import sys
 import platform
 
-from fairylandfuture.constants.enums import PlatformEnum
+from fairylandfuture.const.enums import PlatformEnum
 
 from fairylandfuture.utils.general.common import OSPlatform
 

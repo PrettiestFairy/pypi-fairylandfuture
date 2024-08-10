@@ -15,7 +15,7 @@
 ## 导入模块
 
 ```python
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.modules.datetimes import DateTimeModule
 ```
 
 ## 常用方法
@@ -23,12 +23,12 @@ from fairylandfuture.modules.datetimes import DatetimeModule
 ### 获取当前日期
 
 ```python
-from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.const.enums import DateTimeEnum
+from fairylandfuture.modules.datetimes import DateTimeModule
 
-date = DatetimeModule.date()  # default format:: %Y-%m-%d
+date = DateTimeModule.date()  # default format:: %Y-%m-%d
 print(date)  # Output: 2024-05-10
 
-date = DatetimeModule.date("%Y/%m/%d")  # format: %Y/%m/%d
+date = DateTimeModule.date("%Y/%m/%d")  # format: %Y/%m/%d
 print(date)  # Output: 2024/05/10
 ```

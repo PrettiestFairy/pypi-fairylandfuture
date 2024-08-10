@@ -8,16 +8,17 @@
 """
 
 import time
+
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
-from fairylandfuture.constants.enums import DateTimeEnum
+from fairylandfuture.const.enums import DateTimeEnum
 from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 
-class DatetimeModule:
+class DateTimeModule:
     """
     Data and time module
     """
@@ -124,11 +125,11 @@ class DatetimeModule:
         validator.validate({"ms": ms, "n": n})
 
         if ms:
-            return int(round(time.time()) * 1000)
+            return round(time.time() * 1000)
         if n:
-            return int(round(time.time()) * (10 ** (n - 10)))
+            return round(time.time()) * (10 ** (n - 10))
 
-        return int(round(time.time()))
+        return round(time.time())
 
     @classmethod
     def timestamp_to_datetime(cls, timestamp: Union[int, float], _format: Optional[str] = None) -> str:

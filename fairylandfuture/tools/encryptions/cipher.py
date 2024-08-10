@@ -15,7 +15,7 @@ from typing import Optional, Tuple
 
 from cryptography.fernet import Fernet
 
-from fairylandfuture.constants.enums import EncodingEnum
+from fairylandfuture.const.enums import EncodingEnum
 
 
 class Cipher:

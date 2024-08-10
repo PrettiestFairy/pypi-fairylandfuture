@@ -4,9 +4,5 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-08-04 01:06:57 UTC+08:00
+@since: 2024-08-10 18:26:51 UTC+08:00
 """
-
-from fairylandfuture.modules.journal import JournalModule
-
-journal = JournalModule(debug=True)

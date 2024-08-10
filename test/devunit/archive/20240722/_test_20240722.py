@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from test.utils.config import TestConfig
 
 from fairylandfuture.modules.databases.postgresql import PostgreSQLConnector, PostgreSQLOperation
-from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
+from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
 from fairylandfuture.utils.builder.convert import ConvertDataStructure
 
 
@@ -35,9 +35,7 @@ class TestPostgreSQL(PostgreSQLConnector):
 # laptop
 config = TestConfig(Path(r"C:\Lionel\Project\Github\PrettiestFairy\pypi-fairylandfuture\conf\dev\config.yaml")).config.get("postgresql")
 
-connector = TestPostgreSQL(
-    host=config.get("host"), port=config.get("port"), user=config.get("user"), password=config.get("password"), database=config.get("database")
-)
+connector = TestPostgreSQL(host=config.get("host"), port=config.get("port"), user=config.get("user"), password=config.get("password"), database=config.get("database"))
 
 print(connector.dsn)
 

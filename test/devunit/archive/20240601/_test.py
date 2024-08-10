@@ -7,12 +7,12 @@
 @since: 2024-06-02 12:02:50 UTC+08:00
 """
 
-from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.const.enums import DateTimeEnum
+from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.utils.journal import journal
 from fairylandfuture.utils.networking.local import LocalNetworkUtils
 
-ts = DatetimeModule.datetime_to_timestamp("2024-06-03", _format=DateTimeEnum.date)
+ts = DateTimeModule.datetime_to_timestamp("2024-06-03", _format=DateTimeEnum.date)
 
 journal.debug("测试DEBUG日志")
 journal.debug(str(ts))

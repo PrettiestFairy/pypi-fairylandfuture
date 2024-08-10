@@ -19,17 +19,6 @@ class BaseEnum(Enum):
     """
 
     @classmethod
-    @abc.abstractmethod
-    def default(cls):
-        """
-        Abstract method to be implemented in subclasses.
-        Returns the default value for the Enum.
-        :return: Default value for the Enum.
-        :rtype: ...
-        """
-        raise NotImplementedError("Implement it in a subclass.")
-
-    @classmethod
     def get(cls, value: str) -> Any:
         """
         Get the Enum value by member.

@@ -7,16 +7,15 @@
 @since: 2024-06-30 15:02:13 UTC+08:00
 """
 
-import functools
+import os
 import hashlib
 import json
-import os
-from pathlib import Path
-from typing import Union, AnyStr, Sequence
-
 import yaml
 
-from fairylandfuture.constants.enums import EncodingEnum
+from pathlib import Path
+from typing import Union, AnyStr, Sequence, Optional, Any
+
+from fairylandfuture.const.enums import EncodingEnum, FileModeEnum
 
 
 class BaseFile:
@@ -29,6 +28,8 @@ class BaseFile:
     :type create: bool
 
     Usage:
+        >>> from fairylandfuture.core.superclass.files import BaseFile
+        >>> from fairylandfuture.const.enums import EncodingEnum, FileModeEnum
         >>> file = BaseFile("path/to/file.txt")
         >>> file.name
         "file"
@@ -56,17 +57,17 @@ class BaseFile:
         0.000000000012
         >>> file.dir_path
         "path/to"
-        >>> file.read_data("r")
+        >>> file.read(FileModeEnum.r)
         "Hello, world!"
         >>> file.md5
         "1b2cf535f27732324c34a76544b79991"
         >>> file.sha256
         "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
-        >>> file.write_data("w", "Hello, world!")
+        >>> file.write("Hello, world!", mode=FileModeEnum.w)
         "path/to/file.txt"
     """
 
-    def __init__(self, path: Union[Path, str], create: bool = False):
+    def __init__(self, path: Union[Path, str], /, *, create: bool = False):
         if os.path.isdir(path):
             raise ValueError("Path is a directory.")
         if not os.path.exists(path):
@@ -74,11 +75,12 @@ class BaseFile:
                 open(path, "w").close()
             else:
                 raise FileNotFoundError("File not found.")
-        self.path: Union[Path, str] = path
-        self.max_size: Union[int, float] = 200 * (1024**2)
-        self._dir_path: str = os.sep.join(self.path.split(os.sep)[:-1])
-        self._file_name, self._file_ext = os.path.splitext(self.path.split(os.sep)[-1])
-        self._file_size: float = os.path.getsize(self.path)
+
+        self._path: Union[Path, str] = path
+        self.max_size: Union[int, float] = 10 * (1024**2)
+        self._dir_path: str = os.sep.join(self._path.split(os.sep)[:-1])
+        self._file_name, self._file_ext = os.path.splitext(self._path.split(os.sep)[-1])
+        self._file_size: float = os.path.getsize(self._path)
 
     @property
     def name(self) -> str:
@@ -87,6 +89,14 @@ class BaseFile:
     @property
     def ext(self) -> str:
         return self._file_ext
+
+    @property
+    def path(self):
+        return self._path
+
+    @property
+    def dir_path(self) -> str:
+        return self._dir_path
 
     @property
     def size_byte(self) -> float:
@@ -129,10 +139,22 @@ class BaseFile:
         return self._file_size / (1024**9)
 
     @property
-    def dir_path(self) -> str:
-        return self._dir_path
+    def md5(self) -> str:
+        data = self.read(FileModeEnum.rb)
 
-    def read_data(self, mode, encoding: str = EncodingEnum.default()) -> AnyStr:
+        return hashlib.md5(data).hexdigest()
+
+    @property
+    def sha256(self) -> str:
+        data = self.read(FileModeEnum.rb)
+
+        return hashlib.sha256(data).hexdigest()
+
+    def vaildate_ext(self, exts: Sequence[str], /) -> None:
+        if self.ext not in exts:
+            raise TypeError("File extension is not valid.")
+
+    def read(self, mode: FileModeEnum = None, /, *, encoding: Optional[EncodingEnum] = None) -> AnyStr:
         """
         Read data from file.
 
@@ -143,30 +165,24 @@ class BaseFile:
         :return: Read data.
         :rtype: str
         """
+        if not mode:
+            mode = FileModeEnum.r
+        if not encoding:
+            encoding = EncodingEnum.default
+
         if self.size_byte > self.max_size:
             raise ValueError("Out of file size max.")
-        if "b" in mode:
-            with open(self.path, mode) as stream:
+
+        if "b" in mode.value:
+            with open(self.path, mode.value) as stream:
                 data = stream.read()
             return data
         else:
-            with open(self.path, mode, encoding=encoding) as stream:
+            with open(self.path, mode.value, encoding=encoding.value) as stream:
                 data = stream.read()
             return data
 
-    @property
-    def md5(self) -> str:
-        data = self.read_data("rb")
-
-        return hashlib.md5(data).hexdigest()
-
-    @property
-    def sha256(self) -> str:
-        data = self.read_data("rb")
-
-        return hashlib.sha256(data).hexdigest()
-
-    def write_data(self, mode, data, encoding: str = EncodingEnum.default()) -> str:
+    def write(self, data: AnyStr, /, *, mode: FileModeEnum, encoding: Optional[EncodingEnum] = None) -> str:
         """
         Write data to file.
 
@@ -179,33 +195,22 @@ class BaseFile:
         :return: File path.
         :rtype: str
         """
+        if not mode:
+            mode = FileModeEnum.w
+        if not encoding:
+            encoding = EncodingEnum.default
+
         if self.size_byte > self.max_size:
-            raise ValueError("Out of file size max.")
-        if "b" in mode:
-            with open(self.path, mode) as stream:
+            raise ValueError(f"Out of file size max: {self.max_size}.")
+
+        if "b" in mode.value:
+            with open(self.path, mode.value) as stream:
                 stream.write(data)
         else:
-            with open(self.path, mode, encoding=encoding) as stream:
+            with open(self.path, mode.value, encoding=encoding.value) as stream:
                 stream.write(data)
 
         return str(self.path)
-
-    @staticmethod
-    def check_ext(exts: Union[str, Sequence[str]]):
-        def decorator(func):
-            @functools.wraps(func)
-            def wrapper(self: BaseFile, *args, **kwargs):
-                if isinstance(exts, str):
-                    if self.ext != exts:
-                        raise ValueError(f"File extension is not {exts}.")
-                else:
-                    if self.ext not in exts:
-                        raise ValueError(f"File extension is not in {exts}.")
-                return func(self, *args, **kwargs)
-
-            return wrapper
-
-        return decorator
 
 
 class BaseTextFile(BaseFile):
@@ -226,9 +231,8 @@ class BaseTextFile(BaseFile):
     """
 
     def __init__(self, path: Union[Path, str], create: bool = False):
-        super().__init__(path, create)
+        super().__init__(path, create=create)
 
-    @BaseFile.check_ext(".txt")
     def load_text(self) -> str:
         """
         Load text data from file.
@@ -236,12 +240,9 @@ class BaseTextFile(BaseFile):
         :return: Text data.
         :rtype: str
         """
-        data = super().read_data("r")
+        return super().read(FileModeEnum.r)
 
-        return data
-
-    @BaseFile.check_ext(".txt")
-    def save_text(self, data) -> str:
+    def save_text(self, data: AnyStr, /) -> str:
         """
         Save text data to file.
 
@@ -250,7 +251,7 @@ class BaseTextFile(BaseFile):
         :return: Text file path.
         :rtype: str
         """
-        return super().write_data("w", data)
+        return super().write(data, mode=FileModeEnum.w)
 
 
 class BaseYamlFile(BaseFile):
@@ -271,9 +272,10 @@ class BaseYamlFile(BaseFile):
     """
 
     def __init__(self, path: Union[Path, str], create: bool = False):
-        super().__init__(path, create)
+        super().__init__(path, create=create)
 
-    @BaseFile.check_ext((".yaml", ".yml"))
+        self.vaildate_ext((".yaml", ".yml"))
+
     def load_yaml(self) -> object:
         """
         Load yaml data from file.
@@ -281,12 +283,11 @@ class BaseYamlFile(BaseFile):
         :return: Python YAML object.
         :rtype: object
         """
-        data = super().read_data("r")
+        data = super().read(FileModeEnum.r)
 
         return yaml.load(data, Loader=yaml.FullLoader)
 
-    @BaseFile.check_ext((".yaml", ".yml"))
-    def save_yaml(self, data) -> str:
+    def save_yaml(self, data: Any, /) -> str:
         """
         Save yaml data to file.
 
@@ -295,9 +296,9 @@ class BaseYamlFile(BaseFile):
         :return: Yaml file path.
         :rtype: str
         """
-        yaml_data = yaml.dump(data)
+        yaml_data = yaml.dump(data, indent=2)
 
-        return super().write_data("w", yaml_data)
+        return super().write(yaml_data, mode=FileModeEnum.w)
 
 
 class BaseJsonFile(BaseFile):
@@ -318,9 +319,10 @@ class BaseJsonFile(BaseFile):
     """
 
     def __init__(self, path: Union[Path, str], create: bool = False):
-        super().__init__(path, create)
+        super().__init__(path, create=create)
 
-    @BaseFile.check_ext(".json")
+        self.vaildate_ext((".json",))
+
     def load_json(self) -> object:
         """
         Load json data from file.
@@ -328,12 +330,11 @@ class BaseJsonFile(BaseFile):
         :return: Python JSON object.
         :rtype: object
         """
-        data = super().read_data("r")
+        data = super().read(FileModeEnum.r)
 
         return json.loads(data)
 
-    @BaseFile.check_ext(".json")
-    def save_json(self, data) -> str:
+    def save_json(self, data: Any) -> str:
         """
         Save json data to file.
 
@@ -342,6 +343,6 @@ class BaseJsonFile(BaseFile):
         :return: Json file path.
         :rtype: str
         """
-        json_data = json.dumps(data, indent=2, ensure_ascii=False)
+        data = json.dumps(data, indent=2, ensure_ascii=False)
 
-        return super().write_data("w", json_data)
+        return super().write(data, mode=FileModeEnum.w)

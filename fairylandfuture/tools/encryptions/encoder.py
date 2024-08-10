@@ -9,7 +9,7 @@
 
 import base64
 
-from fairylandfuture.constants.enums import EncodingEnum
+from fairylandfuture.const.enums import EncodingEnum
 
 
 class Base64Encryption:
