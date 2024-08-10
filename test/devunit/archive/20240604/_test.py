@@ -9,7 +9,7 @@
 
 # from fairylandfuture.utils.journal import journal
 from fairylandfuture.core.superclass.enumerate import BaseEnum
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.modules.datetimes import DateTimeModule
 
 
 class DepartmemtEnum(BaseEnum):

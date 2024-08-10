@@ -7,9 +7,9 @@
 @since: 2024-07-08 11:15:14 UTC+08:00
 """
 
-from fairylandfuture.modules.journal import Journal
+from fairylandfuture.modules.journal import JournalModule
 
-journal = Journal(serialize=True)
+journal = JournalModule(serialize=True)
 
 journal.debug("DEBUG")
 journal.info("INFO")

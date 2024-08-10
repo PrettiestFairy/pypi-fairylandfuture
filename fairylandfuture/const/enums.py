@@ -23,13 +23,8 @@ class DateTimeEnum(BaseEnum):
     time_cn = "%H时%M分%S秒"
     datetime_cn = "%Y年%m月%d日 %H时%M分%S秒"
 
-    @classmethod
-    def default(cls) -> str:
-        return cls.datetime.value
-
-    @classmethod
-    def default_cn(cls) -> str:
-        return cls.datetime_cn.value
+    default = datetime
+    default_cn = datetime_cn
 
 
 class EncodingEnum(BaseEnum):
@@ -42,9 +37,7 @@ class EncodingEnum(BaseEnum):
     gb2312 = "GB2312"
     gb18030 = "GB18030"
 
-    @classmethod
-    def default(cls):
-        return cls.utf8.value
+    default = utf8
 
 
 class LogLevelEnum(BaseEnum):
@@ -60,13 +53,7 @@ class LogLevelEnum(BaseEnum):
     error = "ERROR"
     critical = "CRITICAL"
 
-    @classmethod
-    def default(cls) -> str:
-        return cls.info.value
-
-    @classmethod
-    def default_debug(cls) -> str:
-        return cls.trace.value
+    default = info
 
 
 class PlatformEnum(BaseEnum):
@@ -79,6 +66,25 @@ class PlatformEnum(BaseEnum):
     macos = "Darwin"
     darwin = "Darwin"
 
-    @classmethod
-    def default(cls) -> str:
-        return cls.linux.value
+
+class FileModeEnum(BaseEnum):
+    """
+    file mode enum.
+    """
+
+    r = "r"
+    rb = "rb"
+    r_plus = "r+"
+    rb_plus = "rb+"
+
+    w = "w"
+    wb = "wb"
+    w_plus = "w+"
+    wb_plus = "wb+"
+
+    a = "a"
+    ab = "ab"
+    a_plus = "a+"
+    ab_plus = "ab+"
+
+    default = r

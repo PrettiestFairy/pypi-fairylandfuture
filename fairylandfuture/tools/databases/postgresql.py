@@ -14,9 +14,9 @@ import psycopg2
 from psycopg2.extras import NamedTupleCursor
 
 from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLOperation
-from fairylandfuture.modules.decorators import SingletonDecorator
-from fairylandfuture.modules.exceptions import SQLSyntaxException
-from fairylandfuture.structures.builder.expression import StructurePostgreSQLExecute
+from fairylandfuture.utils.decorators import SingletonDecorator
+from fairylandfuture.exceptions.databases import SQLSyntaxException
+from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
 
 
 class CustomPostgreSQLConnection(psycopg2.extensions.connection):
