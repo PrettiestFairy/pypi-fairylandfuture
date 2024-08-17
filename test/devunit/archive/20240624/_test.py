@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-24 12:31:33 UTC+08:00
+@datetime: 2024-06-24 12:31:33 UTC+08:00
 """
 
 import os.path
@@ -13,7 +13,7 @@ from fairylandfuture.modules.datasource import MySQLConnector
 
 from test.utils.config import TestConfig
 from test.devunit._test import BASE_PATH
-from bin.generate import DEV_CONFIG_FILE_PATH
+from bin.general import DEV_CONFIG_FILE_PATH
 
 if __name__ == "__main__":
     config_instance = TestConfig(DEV_CONFIG_FILE_PATH)

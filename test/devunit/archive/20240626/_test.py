@@ -4,14 +4,14 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-26 00:09:01 UTC+08:00
+@datetime: 2024-06-26 00:09:01 UTC+08:00
 """
 
 import os
 import sys
 import platform
 
-from fairylandfuture.constants.enums import PlatformEnum
+from fairylandfuture.const.enums import PlatformEnum
 
 from fairylandfuture.utils.general.common import OSPlatform
 

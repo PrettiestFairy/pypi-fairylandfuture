@@ -2,7 +2,7 @@
 # @author: Lionel Johnson
 # @contact: https://fairy.host
 # @organization: https://github.com/FairylandFuture
-# @since: 06 30, 2024
+# @datetime: 06 30, 2024
 ---
 mysql:
   host: 127.0.0.1

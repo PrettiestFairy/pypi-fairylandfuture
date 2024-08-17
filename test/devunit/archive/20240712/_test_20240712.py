@@ -4,11 +4,11 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-07-12 22:57:24 UTC+08:00
+@datetime: 2024-07-12 22:57:24 UTC+08:00
 """
 
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.modules.datetimes import DateTimeModule
 
-print(DatetimeModule.date_beijing())
-print(DatetimeModule.time_beijing())
-print(DatetimeModule.datetime_beijing())
+print(DateTimeModule.date_beijing())
+print(DateTimeModule.time_beijing())
+print(DateTimeModule.datetime_beijing())

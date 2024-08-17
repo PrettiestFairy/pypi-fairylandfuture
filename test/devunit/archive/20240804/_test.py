@@ -4,14 +4,14 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-08-04 12:35:51 UTC+08:00
+@datetime: 2024-08-04 12:35:51 UTC+08:00
 """
 
 from dataclasses import dataclass
 
 from fairylandfuture.modules.databases.mysql import MySQLConnector
 from fairylandfuture.modules.databases.mysql import MySQLOperation
-from fairylandfuture.structures.builder.expression import StructureMySQLExecute
+from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 
 from test.utils.logger import journal
 from test.devunit import BASE_PATH
