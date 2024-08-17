@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-08-18 01:30:12 UTC+08:00
+@datetime: 2024-08-18 01:30:12 UTC+08:00
 """
 
 RESPONSE_CODE_MAP = {

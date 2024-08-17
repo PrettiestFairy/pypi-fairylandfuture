@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-07-05 12:43:37 UTC+08:00
+@datetime: 2024-07-05 12:43:37 UTC+08:00
 """
 
 from typing import Dict, Any, List, NamedTuple
@@ -33,7 +33,7 @@ pg = PostgreSQLConnector(
     user=config.get("user"),
     password=config.get("password"),
     database=config.get("database"),
-    schema="information_schema"
+    schema="information_schema",
 )
 
 pg.cursor.execute("select * from sql_features limit 10 offset 0;")

@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-08-10 13:16:27 UTC+08:00
+@datetime: 2024-08-10 13:16:27 UTC+08:00
 """
 
 from fairylandfuture.enums.enconding import EncodingEnum
