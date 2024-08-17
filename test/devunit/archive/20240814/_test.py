@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-08-14 17:13:15 UTC+08:00
+@datetime: 2024-08-14 17:13:15 UTC+08:00
 """
 
 from fairylandfuture.structures.general.api import ResponseStructure

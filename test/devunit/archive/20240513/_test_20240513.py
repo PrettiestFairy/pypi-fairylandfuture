@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-13 13:23:18 UTC+08:00
+@datetime: 2024-05-13 13:23:18 UTC+08:00
 """
 
 from typing import Any, Dict, List, Tuple, Union
@@ -15,12 +15,9 @@ from _test import TestBase
 # from fairylandfuture.modules.datasource import MySQLDatabase
 
 
-
 def handle_connection(func):
     def wrapper(self, *args, **kwargs):
-        self.conn = pymysql.connect(
-            host=self.host, port=self.port, user=self.user, password=self.password, database=self.database
-        )
+        self.conn = pymysql.connect(host=self.host, port=self.port, user=self.user, password=self.password, database=self.database)
         self.cur = self.conn.cursor()
         try:
             result = func(self, *args, **kwargs)
@@ -94,24 +91,13 @@ class TestMySQLDataSource(TestBase):
             "from public_db_test.tb_test;"
         )
 
-        update_sql1 = (
-            "update public_db_test.tb_test "
-            "set status = 0 "
-            "where id = %(id)s;"
-        )
-        update_sql2 = (
-            "update public_db_test.tb_test "
-            "set status = 1 "
-            "where id = %(id)s;"
-        )
+        update_sql1 = "update public_db_test.tb_test " "set status = 0 " "where id = %(id)s;"
+        update_sql2 = "update public_db_test.tb_test " "set status = 1 " "where id = %(id)s;"
         # a = ds.select(sql1)
         # print(a)
-        mapping_data = {
-            update_sql1: {"id": 1},
-            update_sql2: {"id": 20}
-        }
+        mapping_data = {update_sql1: {"id": 1}, update_sql2: {"id": 20}}
         ds.execute_set(mapping_data=mapping_data)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     TestMySQLDataSource.run()

@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-02 12:09:25 UTC+08:00
+@datetime: 2024-06-02 12:09:25 UTC+08:00
 """
 
 from typing import Literal
