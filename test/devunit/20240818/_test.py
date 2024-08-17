@@ -4,9 +4,11 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-08-04 01:06:57 UTC+08:00
+@since: 2024-08-18 00:40:48 UTC+08:00
 """
 
 from fairylandfuture.modules.journals import JournalModule
 
-journal = JournalModule(debug=True)
+journal = JournalModule(console=True)
+
+journal.info("INFO ...")

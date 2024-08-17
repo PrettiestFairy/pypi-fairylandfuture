@@ -13,7 +13,7 @@ from typing import Union, Dict, Tuple, Any
 import pymysql
 from pymysql.cursors import DictCursor
 
-from fairylandfuture.core.abstracts.databases import AbstractMySQLOperation
+from fairylandfuture.interface.databases import AbstractMySQLOperation
 from fairylandfuture.utils.decorators import SingletonDecorator
 from fairylandfuture.exceptions.databases import SQLSyntaxException
 from fairylandfuture.structures.builder.databases import StructureMySQLExecute

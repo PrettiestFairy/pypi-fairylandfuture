@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-12 14:44:33 UTC+08:00
+@since: 2024-08-18 01:06:36 UTC+08:00
 """
 
 import os
@@ -14,9 +14,10 @@ from typing import Optional
 
 from loguru import logger
 
-from fairylandfuture.const.enums import EncodingEnum, LogLevelEnum
 from fairylandfuture.const.typed import TypeLogLevel
 from fairylandfuture.core.metaclasses.singleton import SingletonMeta
+from fairylandfuture.enums.enconding import EncodingEnum
+from fairylandfuture.enums.journal import LogLevelEnum
 
 
 class JournalModule(metaclass=SingletonMeta):

@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-10 12:34:34 UTC+08:00
+@since: 2024-08-18 01:05:53 UTC+08:00
 """
 
 import time
@@ -14,7 +14,7 @@ from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
-from fairylandfuture.const.enums import DateTimeEnum
+from fairylandfuture.enums.datetimes import DateTimeEnum
 from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 
