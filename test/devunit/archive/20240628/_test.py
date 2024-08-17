@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-28 23:13:08 UTC+08:00
+@datetime: 2024-06-28 23:13:08 UTC+08:00
 """
 
 from typing import Dict, Any
@@ -13,7 +13,7 @@ from pathlib import Path
 from fairylandfuture.modules.journal import journal
 from fairylandfuture.modules.databases.mysql import MySQLDatabase, MySQLConnector
 from fairylandfuture.utils.builder.expression import QueryMySQLBuilder, InsertMySQLBuilder
-from fairylandfuture.structures.builder.expression import StructureMySQLExecute, StructureSQLInsertManyParams
+from fairylandfuture.structures.builder.databases import StructureMySQLExecute, StructureSQLInsertManyParams
 
 from test.utils.config import TestConfig
 

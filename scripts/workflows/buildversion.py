@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-11 17:02:12 UTC+08:00
+@datetime: 2024-05-11 17:02:12 UTC+08:00
 """
 
 import os
@@ -50,9 +50,9 @@ def count_commits(token):
 
 
 def write_commit_count(count):
-    with open("fairylandfuture/conf/release/commit-version", "w", encoding="UTF-8") as file:
+    with open("fairylandfuture/conf/release/buildversion", "w", encoding="UTF-8") as file:
         file.write(count)
-    with open("conf/release/commit-version", "w", encoding="UTF-8") as file:
+    with open("conf/release/buildversion", "w", encoding="UTF-8") as file:
         file.write(count)
     return "Successful"
 

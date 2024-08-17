@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-18 13:00:17 UTC+08:00
+@datetime: 2024-05-18 13:00:17 UTC+08:00
 """
 
 import time
@@ -36,6 +36,7 @@ class TimeDecorator:
 
 # 使用示例
 
+
 # 为普通函数装饰
 @TimeDecorator
 def my_function(x, y):
@@ -54,7 +55,7 @@ class MyClass:
     @TimeDecorator
     def my_classmethod(cls, x, y):
         time.sleep(1)
-        return x ** y
+        return x**y
 
     @staticmethod
     @TimeDecorator

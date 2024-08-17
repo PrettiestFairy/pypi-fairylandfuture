@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-10 10:46:52 UTC+08:00
+@datetime: 2024-05-10 10:46:52 UTC+08:00
 """
 import abc
 from enum import Enum
@@ -17,17 +17,6 @@ class BaseEnum(Enum):
     """
     Enum Base Class.
     """
-
-    @classmethod
-    @abc.abstractmethod
-    def default(cls):
-        """
-        Abstract method to be implemented in subclasses.
-        Returns the default value for the Enum.
-        :return: Default value for the Enum.
-        :rtype: ...
-        """
-        raise NotImplementedError("Implement it in a subclass.")
 
     @classmethod
     def get(cls, value: str) -> Any:

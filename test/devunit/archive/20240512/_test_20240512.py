@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-12 02:24:21 UTC+08:00
+@datetime: 2024-05-12 02:24:21 UTC+08:00
 """
 
 import os
@@ -13,8 +13,8 @@ from datetime import datetime
 from _test import TestBase
 from dateutil.relativedelta import relativedelta
 
-from fairylandfuture.constants.enums import DateTimeEnum
-from fairylandfuture.modules.datetimes import DatetimeModule
+from fairylandfuture.enums.datetimes import DateTimeEnum
+from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.modules.decorators import ActionDecorator, SingletonDecorator, TimingDecorator, TipsDecorator
 from fairylandfuture.utils.journal import journal
 
@@ -34,7 +34,7 @@ class TestClass(TestBase):
     @classmethod
     @TipsDecorator(tips="测试001")
     def test_001(cls):
-        journal.debug(DatetimeModule.timestamp())
+        journal.debug(DateTimeModule.timestamp())
 
     @classmethod
     @CustomizeActionDecorator(action="测试002")
@@ -46,10 +46,10 @@ class TestClass(TestBase):
     @CustomizeTimingDecorator
     @CustomizeActionDecorator(action="测试003")
     def test_003(cls):
-        a = DatetimeModule.daysdelta("2024/05/12", "2024/05/25", _format="%Y/%m/%d")
-        b = DatetimeModule.datetime_to_timestamp("2024/05/12", millisecond=False, _format="%Y/%m/%d")
-        c = DatetimeModule.datetime_to_timestamp("2024--05--25", millisecond=False, _format="%Y--%m--%d")
-        d = DatetimeModule.daysdelta(b, c, timestamp=True)
+        a = DateTimeModule.daysdelta("2024/05/12", "2024/05/25", _format="%Y/%m/%d")
+        b = DateTimeModule.datetime_to_timestamp("2024/05/12", millisecond=False, _format="%Y/%m/%d")
+        c = DateTimeModule.datetime_to_timestamp("2024--05--25", millisecond=False, _format="%Y--%m--%d")
+        d = DateTimeModule.daysdelta(b, c, timestamp=True)
         journal.debug(a)
         journal.debug(b)
         journal.debug(c)

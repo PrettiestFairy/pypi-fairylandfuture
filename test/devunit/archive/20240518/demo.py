@@ -4,15 +4,12 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-05-18 19:36:03 UTC+08:00
+@datetime: 2024-05-18 19:36:03 UTC+08:00
 """
 
 import time
 
-from fairylandfuture.modules.decorators import (ActionDecorator,
-                                                SingletonDecorator,
-                                                TimingDecorator, TipsDecorator,
-                                                TryCatchDecorator)
+from fairylandfuture.modules.decorators import ActionDecorator, SingletonDecorator, TimingDecorator, TipsDecorator, TryCatchDecorator
 from fairylandfuture.utils.journal import journal
 
 

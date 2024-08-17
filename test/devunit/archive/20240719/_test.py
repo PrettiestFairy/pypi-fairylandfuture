@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-07-19 20:27:35 UTC+08:00
+@datetime: 2024-07-19 20:27:35 UTC+08:00
 """
 
 from pathlib import Path
@@ -21,13 +21,7 @@ user = config.get("user")
 password = config.get("password")
 database = config.get("database")
 
-connector = PostgreSQLConnector(
-    host=host,
-    port=port,
-    user=user,
-    password=password,
-    database=database
-)
+connector = PostgreSQLConnector(host=host, port=port, user=user, password=password, database=database)
 
 connector.cursor.execute("SELECT * FROM public_dev_test.author;")
 data = connector.cursor.fetchall()

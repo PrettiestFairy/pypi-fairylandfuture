@@ -4,7 +4,7 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@since: 2024-06-24 12:49:52 UTC+08:00
+@datetime: 2024-06-24 12:49:52 UTC+08:00
 """
 
 import yaml
@@ -12,7 +12,7 @@ import yaml
 from typing import Dict, Any
 from pathlib import Path
 
-from fairylandfuture.constants.enums import EncodingEnum
+from fairylandfuture.enums.enconding import EncodingEnum
 
 
 class TestConfig:
