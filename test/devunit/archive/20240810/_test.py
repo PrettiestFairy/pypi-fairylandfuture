@@ -7,7 +7,7 @@
 @since: 2024-08-10 13:16:27 UTC+08:00
 """
 
-from fairylandfuture.const.enums import EncodingEnum
+from fairylandfuture.enums.enconding import EncodingEnum
 from fairylandfuture.core.superclass.enumerate import BaseEnum
 from fairylandfuture.modules.validations.strings import ValidateStringModule
 

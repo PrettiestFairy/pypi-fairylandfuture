@@ -7,15 +7,16 @@
 @since: 2024-06-30 15:02:13 UTC+08:00
 """
 
-import os
 import hashlib
 import json
-import yaml
-
+import os
 from pathlib import Path
 from typing import Union, AnyStr, Sequence, Optional, Any
 
-from fairylandfuture.const.enums import EncodingEnum, FileModeEnum
+import yaml
+
+from fairylandfuture.enums.enconding import EncodingEnum
+from fairylandfuture.enums.files import FileModeEnum
 
 
 class BaseFile:
@@ -29,7 +30,7 @@ class BaseFile:
 
     Usage:
         >>> from fairylandfuture.core.superclass.files import BaseFile
-        >>> from fairylandfuture.const.enums import EncodingEnum, FileModeEnum
+        >>> from fairylandfuture.enums.enconding import EncodingEnum, FileModeEnum
         >>> file = BaseFile("path/to/file.txt")
         >>> file.name
         "file"

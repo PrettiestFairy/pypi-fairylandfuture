@@ -13,7 +13,7 @@ from typing import Optional, Sequence, Tuple, NamedTuple, Union
 import psycopg2
 from psycopg2.extras import NamedTupleCursor
 
-from fairylandfuture.core.abstracts.databases import AbstractPostgreSQLOperation
+from fairylandfuture.interface.databases import AbstractPostgreSQLOperation
 from fairylandfuture.utils.decorators import SingletonDecorator
 from fairylandfuture.exceptions.databases import SQLSyntaxException
 from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
