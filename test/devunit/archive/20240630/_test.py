@@ -7,10 +7,10 @@
 @datetime: 2024-06-30 15:10:23 UTC+08:00
 """
 
-# from fairylandfuture.core.superclass.files import BaseFile, YamlFileMixin, JsonFileMixin
+# from fairylandfuture.core.superclass.files import FileBase, YamlFileMixin, JsonFileMixin
 
-# file = BaseFile(r"C:\Lionel\Project\Github\pypi-fairylandfuture\fairylandfuture\modules\journal.py")
-# file = BaseFile(r"C:\Users\Administrator\Downloads\immortalwrt-23.05.2-x86-64-generic-squashfs-combined.img")
+# file = FileBase(r"C:\Lionel\Project\Github\pypi-fairylandfuture\fairylandfuture\modules\journal.py")
+# file = FileBase(r"C:\Users\Administrator\Downloads\immortalwrt-23.05.2-x86-64-generic-squashfs-combined.img")
 # print(file.name, file.ext, file.size_byte, file.size_kilobyte, file.size_megabytes)
 # file.max_size = 333 * (1024**2)
 # print(file.md5, file.sha256)

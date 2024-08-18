@@ -8,7 +8,16 @@
 """
 
 from fairylandfuture.modules.journals import JournalModule
+from fairylandfuture.tools.files.general import YamlFile
 
 journal = JournalModule(console=True)
 
 journal.info("INFO ...")
+
+file = YamlFile("test.yaml", create=True)
+
+data = {"data": "test", "data2": [1, 2, 3, 4, 5], "data3": {"data": "test", "data1": "test1"}}
+
+save_path = file.save_yaml(data)
+
+journal.debug(f"save path: {save_path}")

@@ -19,7 +19,7 @@ from fairylandfuture.enums.enconding import EncodingEnum
 from fairylandfuture.enums.files import FileModeEnum
 
 
-class BaseFile:
+class FileBase:
     """
     Base file class.
 
@@ -29,9 +29,9 @@ class BaseFile:
     :type create: bool
 
     Usage:
-        >>> from fairylandfuture.core.superclass.files import BaseFile
+        >>> from fairylandfuture.core.superclass.files import FileBase
         >>> from fairylandfuture.enums.enconding import EncodingEnum, FileModeEnum
-        >>> file = BaseFile("path/to/file.txt")
+        >>> file = FileBase("path/to/file.txt")
         >>> file.name
         "file"
         >>> file.ext
@@ -214,7 +214,7 @@ class BaseFile:
         return str(self.path)
 
 
-class BaseTextFile(BaseFile):
+class TextFileBase(FileBase):
     """
     Text file.
 
@@ -224,7 +224,7 @@ class BaseTextFile(BaseFile):
     :type create: bool
 
     Usage:
-        >>> file = BaseTextFile("path/to/file.txt")
+        >>> file = TextFileBase("path/to/file.txt")
         >>> file.load_text()
         "Hello, world!"
         >>> file.save_text("Hello, world!")
@@ -255,7 +255,7 @@ class BaseTextFile(BaseFile):
         return super().write(data, mode=FileModeEnum.w)
 
 
-class BaseYamlFile(BaseFile):
+class YamlFileBase(FileBase):
     """
     Yaml file.
 
@@ -265,7 +265,7 @@ class BaseYamlFile(BaseFile):
     :type create: bool
 
     Usage:
-        >>> file = BaseYamlFile("path/to/file.yaml")
+        >>> file = YamlFileBase("path/to/file.yaml")
         >>> file.load_yaml()
         {'key': 'value'}
         >>> file.save_yaml({'key': 'value'})
@@ -302,7 +302,7 @@ class BaseYamlFile(BaseFile):
         return super().write(yaml_data, mode=FileModeEnum.w)
 
 
-class BaseJsonFile(BaseFile):
+class JsonFileBase(FileBase):
     """
     Json file.
 
@@ -312,7 +312,7 @@ class BaseJsonFile(BaseFile):
     :type create: bool
 
     Usage:
-        >>> file = BaseJsonFile("path/to/file.json")
+        >>> file = JsonFileBase("path/to/file.json")
         >>> file.load_json()
         {'key': 'value'}
         >>> file.save_json({'key': 'value'})
