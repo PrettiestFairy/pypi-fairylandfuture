@@ -179,7 +179,7 @@ class MySQLOperation(AbstractMySQLOperation):
 
     def __init__(self, connector: MySQLConnector):
         if not isinstance(connector, MySQLConnector) or isinstance(connector, type):
-            raise TypeError("The connector must be an instance or subclass instance of PostgreSQLConnector.")
+            raise TypeError("The connector must be an instance or subclass instance of MySQLConnector.")
 
         self.connector = connector
 
