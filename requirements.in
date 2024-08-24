@@ -27,20 +27,24 @@ pymysql
 psycopg2
 psycopg2-binary
 elasticsearch
+mysql-connector-python
+sqlalchemy
+DBUtils
+aiomysql
 
-# django
-# djangorestframework
-# django-redis
-# django-filter
-# django-cors-headers
-# django-simpleui
-# django-tenant-schemas
-# django-tenants
-# django-extensions
-# django-celery-results
-# drf-yasg
-# drf-spectacular
-# coreapi
-# pygments
-# markdown
-# uritemplate
+django
+djangorestframework
+django-redis
+django-filter
+django-cors-headers
+django-simpleui
+django-tenant-schemas
+django-tenants
+django-extensions
+django-celery-results
+drf-yasg
+drf-spectacular
+coreapi
+pygments
+markdown
+uritemplate
