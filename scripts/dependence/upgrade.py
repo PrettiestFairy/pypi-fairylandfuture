@@ -28,7 +28,8 @@ def main():
     print("Upgrade pip-tools successfully.")
 
     print("Step 2: Generate requirements.")
-    generate_requirements = "pip-compile --upgrade --strip-extras --generate-hashes requirements.in"
+    # generate_requirements = "pip-compile --upgrade --strip-extras --generate-hashes requirements.in"
+    generate_requirements = "pip-compile --upgrade --strip-extras --generate-hashes --output-file=requirements.txt requirements.in"
     # The output information is in the error channel
     subprocess.Popen(generate_requirements.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     print("Generate requirements successfully.")
