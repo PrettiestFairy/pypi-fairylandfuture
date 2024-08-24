@@ -277,12 +277,12 @@ class YamlFileBase(FileBase):
 
         self.vaildate_ext((".yaml", ".yml"))
 
-    def load_yaml(self) -> object:
+    def load_yaml(self) -> Any:
         """
         Load yaml data from file.
 
         :return: Python YAML object.
-        :rtype: object
+        :rtype: ...
         """
         data = super().read(FileModeEnum.r)
 
@@ -324,12 +324,12 @@ class JsonFileBase(FileBase):
 
         self.vaildate_ext((".json",))
 
-    def load_json(self) -> object:
+    def load_json(self) -> Any:
         """
         Load json data from file.
 
         :return: Python JSON object.
-        :rtype: object
+        :rtype: ...
         """
         data = super().read(FileModeEnum.r)
 
