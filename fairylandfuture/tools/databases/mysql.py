@@ -8,14 +8,16 @@
 """
 
 import functools
-from typing import Union, Dict, Tuple, Any
+from typing import Union, Dict, Tuple, Any, Sequence
 
 import pymysql
+from dbutils.pooled_db import PooledDB
+from pymysql.connections import Connection
 from pymysql.cursors import DictCursor
 
-from fairylandfuture.interface.databases import AbstractMySQLOperation
-from fairylandfuture.utils.decorators import SingletonDecorator
 from fairylandfuture.exceptions.databases import SQLSyntaxException
+from fairylandfuture.exceptions.messages.databases import SQLSyntaxExceptMessage
+from fairylandfuture.interface.databases import AbstractMySQLOperation
 from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 
 
@@ -174,8 +176,21 @@ class MySQLConnector:
         self.close()
 
 
-@SingletonDecorator
 class MySQLOperation(AbstractMySQLOperation):
+    """
+    This class is used to execute SQL statements for MySQL database.
+    It is a subclass of AbstractMySQLOperation and implements the methods of AbstractMySQLOperation.
+
+    :param connector: The MySQLConnector object.
+    :type connector: MySQLConnector
+
+    Usage:
+        >>> from fairylandfuture.modules.databases.mysql import MySQLConnector, MySQLOperation
+        >>> connector = MySQLConnector(host="localhost", port=3306, user="root", password="password", database="test")
+        >>> operation = MySQLOperation(connector)
+        >>> operation.execute("SELECT * FROM users")
+        [{'id': 1, 'name': 'John', 'age': 25}, {'id': 2, 'name': 'Mary', 'age': 30}]
+    """
 
     def __init__(self, connector: MySQLConnector):
         if not isinstance(connector, MySQLConnector) or isinstance(connector, type):
@@ -184,6 +199,14 @@ class MySQLOperation(AbstractMySQLOperation):
         self.connector = connector
 
     def execute(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
+        """
+        This method is used to execute a SQL statement.
+
+        :param struct: StructureMySQLExecute object.
+        :type struct: StructureMySQLExecute
+        :return: Query result or execution result.
+        :rtype: bool | tuple
+        """
         try:
             self.connector.reconnect()
             self.connector.cursor.execute(struct.query, struct.args)
@@ -195,13 +218,65 @@ class MySQLOperation(AbstractMySQLOperation):
 
             return tuple(data)
         except Exception as err:
+            self.connector.connection.rollback()
+            raise err
+        finally:
+            self.connector.close()
+
+    def executemany(self, struct: StructureMySQLExecute, /) -> bool:
+        """
+        This method is used to execute multiple SQL statements.
+
+        :param struct: StructureMySQLExecute object.
+        :type struct: StructureMySQLExecute
+        :return: Execution result.
+        :rtype: bool
+        """
+        try:
+            self.connector.reconnect()
+            self.connector.cursor.executemany(struct.query, struct.args)
+            self.connector.connection.commit()
+            return True
+        except Exception as err:
+            self.connector.connection.rollback()
+            raise err
+        finally:
+            self.connector.close()
+
+    def multiexecute(self, structs: Sequence[StructureMySQLExecute], /) -> bool:
+        """
+        This method is used to execute multiple SQL statements.
+
+        :param structs: StructureMySQLExecute object sequence.
+        :type structs: Sequence
+        :return: Execution result.
+        :rtype: bool
+        """
+        try:
+            self.connector.reconnect()
+            for struct in structs:
+                if sql.query.lower().startswith("select"):
+                    raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_NOT_SELECT)
+                self.connector.cursor.execute(struct.query, struct.args)
+            self.connector.connection.commit()
+            return True
+        except Exception as err:
+            self.connector.connection.rollback()
             raise err
         finally:
             self.connector.close()
 
     def select(self, struct: StructureMySQLExecute, /) -> Tuple[Dict[str, Any], ...]:
+        """
+        This method is used to execute a select statement.
+
+        :param struct: Query structure.
+        :type struct: StructureMySQLExecute
+        :return: Query result
+        :rtype: tuple
+        """
         if not struct.query.lower().startswith("select"):
-            raise SQLSyntaxException("The query must be a select statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_SELECT)
 
         try:
             return self.execute(struct)
@@ -209,3 +284,110 @@ class MySQLOperation(AbstractMySQLOperation):
             raise err
         finally:
             self.connector.close()
+
+
+class MySQLSQLSimpleConnectionPool:
+
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, charset: str = None, /):
+        self.__host = host
+        self.__port = port
+        self.__user = user
+        self.__password = password
+        self.__database = database
+        self.__charset = charset if charset else "utf8mb4"
+
+        self.__pool = PooledDB(
+            creator=pymysql,
+            maxconnections=50,
+            mincached=3,
+            maxcached=5,
+            maxshared=5,
+            blocking=True,
+            maxusage=None,
+            setsession=[],
+            ping=0,
+            host=self.__host,
+            port=self.__port,
+            user=self.__user,
+            password=self.__password,
+            database=self.__database,
+            charset=self.__charset,
+            cursorclass=CustomMySQLCursor,
+        )
+
+    @property
+    def host(self):
+        return self.__host
+
+    @property
+    def port(self):
+        return self.__port
+
+    @property
+    def user(self):
+        return self.__user
+
+    @property
+    def password(self):
+        return "".join(["*" for _ in range(len(self.__password))])
+
+    @property
+    def database(self):
+        return self.__database
+
+    @property
+    def charset(self):
+        return self.__charset
+
+    def __open(self) -> Tuple[Connection, CustomMySQLCursor]:
+        connection: Connection = self.__pool.connection()
+        cursor: CustomMySQLCursor = connection.cursor(CustomMySQLCursor)
+        return connection, cursor
+
+    def __close(self, conn: Connection, cur: CustomMySQLCursor) -> None:
+        cur.close()
+        conn.close()
+
+    def execute(self, struct: StructureMySQLExecute) -> Union[bool, Tuple[Dict[str, Any], ...]]:
+        connection, cursor = self.__open()
+        try:
+            cursor.execute(struct.query, struct.args)
+            data = cursor.fetchall()
+            connection.commit()
+
+            if not data:
+                return True
+
+            return tuple(data)
+        except Exception as err:
+            connection.rollback()
+            raise err
+        finally:
+            self.__close(connection, cursor)
+
+    def executemany(self, struct: StructureMySQLExecute) -> bool:
+        connection, cursor = self.__open()
+        try:
+            cursor.executemany(struct.query, struct.args)
+            connection.commit()
+            return True
+        except Exception as err:
+            connection.rollback()
+            raise err
+        finally:
+            self.__close(connection, cursor)
+
+    def multiexecute(self, structs: Sequence[StructureMySQLExecute]) -> bool:
+        connection, cursor = self.__open()
+        try:
+            for struct in structs:
+                if sql.query.lower().startswith("select"):
+                    raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_NOT_SELECT)
+                cursor.execute(struct.query, struct.args)
+            connection.commit()
+            return True
+        except Exception as err:
+            connection.rollback()
+            raise err
+        finally:
+            self.__close(connection, cursor)
