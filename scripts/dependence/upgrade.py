@@ -6,13 +6,13 @@
 @organization: https://github.com/FairylandFuture
 @datetime: 2024-08-24 14:01:31 UTC+08:00
 """
+
 import os
 import subprocess
 import sys
 
-from fairylandfuture.enums.enconding import EncodingEnum
-
 from bin.general import ROOT_PATH
+from fairylandfuture.enums.enconding import EncodingEnum
 
 
 def main():
