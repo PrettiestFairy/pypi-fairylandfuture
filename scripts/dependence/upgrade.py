@@ -29,9 +29,11 @@ def main():
 
     print("Step 2: Generate requirements.")
     # generate_requirements = "pip-compile --upgrade --strip-extras --generate-hashes requirements.in"
-    generate_requirements = "pip-compile --upgrade --strip-extras --generate-hashes --output-file=requirements.txt requirements.in"
+    generate_requirements = "pip-compile --upgrade --strip-extras --generate-hashes --output-file=release-win-requirements.txt requirements.in"
     # The output information is in the error channel
+    copy_requirements = "copy release-win-requirements.txt requirements.txt"
     subprocess.Popen(generate_requirements.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
+    subprocess.Popen(copy_requirements.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()
     print("Generate requirements successfully.")
 
     print("Step 3: Sync dependencies.")
@@ -60,5 +62,6 @@ def main():
 
 
 if __name__ == "__main__":
+    sys.path.append(ROOT_PATH)
     os.chdir(ROOT_PATH)
     main()
