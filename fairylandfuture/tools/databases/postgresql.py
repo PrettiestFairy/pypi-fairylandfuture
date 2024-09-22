@@ -11,11 +11,12 @@ import re
 from typing import Optional, Sequence, Tuple, NamedTuple, Union
 
 import psycopg2
+from psycopg2 import pool
 from psycopg2.extras import NamedTupleCursor
 
-from fairylandfuture.interface.databases import AbstractPostgreSQLOperation
-from fairylandfuture.utils.decorators import SingletonDecorator
 from fairylandfuture.exceptions.databases import SQLSyntaxException
+from fairylandfuture.exceptions.messages.databases import SQLSyntaxExceptMessage
+from fairylandfuture.interface.databases import AbstractPostgreSQLOperation
 from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
 
 
@@ -149,7 +150,6 @@ class PostgreSQLConnector:
         self.close()
 
 
-@SingletonDecorator
 class PostgreSQLOperation(AbstractPostgreSQLOperation):
     """
     PostgreSQLOperation is a class for executing SQL queries on PostgreSQL database.
@@ -202,26 +202,7 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         finally:
             self.connector.close()
 
-    def select(self, struct: StructurePostgreSQLExecute, /) -> Tuple[NamedTuple, ...]:
-        """
-        Select data from PostgreSQL database.
-
-        :param struct: PostgreSQL Query structure.
-        :type struct: StructurePostgreSQLExecute
-        :return: Query result.
-        :rtype: tuple
-        """
-        if not struct.query.lower().startswith("select"):
-            raise SQLSyntaxException("The query must be a select statement.")
-
-        try:
-            return self.execute(struct)
-        except Exception as err:
-            raise err
-        finally:
-            self.connector.close()
-
-    def executemany(self, struct: StructurePostgreSQLExecute) -> bool:
+    def executemany(self, struct: StructurePostgreSQLExecute, /) -> bool:
         """
         Execute multiple SQL queries on PostgreSQL database.
         Generally used for batch insertion, update, and deletion of data.
@@ -242,7 +223,7 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         finally:
             self.connector.close()
 
-    def multi(self, structs: Sequence[StructurePostgreSQLExecute]):
+    def multiexecute(self, structs: Sequence[StructurePostgreSQLExecute], /) -> bool:
         """
         Execute multiple SQL queries on PostgreSQL database.
 
@@ -254,6 +235,8 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
         try:
             self.connector.reconnect()
             for struct in structs:
+                if struct.query.lower().startswith("select"):
+                    raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_NOT_SELECT)
                 self.connector.cursor.execute(struct.query, struct.vars)
             self.connector.connection.commit()
             return True
@@ -262,3 +245,85 @@ class PostgreSQLOperation(AbstractPostgreSQLOperation):
             raise err
         finally:
             self.connector.close()
+
+    def select(self, struct: StructurePostgreSQLExecute, /) -> Tuple[NamedTuple, ...]:
+        """
+        Select data from PostgreSQL database.
+
+        :param struct: PostgreSQL Query structure.
+        :type struct: StructurePostgreSQLExecute
+        :return: Query result.
+        :rtype: tuple
+        """
+        if not struct.query.lower().startswith("select"):
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_SELECT)
+
+        try:
+            return self.execute(struct)
+        except Exception as err:
+            raise err
+        finally:
+            self.connector.close()
+
+
+class PostgreSQLSimpleConnectionPool:
+
+    def __init__(self, host: str, port: int, user: str, password: str, database: str, /):
+        self.__host = host
+        self.__port = port
+        self.__user = user
+        self.__password = password
+        self.__database = database
+
+        self.__pool = psycopg2.pool.SimpleConnectionPool(
+            2,
+            20,
+            host=self.__host,
+            port=self.__port,
+            user=self.__user,
+            password=self.__password,
+            database=self.__database,
+        )
+
+    @property
+    def host(self):
+        return self.__host
+
+    @property
+    def port(self):
+        return self.__port
+
+    @property
+    def user(self):
+        return self.__user
+
+    @property
+    def password(self):
+        return "".join(["*" for _ in range(len(self.__password))])
+
+    @property
+    def database(self):
+        return self.__database
+
+    def execute(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]:
+        connection: psycopg2.extensions.connection = self.__pool.getconn()
+        cursor: CustomPostgreSQLCursor = connection.cursor(cursor_factory=CustomPostgreSQLCursor)
+        try:
+            cursor.execute(struct.query, struct.vars)
+            data = cursor.fetchall()
+            connection.commit()
+
+            if not data and not struct.query.lower().startswith("select"):
+                return True
+
+            return tuple(data)
+        except Exception as err:
+            connection.rollback()
+            raise err
+        finally:
+            cursor.close()
+            if connection:
+                self.__pool.putconn(connection)
+
+    def __del__(self):
+        self.__pool.closeall()

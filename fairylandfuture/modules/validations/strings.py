@@ -9,6 +9,7 @@
 
 import os
 import re
+import json
 
 from array import array
 
@@ -54,6 +55,8 @@ class ValidateStringModule:
             return True
         except json.JSONDecodeError:
             return False
+        except Exception as err:
+            raise err
 
     @classmethod
     def vaild_url(cls, string: str, /) -> bool:

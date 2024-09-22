@@ -13,6 +13,7 @@ from typing import Tuple, NamedTuple, Union, Dict, Any
 from fairylandfuture.exceptions.databases import SQLSyntaxException
 from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
+from fairylandfuture.exceptions.messages.databases import SQLSyntaxExceptMessage
 
 
 class AbstractMySQLOperation(abc.ABC):
@@ -26,17 +27,17 @@ class AbstractMySQLOperation(abc.ABC):
 
     def insert(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
         if not struct.query.lower().startswith("insert"):
-            raise SQLSyntaxException("SQL syntax error. The query must be an insert statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_INSERT)
         return self.execute(struct)
 
     def delete(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
         if not struct.query.lower().startswith("delete"):
-            raise SQLSyntaxException("SQL syntax error. The query must be a delete statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_DELETE)
         return self.execute(struct)
 
     def update(self, struct: StructureMySQLExecute, /) -> Union[bool, Tuple[Dict[str, Any], ...]]:
         if not struct.query.lower().startswith("update"):
-            raise SQLSyntaxException("SQL syntax error. The query must be an update statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_UPDATE)
         return self.execute(struct)
 
     @abc.abstractmethod
@@ -54,17 +55,17 @@ class AbstractPostgreSQLOperation(abc.ABC):
 
     def insert(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]:
         if not struct.query.lower().startswith("insert"):
-            raise SQLSyntaxException("SQL syntax error. The query must be an insert statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_INSERT)
         return self.execute(struct)
 
     def delete(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]:
         if not struct.query.lower().startswith("delete"):
-            raise SQLSyntaxException("SQL syntax error. The query must be a delete statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_DELETE)
         return self.execute(struct)
 
     def update(self, struct: StructurePostgreSQLExecute, /) -> Union[bool, Tuple[NamedTuple, ...]]:
         if not struct.query.lower().startswith("update"):
-            raise SQLSyntaxException("SQL syntax error. The query must be an update statement.")
+            raise SQLSyntaxException(SQLSyntaxExceptMessage.SQL_MUST_UPDATE)
         return self.execute(struct)
 
     @abc.abstractmethod

@@ -8,7 +8,7 @@
 """
 
 
-class ProgramException(Exception):
+class BaseProgramException(Exception):
 
     def __init__(self, message: str = "Internal program error."):
         self.message = f"{self.__class__.__name__}: {message}"

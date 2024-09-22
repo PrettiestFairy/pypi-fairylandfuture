@@ -7,10 +7,10 @@
 @datetime: 2024-08-10 18:32:09 UTC+08:00
 """
 
-from fairylandfuture.core.superclass.exceptions import ProgramException
+from fairylandfuture.core.superclass.exceptions import BaseProgramException
 
 
-class FileReadException(ProgramException):
+class FileReadException(BaseProgramException):
 
     def __init__(self, message: str = "File read error."):
         super().__init__(message=message)

@@ -7,8 +7,10 @@
 @datetime: 2024-05-18 11:39:05 UTC+08:00
 """
 
+import functools
 from functools import wraps
-from typing import Any, Callable, Generic, Type, TypeVar
+from typing import Callable, TypeVar, Generic, Any
+from typing import Type
 
 _T = TypeVar("_T", bound=Callable[..., Any])
 
