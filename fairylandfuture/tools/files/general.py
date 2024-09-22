@@ -26,5 +26,5 @@ class JsonFile(BaseJsonFile):
     """Base JSON File class."""
 
 
-class OtherFile(BaseTextFile):
+class OtherTextFile(BaseTextFile):
     """Other File class."""

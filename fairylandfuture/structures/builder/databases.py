@@ -10,14 +10,16 @@
 from dataclasses import dataclass, field
 from typing import Optional, Union, Sequence, MutableSequence, Mapping, MutableMapping
 
+from fairylandfuture.core.superclass.structures import BaseStructure
+
 
 @dataclass(frozen=True)
-class StructureMySQLExecute:
+class StructureMySQLExecute(BaseStructure):
     query: str
     args: Optional[Union[Sequence, MutableSequence, Mapping, MutableMapping]] = field(default=None)
 
 
 @dataclass(frozen=True)
-class StructurePostgreSQLExecute:
+class StructurePostgreSQLExecute(BaseStructure):
     query: str
     vars: Optional[Union[Sequence, MutableSequence, Mapping, MutableMapping]] = field(default=None)

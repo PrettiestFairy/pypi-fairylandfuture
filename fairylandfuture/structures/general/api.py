@@ -15,7 +15,7 @@ from fairylandfuture.const.response.code import RESPONSE_CODE_MAP
 
 
 @dataclass(frozen=True)
-class ResponseStructure(BaseStructure):
+class StructureResponse(BaseStructure):
     code: int = field(default=None)
     message: str = field(default=None)
     data: Union[MutableSequence, Sequence, MutableMapping, Mapping] = field(default=None)
