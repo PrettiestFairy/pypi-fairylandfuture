@@ -11,7 +11,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Union, AnyStr, Sequence, Optional, Any
+from typing import Union, AnyStr, Sequence, Optional, Any, Self
 
 import yaml
 
@@ -19,7 +19,7 @@ from fairylandfuture.enums.enconding import EncodingEnum
 from fairylandfuture.enums.files import FileModeEnum
 
 
-class FileBase:
+class BaseFile:
     """
     Base file class.
 
@@ -29,9 +29,9 @@ class FileBase:
     :type create: bool
 
     Usage:
-        >>> from fairylandfuture.core.superclass.files import FileBase
+        >>> from fairylandfuture.core.superclass.files import BaseFile
         >>> from fairylandfuture.enums.enconding import EncodingEnum, FileModeEnum
-        >>> file = FileBase("path/to/file.txt")
+        >>> file = BaseFile("path/to/file.txt")
         >>> file.name
         "file"
         >>> file.ext
@@ -214,7 +214,7 @@ class FileBase:
         return str(self.path)
 
 
-class TextFileBase(FileBase):
+class BaseTextFile(BaseFile):
     """
     Text file.
 
@@ -224,7 +224,7 @@ class TextFileBase(FileBase):
     :type create: bool
 
     Usage:
-        >>> file = TextFileBase("path/to/file.txt")
+        >>> file = BaseTextFile("path/to/file.txt")
         >>> file.load_text()
         "Hello, world!"
         >>> file.save_text("Hello, world!")
@@ -255,7 +255,7 @@ class TextFileBase(FileBase):
         return super().write(data, mode=FileModeEnum.w)
 
 
-class YamlFileBase(FileBase):
+class BaseYamlFile(BaseFile):
     """
     Yaml file.
 
@@ -265,7 +265,7 @@ class YamlFileBase(FileBase):
     :type create: bool
 
     Usage:
-        >>> file = YamlFileBase("path/to/file.yaml")
+        >>> file = BaseYamlFile("path/to/file.yaml")
         >>> file.load_yaml()
         {'key': 'value'}
         >>> file.save_yaml({'key': 'value'})
@@ -302,7 +302,7 @@ class YamlFileBase(FileBase):
         return super().write(yaml_data, mode=FileModeEnum.w)
 
 
-class JsonFileBase(FileBase):
+class BaseJsonFile(BaseFile):
     """
     Json file.
 
@@ -312,7 +312,7 @@ class JsonFileBase(FileBase):
     :type create: bool
 
     Usage:
-        >>> file = JsonFileBase("path/to/file.json")
+        >>> file = BaseJsonFile("path/to/file.json")
         >>> file.load_json()
         {'key': 'value'}
         >>> file.save_json({'key': 'value'})

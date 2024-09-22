@@ -11,29 +11,29 @@ import json
 
 from dataclasses import dataclass, asdict, astuple
 
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Self, Union
 
 
 @dataclass(frozen=True)
 class BaseStructure:
 
     @property
-    def asdict(self) -> Dict[str, Any]:
+    def asdict(self: Self) -> Dict[str, Any]:
         return asdict(self)
 
     @property
-    def astuple(self) -> Tuple[Any, ...]:
+    def astuple(self: Self) -> Tuple[Any, ...]:
         return astuple(self)
 
     @property
-    def string(self) -> str:
+    def string(self: Self) -> str:
         return json.dumps(self.asdict, separators=(",", ":"), ensure_ascii=False)
 
-    def to_dict(self, /, *, ignorenone: bool = False) -> Dict[str, Any]:
+    def to_dict(self: Self, /, *, ignorenone: bool = False) -> Union[Dict[Any, Any], property]:
         if ignorenone:
             return {k: v for k, v in self.asdict.items() if v is not None}
         else:
             return self.asdict
 
-    def to_jsonstring(self, /, *, ignorenone: bool = False) -> str:
+    def to_jsonstring(self: Self, /, *, ignorenone: bool = False) -> str:
         return json.dumps(self.to_dict(ignorenone=ignorenone), separators=(",", ":"), ensure_ascii=False)

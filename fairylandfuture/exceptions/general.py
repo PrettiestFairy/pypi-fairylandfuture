@@ -7,20 +7,22 @@
 @datetime: 2024-08-10 18:29:47 UTC+08:00
 """
 
+from fairylandfuture.core.superclass.exceptions import BaseProgramException
 
-class InvalidParamsException(ProgramException):
+
+class ParamsInvalidException(BaseProgramException):
 
     def __init__(self, message: str = "Parameter error."):
         super().__init__(message)
 
 
-class ParamsTypeException(ProgramException):
+class ParamsTypeException(BaseProgramException):
 
     def __init__(self, message: str = "Parameter type error."):
         super().__init__(message)
 
 
-class ParamsValueException(ProgramException):
+class ParamsValueException(BaseProgramException):
 
     def __init__(self, message: str = "Parameter value error."):
         super().__init__(message)

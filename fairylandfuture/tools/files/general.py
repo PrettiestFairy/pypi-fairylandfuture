@@ -7,24 +7,24 @@
 @datetime: 2024-06-30 14:20:28 UTC+08:00
 """
 
-from fairylandfuture.core.superclass.files import FileBase, TextFileBase, YamlFileBase, JsonFileBase
+from fairylandfuture.core.superclass.files import BaseFile, BaseTextFile, BaseYamlFile, BaseJsonFile
 
 
-class File(FileBase):
+class File(BaseFile):
     """Base File class."""
 
 
-class TextFile(TextFileBase):
+class TextFile(BaseTextFile):
     """Base Text File class."""
 
 
-class YamlFile(YamlFileBase):
+class YamlFile(BaseYamlFile):
     """Base YAML File class."""
 
 
-class JsonFile(JsonFileBase):
+class JsonFile(BaseJsonFile):
     """Base JSON File class."""
 
 
-class OtherFile(TextFileBase):
+class OtherTextFile(BaseTextFile):
     """Other File class."""
