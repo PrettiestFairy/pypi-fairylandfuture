@@ -9,7 +9,7 @@
 
 import hashlib
 import os
-import random
+import secrets
 import string
 from typing import Optional, Tuple
 
@@ -31,7 +31,7 @@ class Cipher:
         :rtype: str
         """
         chars = string.ascii_letters + string.digits + string.punctuation
-        return "".join(random.choice(chars) for _ in range(length))
+        return "".join(secrets.choice(chars) for _ in range(length))
 
     @classmethod
     def generate_key(cls) -> bytes:

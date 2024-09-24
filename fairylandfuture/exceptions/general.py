@@ -26,3 +26,9 @@ class ParamsValueException(BaseProgramException):
 
     def __init__(self, message: str = "Parameter value error."):
         super().__init__(message)
+
+
+class ValidationError(BaseProgramException):
+    def __init__(self, message: str = "Validation error."):
+        self.message = message
+        super().__init__(self.message)
