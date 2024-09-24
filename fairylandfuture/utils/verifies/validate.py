@@ -9,7 +9,7 @@
 
 from typing import Dict, Tuple, Type, Union
 
-from fairylandfuture.modules.exceptions import InvalidParameter, ParameterTypeException
+from fairylandfuture.exceptions.general import ParamsInvalidException, ParamsTypeException
 
 
 class ParamTypeValidatorUtils:
@@ -46,11 +46,11 @@ class ParamTypeValidatorUtils:
     def validate(self, params: Dict[str, object]):
         for param_name, param_value in params.items():
             if param_name not in self.expected_types:
-                raise InvalidParameter(f"Parameter '{param_name}' is not defined in the expected types.")
+                raise ParamsInvalidException(f"Parameter '{param_name}' is not defined in the expected types.")
 
             expected_type = self.expected_types[param_name]
             if not isinstance(param_value, expected_type):
                 err_msg = f"The type of parameter '{param_name}' is '{type(param_value)}', which does not match the expected type '{expected_type}'."
-                raise ParameterTypeException(err_msg)
+                raise ParamsTypeException(err_msg)
 
         return True
