@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 """
 @software: PyCharm
 @author: Lionel Johnson
@@ -10,22 +10,18 @@
 import os
 import subprocess
 import sys
-import setuptools
-import requests
-
 from datetime import datetime
-from typing import Literal
-from importlib.resources import read_text
+from enum import StrEnum
+from typing import Optional
+
+import requests
+import setuptools
 
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
-_RELEASE_LEVEL = ["release", "test", "alpha", "beta"]
-_major = 1
-_minor = 1
-_micro = 1
-releaselevel: Literal["release", "test", "alpha", "beta"] = "beta"
+_VERSION = "1.1.2"
 
-if sys.version_info < (3, 9):
-    sys.exit("Python 3.9 or higher is required.")
+if sys.version_info < (3, 11):
+    sys.exit("Python 3.11 or higher is required.")
 
 
 class InstallDependenciesCommand(setuptools.Command):
@@ -42,36 +38,39 @@ class InstallDependenciesCommand(setuptools.Command):
         subprocess.call(command, shell=True)
 
 
-class PackageInfo(object):
-    """
-    Public package
+class VersionLevelEnum(StrEnum):
+    release = "release"  # 发布版本
+    test = "test"  # 测试版本
+    alpha = "alpha"  # 内测版本
+    beta = "beta"  # 公测版本
 
-    :param major: major num
-    :type major: int
-    :param minor: minor num
-    :type minor: int
-    :param micro: stage num
-    :type micro: int
-    :param revise: revise num
-    :type revise: int
-    :param releaselevel: version mark
-    :type releaselevel: str
-    """
 
-    def __init__(self, major: int, minor: int, micro: int, releaselevel: str):
-        self.major = self.vaildate_param(major, int)
-        self.minor = self.vaildate_param(minor, int)
-        self.micro = self.vaildate_param(micro, int)
-        self.serial = self.get_github_serial()
+class Package(object):
 
-        if releaselevel.lower() not in ("release", "test", "alpha", "beta"):
-            raise TypeError('Param: releaselevel type error, releaselevel must in ["release", "test", "alpha", "beta"].')
-
-        self.releaselevel = releaselevel
+    def __init__(self, version_number: str, version_level: Optional[VersionLevelEnum] = None):
+        self.version_number: str = version_number
+        self.version_level: VersionLevelEnum = version_level if version_level else VersionLevelEnum.release
 
     @property
     def name(self):
         return "PyFairylandFuture"
+
+    @property
+    def version(self):
+        serial_number = self.github_commit_number()
+
+        if self.version_level == VersionLevelEnum.release:
+            version = self.version_number
+        elif self.version_level == VersionLevelEnum.test:
+            version = f"{self.version_number}rc.{serial_number}"
+        elif self.version_level == VersionLevelEnum.alpha:
+            version = f"{self.version_number}alpha.{serial_number}"
+        elif self.version_level == VersionLevelEnum.beta:
+            version = f"{self.version_number}beta.{serial_number}"
+        else:
+            raise RuntimeError("Unsupport version level, Please select from `VersionLevelEnum`.")
+
+        return version
 
     @property
     def author(self):
@@ -82,40 +81,23 @@ class PackageInfo(object):
         return "fairylandfuture@outlook.com"
 
     @property
-    def url(self):
-        return "https://github.com/PrettiestFairy/pypi-fairylandfuture"
-
-    @property
-    def version(self):
-        self.serial = self.serial.__str__()
-
-        date_str = datetime.now().date().__str__().replace("-", "")
-        revise_after = "-".join((self.serial.__str__(), date_str))
-        release_version = ".".join((self.major.__str__(), self.minor.__str__(), self.micro.__str__()))
-
-        if self.releaselevel == "release":
-            version = release_version
-        elif self.releaselevel == "test":
-            version = ".".join((release_version, "".join(("rc.", revise_after))))
-        elif self.releaselevel == "alpha":
-            version = ".".join((release_version, "".join(("alpha.", revise_after))))
-        elif self.releaselevel == "beta":
-            version = ".".join((release_version, "".join(("beta.", revise_after))))
-        else:
-            version = ".".join((release_version, "".join(("rc.", revise_after))))
-
-        return version
-
-    @property
     def description(self):
         return "Efficient developed Python library."
 
     @property
+    def url(self):
+        return "https://github.com/FairylandTech/pypi-fairylandfuture"
+
+    @property
+    def license(self):
+        return "AGPLv3+"
+
+    @property
     def long_description(self):
         with open(os.path.join(_ROOT_PATH, "README.md"), "r", encoding="UTF-8") as stream:
-            long_description = stream.read()
+            content = stream.read()
 
-        return long_description
+        return content
 
     @property
     def long_description_content_type(self):
@@ -154,7 +136,7 @@ class PackageInfo(object):
 
     @property
     def python_requires(self):
-        return ">=3.8"
+        return ">=3.11"
 
     @property
     def keywords(self):
@@ -177,11 +159,9 @@ class PackageInfo(object):
     @property
     def classifiers(self):
         results = [
-            "Programming Language :: Python :: 3",
-            "Programming Language :: Python :: 3.9",
-            "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: 3.11",
             "Programming Language :: Python :: 3.12",
+            "Programming Language :: Python :: 3.13",
             "Programming Language :: Python :: Implementation :: CPython",
             "Programming Language :: Python :: Implementation :: PyPy",
             "Programming Language :: SQL",
@@ -212,64 +192,48 @@ class PackageInfo(object):
             requirements_text = stream.read()
         return requirements_text.split()
 
-    @property
-    def cmdclass(self):
-        results = {
-            "install_dependencies": InstallDependenciesCommand,
-        }
-        return results
-
     @staticmethod
-    def vaildate_param(param, _type):
-        if not isinstance(param, _type):
-            raise TypeError(f"{param} type error.")
+    def github_commit_number():
 
-        return param
+        def local_build_version():
+            try:
+                with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "release", "buildversion"), "r", encoding="UTF-8") as stream:
+                    content = stream.read()
+                return content
+            except Exception as err:
+                print(f"Error: Getting build version {err}")
+                return 0
 
-    @staticmethod
-    def get_local_serial():
         try:
-            with open(os.path.join(_ROOT_PATH, "fairylandfuture", "conf", "release", "buildversion"), "r", encoding="UTF-8") as stream:
-                commit_count = stream.read()
-            return int(commit_count)
-        except Exception as err:
-            print(f"Error: Getting build version {err}")
-            return 0
-
-    @classmethod
-    def get_github_serial(cls):
-        try:
-            url = "https://raw.githubusercontent.com/PrettiestFairy/pypi-fairylandfuture/ReleaseMaster/fairylandfuture/conf/release/buildversion"
+            url = "https://raw.githubusercontent.com/FairylandTech/pypi-fairylandfuture/ReleaseMaster/fairylandfuture/conf/release/buildversion"
             response = requests.get(url)
-            if response.status_code == 200:
-                commit_count = int(response.text)
-                return commit_count
-            else:
-                return cls.get_local_serial()
+            response.raise_for_status()
+
+            return response.text
         except Exception as err:
             print(err)
-            return cls.get_local_serial()
+            return local_build_version()
 
 
-package = PackageInfo(_major, _minor, _micro, releaselevel)
-
-setuptools.setup(
-    name=package.name,
-    fullname=package.fullname,
-    keywords=package.keywords,
-    version=package.version,
-    author=package.author,
-    author_email=package.email,
-    description=package.description,
-    long_description=package.long_description,
-    long_description_content_type=package.long_description_content_type,
-    url=package.url,
-    license="AGPLv3+",
-    packages=setuptools.find_packages(include=package.packages_include),
-    package_data=package.packages_data,
-    include_package_data=package.include_package_data,
-    classifiers=package.classifiers,
-    python_requires=package.python_requires,
-    install_requires=package.install_requires,
-    cmdclass=package.cmdclass,
-)
+if __name__ == "__main__":
+    package = Package(_VERSION, VersionLevelEnum.beta)
+    setuptools.setup(
+        name=package.name,
+        version=package.version,
+        author=package.author,
+        author_email=package.email,
+        description=package.description,
+        url=package.url,
+        license=package.license,
+        packages=setuptools.find_packages(include=package.packages_include),
+        package_data=package.packages_data,
+        include_package_data=package.include_package_data,
+        classifiers=package.classifiers,
+        python_requires=package.python_requires,
+        install_requires=package.install_requires,
+        cmdclass=package.cmdclass,
+        fullname=package.fullname,
+        keywords=package.keywords,
+        long_description=package.long_description,
+        long_description_content_type=package.long_description_content_type,
+    )
