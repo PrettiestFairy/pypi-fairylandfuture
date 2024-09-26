@@ -13,18 +13,18 @@ GREEN_COLOR="\e[32m"
 # Run
 RUN_PATH=$(pwd)
 
-# Temp path
-RANDOM_CURRENT_PATH="/tmp/$(uuidgen)"
-
 # Srouce code
 PACKAGE_NAME="pypi-fairylandfuture"
 SOURCE_CODE_HTTPS_URL="https://github.com/FairylandTech/pypi-fairylandfuture.git"
 SOURCE_CODE_SSH_URL="git@github.com:FairylandTech/pypi-fairylandfuture.git"
 SOURCE_CODE_DEFAULT_BRANCH="ReleaseMaster"
 SYSTEM_DEPENDENCIES=(
-  "python"
   "git"
 )
+
+# Temp path
+RANDOM_CURRENT_PATH="/tmp/$(uuidgen)"
+BUILD_PATH="/tmp/build${PACKAGE_NAME}"
 
 validate_python_version() {
   # Check current Python version
@@ -109,7 +109,7 @@ checkout_main_branch() {
   if [ "${current_branch}" == "${SOURCE_CODE_DEFAULT_BRANCH}" ]; then
     echo -e "${GREEN_COLOR}You are already on the ${SOURCE_CODE_DEFAULT_BRANCH} branch.${RESET_COLOR}"
   else
-    echo "Switching to ${SOURCE_CODE_DEFAULT_BRANCH} branch..."
+    echo -e "Switching to ${SOURCE_CODE_DEFAULT_BRANCH} branch..."
     if git show-ref --verify --quiet refs/heads/${SOURCE_CODE_DEFAULT_BRANCH}; then
       git checkout -b "${SOURCE_CODE_DEFAULT_BRANCH}" origin/"${SOURCE_CODE_DEFAULT_BRANCH}"
     else
@@ -119,31 +119,44 @@ checkout_main_branch() {
   fi
 }
 
+install_pip_dependencies() {
+  # Install dependencies
+  echo -e "${GREEN_COLOR}Install python dependencies...${RESET_COLOR}"
+  python -m pip install --no-cache-dir --upgrade pip
+  python -m pip install --no-cache-dir --upgrade setuptools wheel
+  python -m pip install --no-cache-dir pip-tools
+
+  echo -e "${GREEN_COLOR}Compile requirements...${RESET_COLOR}"
+  pip-compile --generate-hashes requirements.in --output-file compiled-requirements.txt
+
+  echo -e "${GREEN_COLOR}Install compiled requirements...${RESET_COLOR}"
+  python -m pip install --no-cache-dir -r compiled-requirements.txt
+}
+
 main() {
   echo -e "==========${GREEN_COLOR}Run package script${RESET_COLOR}=========="
 
   # Check Python version
-  validate_python_version
-  echo -e "Check Python version: ${GREEN_COLOR}PASS${RESET_COLOR}"
+  validate_python_version && echo -e "Check Python version: ${GREEN_COLOR}PASS${RESET_COLOR}"
 
   # Install system dependencies
-  install_system_dependencies
-  echo -e "Install system dependencies: ${GREEN_COLOR}PASS${RESET_COLOR}"
+  install_system_dependencies && echo -e "Install system dependencies: ${GREEN_COLOR}PASS${RESET_COLOR}"
 
   # Create and enter directory
-  echo -e "${GREEN_COLOR}Temp directory: ${RANDOM_CURRENT_PATH}${RESET_COLOR}"
-  mkdir -p "${RANDOM_CURRENT_PATH}" && cd "${RANDOM_CURRENT_PATH}" || exit 1
+  mkdir -p "${RANDOM_CURRENT_PATH}" && cd "${RANDOM_CURRENT_PATH}" || exit 1 && echo -e "${GREEN_COLOR}Temp directory: ${RANDOM_CURRENT_PATH}${RESET_COLOR}"
 
   # Clone source code & build
   echo -e "${GREEN_COLOR}Clone source code${RESET_COLOR}"
   git clone "${SOURCE_CODE_HTTPS_URL}"
   cd "${PACKAGE_NAME}" || exit 1
   checkout_main_branch
+  install_pip_dependencies
   python -m build --no-isolation
+  mkdir -p "${BUILD_PATH}" && cp -r dist/* "${BUILD_PATH}" && echo -e "${GREEN_COLOR}Build output path: ${BUILD_PATH}${RESET_COLOR}"
 
   # End package
-  #rm -rf "${RANDOM_CURRENT_PATH}"
-  #cd "${RUN_PATH}" || exit 1
+  rm -rf "${RANDOM_CURRENT_PATH}" && echo -e "${GREEN_COLOR}Clean up temp directory${RESET_COLOR}"
+  cd "${RUN_PATH}" || exit 1
 }
 
 main
