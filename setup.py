@@ -18,7 +18,7 @@ import requests
 import setuptools
 
 _ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
-_VERSION = "1.1.2"
+_VERSION = "1.2.0"
 
 if sys.version_info < (3, 11):
     sys.exit("Python 3.11 or higher is required.")
