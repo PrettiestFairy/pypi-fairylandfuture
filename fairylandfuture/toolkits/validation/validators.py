@@ -7,18 +7,31 @@
 @datetime: 2024-09-24 14:41:30 UTC+08:00
 """
 
-from fairylandfuture.interface.toolkits.validation import AbstractValidator
+from typing import Any, Callable, Optional, Union, Sequence, Dict, Type
+
 from fairylandfuture.exceptions.general import ValidationError
 
 
-class Validator(AbstractValidator):
+class Validator:
 
-    def __init__(self, required, typedef, validator_factory=None):
-        self.required = required
-        self.typedef = typedef
-        self.validator_factory = validator_factory
+    def __init__(self, required: bool, typedef: Union[Type, Sequence[Type]], validator_factory: Optional[Callable[[Any], bool]] = None):
+        self.__required = required
+        self.__typedef = typedef
+        self.__validator_factory = validator_factory
 
-    def validate(self, value):
+    @property
+    def required(self):
+        return self.__required
+
+    @property
+    def typedef(self):
+        return self.__typedef
+
+    @property
+    def validator_factory(self):
+        return self.__validator_factory
+
+    def validate(self, value: Any) -> Any:
         if self.required and value is None:
             raise ValidationError("Required parameter is missing.")
 
@@ -32,10 +45,10 @@ class Validator(AbstractValidator):
 
 
 class RequestValidator:
-    def __init__(self, schema):
+    def __init__(self, schema: Dict[str, Validator]):
         self.schema = schema
 
-    def validate(self, request_data):
+    def validate(self, request_data: Dict[str, Any]) -> Dict[str, Any]:
         validated_data = dict()
         for key, validator in self.schema.items():
             validated_data.update({key: validator.validate(request_data.get(key))})
