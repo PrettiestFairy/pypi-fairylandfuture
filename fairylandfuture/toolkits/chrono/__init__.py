@@ -14,7 +14,7 @@ from typing import Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
-from fairylandfuture.enums.datetimes import DateTimeEnum
+from fairylandfuture.enums.chrono import DateTimeEnum
 from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 

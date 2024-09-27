@@ -7,7 +7,7 @@
 @datetime: 2024-06-02 12:02:50 UTC+08:00
 """
 
-from fairylandfuture.enums.datetimes import DateTimeEnum
+from fairylandfuture.enums.chrono import DateTimeEnum
 from fairylandfuture.modules.datetimes import DateTimeModule
 from fairylandfuture.utils.journal import journal
 from fairylandfuture.utils.networking.local import LocalNetworkUtils
