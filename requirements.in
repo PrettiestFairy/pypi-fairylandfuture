@@ -14,14 +14,17 @@ pip-review
 pip-autoremove
 
 setuptools
+wheel
+pip
+
 loguru
 python-dateutil
 python-dotenv
 requests
 
 pyyaml
-cryptography
-netifaces
+cryptography  # required C library
+netifaces  # required C library
 
 pymysql
 psycopg2
