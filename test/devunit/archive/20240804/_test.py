@@ -9,9 +9,9 @@
 
 from dataclasses import dataclass
 
-from fairylandfuture.modules.databases.mysql import MySQLConnector
-from fairylandfuture.modules.databases.mysql import MySQLOperation
-from fairylandfuture.structures.builder.databases import StructureMySQLExecute
+from fairylandfuture.modules.db.mysql import MySQLConnector
+from fairylandfuture.modules.db.mysql import MySQLOperation
+from fairylandfuture.structures.builder.db import StructureMySQLExecute
 
 from test.utils.logger import journal
 from test.devunit import BASE_PATH
