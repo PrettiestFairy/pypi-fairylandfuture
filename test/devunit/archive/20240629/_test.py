@@ -10,7 +10,7 @@
 from typing import Dict, Any
 from pathlib import Path
 
-from fairylandfuture.modules.databases.mysql import MySQLOperation, MySQLConnector
+from fairylandfuture.modules.db.mysql import MySQLOperation, MySQLConnector
 from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 
 from test.utils.config import TestConfig

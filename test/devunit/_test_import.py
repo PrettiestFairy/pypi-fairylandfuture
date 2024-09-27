@@ -44,7 +44,7 @@ from fairylandfuture.modules.datetimes import DateTimeModule  # 日期时间模�
 # from fairylandfuture.modules.decorators  # refactor  # 装饰器模块
 
 # modules.journals
-from fairylandfuture.modules.journals import Journal  # 日志模块
+from fairylandfuture.modules.journal import Journal  # 日志模块
 
 # modules.networks
 from fairylandfuture.modules.networks.local import LocalNetworkModule  # 本地网络模块
@@ -62,19 +62,19 @@ from fairylandfuture.structures.builder.databases import StructureMySQLExecute, 
 from fairylandfuture.structures.general.api import StructureResponse  # API响应结构构造器
 
 # toolkits.databases
-from fairylandfuture.modules.databases.mysql import MySQLConnector, MySQLOperation, MySQLSQLSimpleConnectionPool  # MySQL连接器, MySQL操作类, MySQL简单连接池 工具类
-from fairylandfuture.modules.databases.postgresql import PostgreSQLConnector, PostgreSQLOperation, PostgreSQLSimpleConnectionPool  # PostgreSQL 工具类
+from fairylandfuture.modules.db.mysql import MySQLConnector, MySQLOperation, MySQLSQLSimpleConnectionPool  # MySQL连接器, MySQL操作类, MySQL简单连接池 工具类
+from fairylandfuture.modules.db.postgresql import PostgreSQLConnector, PostgreSQLOperation, PostgreSQLSimpleConnectionPool  # PostgreSQL 工具类
 
 # toolkits.encryptions
-from fairylandfuture.toolkits.encryptions.cipher import CipherToolkits, UserPasswordCryptionToolkits, PasswordCryptionToolkits  # 加密类, 用户密码加密. 密码加密 工具类
-from fairylandfuture.toolkits.encryptions.encoder import Base64CryptionToolkits  # Base64加解密工具类
+from fairylandfuture.toolkits.encryption.cipher import CipherToolkits, UserPasswordCryptionToolkits, PasswordCryptionToolkits  # 加密类, 用户密码加密. 密码加密 工具类
+from fairylandfuture.toolkits.encryption.encoder import Base64CryptionToolkits  # Base64加解密工具类
 
 # modules.files
-from fairylandfuture.modules.files.general import File, TextFile, YamlFile, JsonFile, OtherTextFile  # 文件操作工具类
+from fairylandfuture.modules.file.general import File, TextFile, YamlFile, JsonFile, OtherTextFile  # 文件操作工具类
 
 # modules.validation
-from fairylandfuture.modules.validation.validators import Validator  # 验证器
-from fairylandfuture.modules.validation.validators import RequestValidator  # 请求数据验证器 工具类
+from fairylandfuture.modules.validator.validators import Validator  # 验证器
+from fairylandfuture.modules.validator.validators import RequestValidator  # 请求数据验证器 工具类
 
 
 if __name__ == "__main__":

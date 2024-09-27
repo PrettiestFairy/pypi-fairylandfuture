@@ -9,7 +9,7 @@
 
 from loguru import logger
 
-from fairylandfuture.modules.journals import Journal
+from fairylandfuture.modules.journal import Journal
 
 if __name__ == "__main__":
     logger.info("123")

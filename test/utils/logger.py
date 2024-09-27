@@ -7,6 +7,6 @@
 @datetime: 2024-08-04 01:06:57 UTC+08:00
 """
 
-from fairylandfuture.modules.journals import Journal
+from fairylandfuture.modules.journal import Journal
 
 journal = Journal(debug=True)
