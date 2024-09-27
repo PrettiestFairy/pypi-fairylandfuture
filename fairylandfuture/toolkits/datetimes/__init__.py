@@ -18,7 +18,7 @@ from fairylandfuture.enums.datetimes import DateTimeEnum
 from fairylandfuture.utils.verifies.validate import ParamTypeValidatorUtils
 
 
-class DateTimeModule:
+class DateTimeToolkits:
     """
     Data and time module
     """

@@ -9,10 +9,10 @@
 
 from loguru import logger
 
-from fairylandfuture.modules.journals import JournalModule
+from fairylandfuture.modules.journals import Journal
 
 if __name__ == "__main__":
     logger.info("123")
-    journal = JournalModule(debug=True, serialize=True, console=True)
+    journal = Journal(debug=True, serialize=True, console=True)
     journal.info("123")
     logger.info("456")

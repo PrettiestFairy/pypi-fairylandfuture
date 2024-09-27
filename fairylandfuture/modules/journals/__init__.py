@@ -19,7 +19,7 @@ from fairylandfuture.enums.enconding import EncodingEnum
 from fairylandfuture.enums.journal import LogLevelEnum
 
 
-class JournalModule(metaclass=SingletonMeta):
+class Journal(metaclass=SingletonMeta):
     """
     A logging utility implemented as a singleton to ensure that only one instance
     handles logging across the application.
@@ -53,7 +53,7 @@ class JournalModule(metaclass=SingletonMeta):
 
     Usage::
         >>> # Create a journal instance
-        >>> journal = JournalModule()
+        >>> journal = Journal()
         >>>
         >>> # Log messages
         >>> journal.info("This is an info message")

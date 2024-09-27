@@ -17,7 +17,7 @@ from pymysql.cursors import DictCursor
 
 from fairylandfuture.exceptions.databases import SQLSyntaxException
 from fairylandfuture.exceptions.messages.databases import SQLSyntaxExceptMessage
-from fairylandfuture.interface.toolkits.databases import AbstractMySQLOperation
+from fairylandfuture.interface.modules.databases import AbstractMySQLOperation
 from fairylandfuture.structures.builder.databases import StructureMySQLExecute
 
 
