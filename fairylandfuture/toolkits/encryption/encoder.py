@@ -12,7 +12,7 @@ import base64
 from fairylandfuture.enums.enconding import EncodingEnum
 
 
-class Base64Encryption:
+class Base64CryptionToolkits:
 
     @classmethod
     def encode(cls, data: str) -> str:

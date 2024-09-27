@@ -14,24 +14,22 @@ import json
 from array import array
 
 
-class ValidateStringModule:
+class ValidateStringToolkits:
 
     @classmethod
-    def valid_parentheses(cls, string: str, /) -> bool:
+    def valid_parentheses(cls, _string: str, /) -> bool:
         """
         Validate parentheses.
 
-        :param string: String to validate
-        :type string: str
+        :param _string: String to validate
+        :type _string: str
         :return: True if the parentheses are balanced, False otherwise
         :rtype: bool
         """
         stack = array("u")
         matching = {")": "(", "}": "{", "]": "["}
 
-        for char in string:
-            char: str
-
+        for char in _string:
             if char in matching.values():
                 stack.append(char)
             elif char in matching.keys():
@@ -41,17 +39,17 @@ class ValidateStringModule:
         return not stack
 
     @classmethod
-    def valid_json(cls, string: str, /) -> bool:
+    def valid_json(cls, _string: str, /) -> bool:
         """
         Validate JSON.
 
-        :param string: String to validate
-        :type string: str
+        :param _string: String to validate
+        :type _string: str
         :return: True if the JSON is valid, False otherwise
         :rtype: bool
         """
         try:
-            json.loads(string)
+            json.loads(_string)
             return True
         except json.JSONDecodeError:
             return False
@@ -59,12 +57,12 @@ class ValidateStringModule:
             raise err
 
     @classmethod
-    def vaild_url(cls, string: str, /) -> bool:
+    def vaild_url(cls, _string: str, /) -> bool:
         """
         Validate URL.
 
-        :param string: String to validate
-        :type string: str
+        :param _string: String to validate
+        :type _string: str
         :return: True if the URL is valid, False otherwise
         :rtype: bool
         """
@@ -79,18 +77,18 @@ class ValidateStringModule:
             re.IGNORECASE,
         )
 
-        return re.match(url_regex, string) is not None
+        return re.match(url_regex, _string) is not None
 
     @classmethod
-    def valid_email(cls, string: str, /) -> bool:
+    def valid_email(cls, _string: str, /) -> bool:
         """
         Validate email.
 
-        :param string: String to validate
-        :type string: str
+        :param _string: String to validate
+        :type _string: str
         :return: True if the email is valid, False otherwise
         :rtype: bool
         """
         email_regex = re.compile(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$")
 
-        return re.match(email_regex, string) is not None
+        return re.match(email_regex, _string) is not None
