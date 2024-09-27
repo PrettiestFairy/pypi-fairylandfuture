@@ -14,13 +14,12 @@ from typing import Optional
 
 from loguru import logger
 
-from fairylandfuture.const.typed import TypeLogLevel
 from fairylandfuture.core.metaclasses.singleton import SingletonMeta
 from fairylandfuture.enums.enconding import EncodingEnum
 from fairylandfuture.enums.journal import LogLevelEnum
 
 
-class JournalModule(metaclass=SingletonMeta):
+class Journal(metaclass=SingletonMeta):
     """
     A logging utility implemented as a singleton to ensure that only one instance
     handles logging across the application.
@@ -40,21 +39,21 @@ class JournalModule(metaclass=SingletonMeta):
     :param compression: Compression format for rotated logs.
     :type compression: str
     :param encoding: Encoding for the log files.
-    :type encoding: str
+    :type encoding: EncodingEnum
     :param level: Logging level for the file handler.
-    :type level: TypeLogLevel
+    :type level: LogLevelEnum
     :param serialize: Serialize log messages to JSON format.
     :type serialize: bool
     :param console: Flag to enable logging to console.
     :type console: bool
     :param console_level: Logging level for the console handler.
-    :type console_level: TypeLogLevel
+    :type console_level: LogLevelEnum
     :param console_format: Log message format for console.
     :type console_format: str or None
 
     Usage::
         >>> # Create a journal instance
-        >>> journal = JournalModule()
+        >>> journal = Journal()
         >>>
         >>> # Log messages
         >>> journal.info("This is an info message")
@@ -74,11 +73,11 @@ class JournalModule(metaclass=SingletonMeta):
         retention: str = "180 days",
         formatting: Optional[str] = None,
         compression: str = "gz",
-        encoding: str = EncodingEnum.utf8.value,
-        level: TypeLogLevel = LogLevelEnum.info.value,
+        encoding: EncodingEnum = EncodingEnum.utf8,
+        level: LogLevelEnum = LogLevelEnum.info,
         serialize: bool = False,
         console: bool = False,
-        console_level: TypeLogLevel = LogLevelEnum.trace.value,
+        console_level: LogLevelEnum = LogLevelEnum.trace,
         console_format: Optional[str] = None,
     ):
         """
@@ -111,7 +110,7 @@ class JournalModule(metaclass=SingletonMeta):
 
         if self.__debug:
             self.__name += f".debug{extension if extension else '.log'}"
-            self.__level = LogLevelEnum.debug.value
+            self.__level = LogLevelEnum.debug
 
         if not self.__formatting:
             self.__formatting = "[{time:YYYY-MM-DD HH:mm:ss} | Process ID: {process:<8} | Thread ID: {thread:<8} | {level:<8}]: {message}"
@@ -125,8 +124,8 @@ class JournalModule(metaclass=SingletonMeta):
             retention=self.__retention,
             format=self.__formatting,
             compression=self.__compression,
-            encoding=self.__encoding,
-            level=self.__level,
+            encoding=self.__encoding.value,
+            level=self.__level.value,
             enqueue=self.__enqueue,
             colorize=self.__colorize,
             backtrace=self.__backtrace,
@@ -143,8 +142,8 @@ class JournalModule(metaclass=SingletonMeta):
                 retention=self.__retention,
                 format=self.__formatting,
                 compression=self.__compression,
-                encoding=self.__encoding,
-                level=self.__level,
+                encoding=self.__encoding.value,
+                level=self.__level.value,
                 enqueue=self.__enqueue,
                 colorize=self.__colorize,
                 backtrace=self.__backtrace,
@@ -160,7 +159,7 @@ class JournalModule(metaclass=SingletonMeta):
             logger.add(
                 sink=sys.stdout,
                 format=self.__console_format,
-                level=self.__console_level,
+                level=self.__console_level.value,
                 colorize=self.__console_colorize,
                 enqueue=self.__console_enqueue,
             )

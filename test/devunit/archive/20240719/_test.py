@@ -11,7 +11,7 @@ from pathlib import Path
 
 from test.utils.config import TestConfig
 
-from fairylandfuture.modules.databases.postgresql import PostgreSQLConnector
+from fairylandfuture.modules.db.postgresql import PostgreSQLConnector
 
 config = TestConfig(Path(r"/conf/dev/config.yaml")).config.get("postgresql")
 

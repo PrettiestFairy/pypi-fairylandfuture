@@ -13,7 +13,7 @@ from typing import Dict
 import netifaces
 
 
-class LocalNetworkModule:
+class LocalNetworkToolkits:
 
     @classmethod
     def ip_address(cls) -> Dict[str, str]:

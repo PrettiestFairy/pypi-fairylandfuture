@@ -30,7 +30,7 @@
 # print(data, type(data))
 # json_file.save(data)
 
-from fairylandfuture.modules.files.general import File
+from fairylandfuture.modules.file.general import File
 
 file = File(r"C:\Lionel\Project\Github\pypi-fairylandfuture\test\devunit\20240630\2.json")
 load_file = file.load_json()

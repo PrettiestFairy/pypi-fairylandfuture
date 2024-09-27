@@ -10,10 +10,10 @@
 import abc
 from typing import Tuple, NamedTuple, Union, Dict, Any
 
-from fairylandfuture.exceptions.databases import SQLSyntaxException
-from fairylandfuture.structures.builder.databases import StructureMySQLExecute
-from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
-from fairylandfuture.exceptions.messages.databases import SQLSyntaxExceptMessage
+from fairylandfuture.exceptions.db import SQLSyntaxException
+from fairylandfuture.structures.builder.db import StructureMySQLExecute
+from fairylandfuture.structures.builder.db import StructurePostgreSQLExecute
+from fairylandfuture.exceptions.messages.db import SQLSyntaxExceptMessage
 
 
 class AbstractMySQLOperation(abc.ABC):

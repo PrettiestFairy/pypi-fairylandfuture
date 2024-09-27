@@ -14,8 +14,8 @@ from dataclasses import dataclass
 
 from test.utils.config import TestConfig
 
-from fairylandfuture.modules.databases.postgresql import PostgreSQLConnector, PostgreSQLOperation
-from fairylandfuture.structures.builder.databases import StructurePostgreSQLExecute
+from fairylandfuture.modules.db.postgresql import PostgreSQLConnector, PostgreSQLOperation
+from fairylandfuture.structures.builder.db import StructurePostgreSQLExecute
 from fairylandfuture.utils.builder.convert import ConvertDataStructure
 
 
