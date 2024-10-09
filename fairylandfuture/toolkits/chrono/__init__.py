@@ -170,7 +170,7 @@ class DateTimeToolkits:
         :return: Timestamp.
         :rtype: int
         """
-        validator_expected_types = {"dt_string": str, "ms": bool, "n": (int, type(None)), "_format": str}
+        validator_expected_types = {"dt_string": str, "ms": bool, "n": (int, type(None)), "_format": (str, type(None))}
         validator = ParamTypeValidatorUtils(validator_expected_types)
         validator.validate({"dt_string": dt_string, "ms": ms, "n": n, "_format": _format})
 
