@@ -7,6 +7,7 @@ log[s]
 # dev config file
 conf/dev/config.yaml
 conf/pypi/.pypirc
+__pycache__
 # temp folder, exclude markdown file
 temp/*
 !temp/*.md

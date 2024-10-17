@@ -34,6 +34,8 @@ mysql-connector-python  # MySQL processing
 sqlalchemy  # ORM
 DBUtils  # Connection pooling
 aiomysql  # Asynchronous MySQL processing
+kafka-python  # Kafka processing
+faker  # Fake data generation
 
 django  # Django web framework
 djangorestframework  # RESTful API framework
