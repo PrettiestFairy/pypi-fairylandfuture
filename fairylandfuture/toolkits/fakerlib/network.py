@@ -7,10 +7,12 @@
 @datetime: 2024-10-15 17:13:42 UTC+08:00
 """
 
-from fairylandfuture.toolkits.fakerlib.general import FakeGeneralToolkits
+from faker import Faker
+
+from fairylandfuture.core.superclass.toolkits.fakerlib import BaseFaker
 
 
-class FakeNetworkToolkits(FakeGeneralToolkits):
+class FakeNetworkToolkits(BaseFaker):
 
     @classmethod
     def generate_ipv4_address(cls):

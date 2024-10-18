@@ -9,11 +9,8 @@
 
 import secrets
 
-from faker import Faker
-
 
 class FakeGeneralToolkits:
-    faker = Faker()
 
     @classmethod
     def generate_hex_string(cls, number, group=1, sep=""):
@@ -22,7 +19,3 @@ class FakeGeneralToolkits:
 
         segments = [secrets.token_hex(round(number / 2)).upper() for _ in range(group)]
         return f"{sep}".join(segments)
-
-
-if __name__ == "__main__":
-    print(FakeGeneralToolkits.generate_hex_string(4, 4, "-"))
