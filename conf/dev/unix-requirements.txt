@@ -206,7 +206,7 @@ mypy-extensions==1.0.0
     # via
     #   black
     #   mypy
-mysql-connector-python==9.0.0
+mysql-connector-python==9.1.0
     # via -r requirements.in
 nbclient==0.10.0
     # via nbconvert
