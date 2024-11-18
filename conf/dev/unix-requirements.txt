@@ -6,7 +6,7 @@
 #
 aiohappyeyeballs==2.4.0
     # via aiohttp
-aiohttp==3.10.5
+aiohttp==3.10.11
     # via pigar
 aiomysql==0.2.0
     # via -r requirements.in
