@@ -36,6 +36,7 @@ DBUtils  # Connection pooling
 aiomysql  # Asynchronous MySQL processing
 kafka-python  # Kafka processing
 faker  # Fake data generation
+pypinyin  # Chinese Pinyin processing
 
 django  # Django web framework
 djangorestframework  # RESTful API framework

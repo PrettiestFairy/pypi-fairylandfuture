@@ -9,9 +9,9 @@
 
 import json
 
-from dataclasses import dataclass, asdict, astuple, field
+from dataclasses import dataclass, asdict, astuple
 
-from typing import Dict, Any, Tuple, Self, Union, List
+from typing import Dict, Any, Tuple, Self, Union
 
 
 @dataclass(frozen=True)
@@ -37,30 +37,3 @@ class BaseStructure:
 
     def to_jsonstring(self: Self, /, *, ignorenone: bool = False) -> str:
         return json.dumps(self.to_dict(ignorenone=ignorenone), separators=(",", ":"), ensure_ascii=False)
-
-
-@dataclass
-class BaseStructureTreeNode:
-    id: Any
-    parent_id: Any
-    data: Dict[str, Any]
-    children: List["StructureNode"] = field(default=None)
-
-    def __post_init__(self):
-        self.children = []
-
-    def get_id(self) -> Any:
-        return self.id
-
-    def get_parent_id(self) -> Any:
-        return self.parent_id
-
-    def add_child(self, child: "StructureNode"):
-        self.children.append(child)
-
-    def get_children(self) -> List["StructureNode"]:
-        return self.children
-
-    def to_dict(self) -> Dict:
-        result = {"id": self.id, "parent_id": self.parent_id, "data": self.data, "children": [child.to_dict() for child in self.children]}
-        return result
