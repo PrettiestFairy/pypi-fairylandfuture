@@ -38,7 +38,7 @@ from fairylandfuture.exceptions.general import ParamsInvalidException, ParamsTyp
 from fairylandfuture.interface.modules.db import AbstractMySQLOperation, AbstractPostgreSQLOperation  # MySQL操作抽象基类, PostgreSQL操作抽象基类
 
 # modules.datetimes
-from fairylandfuture.modules.datetimes import DateTimeModule  # 日期时间模块
+from fairylandfuture.toolkits.chrono import DateTimeToolkits  # 日期时间模块
 
 # modules.decorators
 # from fairylandfuture.modules.decorators  # refactor  # 装饰器模块
