@@ -43,17 +43,16 @@ class TreeBuilderV2(TreeBuilder):
             parent_id_field: str = "parent_id",
             max_depth: Optional[int] = None
     ) -> Tuple[Dict[str, Any], ...]:
+
         if not data:
             raise ValueError("Input data cannot be empty.")
 
-        # 创建所有节点
         nodes = {
             item.get(id_field): cls.node(item.get(id_field), parent_id=item.get(parent_id_field), data=item)
             for item in data
         }
         root_nodes = []
 
-        # 构建树
         for node in nodes.values():
             parent_id = node.parent_id
             if parent_id and parent_id in nodes:
