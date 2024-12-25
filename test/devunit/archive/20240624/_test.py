@@ -13,7 +13,7 @@ from fairylandfuture.modules.datasource import MySQLConnector
 
 from test.utils.config import TestConfig
 from test.devunit._test import BASE_PATH
-from bin.general import DEV_CONFIG_FILE_PATH
+from bin.generic import DEV_CONFIG_FILE_PATH
 
 if __name__ == "__main__":
     config_instance = TestConfig(DEV_CONFIG_FILE_PATH)

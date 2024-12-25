@@ -12,7 +12,7 @@ from typing import Any, Dict
 
 import yaml
 
-from bin.general import DEV_CASE_CONFIG_FILE_PATH
+from bin.generic import DEV_CASE_CONFIG_FILE_PATH
 from fairylandfuture.enums.chrono import DateTimeEnum, EncodingEnum
 from fairylandfuture.structures.builder.db import StructureMySQLExecute, StructureSQLInsertManyParams
 from fairylandfuture.modules.datasource import MySQLDataSource

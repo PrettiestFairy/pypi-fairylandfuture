@@ -9,7 +9,7 @@
 
 from typing import Dict, Tuple, Type, Union
 
-from fairylandfuture.exceptions.general import ParamsInvalidException, ParamsTypeException
+from fairylandfuture.exceptions.generic import ParamsInvalidException, ParamsTypeException
 
 
 class ParamTypeValidatorUtils:

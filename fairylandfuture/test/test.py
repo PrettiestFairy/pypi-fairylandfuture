@@ -4,33 +4,39 @@
 @author: Lionel Johnson
 @contact: https://fairy.host
 @organization: https://github.com/FairylandFuture
-@datetime: 2024-12-23 16:35:23 UTC+08:00
+@datetime: 2024-12-24 17:33:39 UTC+08:00
 """
+
+from dataclasses import dataclass, field
 
 from typing import Dict, Any, List
 
-from fairylandfuture.core.superclass.structures import BaseStructureTreeNode
 
+@dataclass
+class BaseStructureTreeNode:
+    id: Any
+    parent_id: Any
+    data: Dict[str, Any]
+    children: List["StructureNode"] = field(default=None)
 
-class TreeEntity:
-    def build_tree(self, data: List[Dict[str, Any]], id_field: str, parent_id_field: str) -> List[Dict[str, Any]]:
-        tree = []
-        lookup = {item[id_field]: {**item, "children": []} for item in data}
+    def __post_init__(self):
+        self.children = []
 
-        for item in data:
-            parent_id = item.get(parent_id_field)
-            node = lookup[item[id_field]]
-            if parent_id is None:
-                # 如果没有父节点，则为根节点
-                tree.append(node)
-            else:
-                parent = lookup.get(parent_id)
-                if parent:
-                    parent["children"].append(node)
-                else:
-                    # 处理父节点不在数据中的情况
-                    tree.append(node)
-        return tree
+    def get_id(self) -> Any:
+        return self.id
+
+    def get_parent_id(self) -> Any:
+        return self.parent_id
+
+    def add_child(self, child: "StructureNode"):
+        self.children.append(child)
+
+    def get_children(self) -> List["StructureNode"]:
+        return self.children
+
+    def to_dict(self) -> Dict:
+        result = {"id": self.id, "parent_id": self.parent_id, "data": self.data, "children": [child.to_dict() for child in self.children]}
+        return result
 
 
 class TreeBuilder:
