@@ -11,7 +11,7 @@ import os
 import subprocess
 import sys
 
-from bin.general import ROOT_PATH
+from bin.generic import ROOT_PATH
 from fairylandfuture.enums.enconding import EncodingEnum
 
 

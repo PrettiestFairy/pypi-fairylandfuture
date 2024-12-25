@@ -7,7 +7,7 @@
 @datetime: 2024-08-14 17:13:15 UTC+08:00
 """
 
-from fairylandfuture.structures.general.api import StructureResponse
+from fairylandfuture.structures.generic.api import StructureResponse
 
 
 if __name__ == "__main__":

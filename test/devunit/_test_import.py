@@ -32,7 +32,7 @@ from fairylandfuture.exceptions.messages.db import SQLSyntaxExceptMessage  # SQL
 # exceptions
 from fairylandfuture.exceptions.db import SQLExecutionException, SQLSyntaxException  # SQL执行异常, SQL语法异常
 from fairylandfuture.exceptions.file import FileReadException  # 文件读取异常
-from fairylandfuture.exceptions.general import ParamsInvalidException, ParamsTypeException, ParamsValueException  # 参数无效异常, 参数类型异常, 参数值异常
+from fairylandfuture.exceptions.generic import ParamsInvalidException, ParamsTypeException, ParamsValueException  # 参数无效异常, 参数类型异常, 参数值异常
 
 # interface
 from fairylandfuture.interface.modules.db import AbstractMySQLOperation, AbstractPostgreSQLOperation  # MySQL操作抽象基类, PostgreSQL操作抽象基类
@@ -59,7 +59,7 @@ from fairylandfuture.modules.validations.strings import ValidateStringModule  # 
 from fairylandfuture.structures.builder.db import StructureMySQLExecute, StructurePostgreSQLExecute  # MySQL执行结构构造器, PostgreSQL执行结构构造器
 
 # structures.general
-from fairylandfuture.structures.general.api import StructureResponse  # API响应结构构造器
+from fairylandfuture.structures.generic.api import StructureResponse  # API响应结构构造器
 
 # toolkits.databases
 from fairylandfuture.modules.db.mysql import MySQLConnector, MySQLOperation, MySQLSQLSimpleConnectionPool  # MySQL连接器, MySQL操作类, MySQL简单连接池 工具类
@@ -70,7 +70,7 @@ from fairylandfuture.toolkits.encryption.cipher import CipherToolkits, UserPassw
 from fairylandfuture.toolkits.encryption.encoder import Base64CryptionToolkits  # Base64加解密工具类
 
 # modules.files
-from fairylandfuture.modules.file.general import File, TextFile, YamlFile, JsonFile, OtherTextFile  # 文件操作工具类
+from fairylandfuture.modules.file.generic import File, TextFile, YamlFile, JsonFile, OtherTextFile  # 文件操作工具类
 
 # modules.validation
 from fairylandfuture.modules.validator.validators import Validator  # 验证器

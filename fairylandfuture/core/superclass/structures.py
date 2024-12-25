@@ -44,7 +44,7 @@ class BaseStructureTreeNode:
     id: Any
     parent_id: Any
     data: Dict[str, Any]
-    children: List["StructureNode"] = field(default=None)
+    children: List["BaseStructureTreeNode"] = field(default=None)
 
     def __post_init__(self):
         self.children = []
@@ -55,10 +55,10 @@ class BaseStructureTreeNode:
     def get_parent_id(self) -> Any:
         return self.parent_id
 
-    def add_child(self, child: "StructureNode"):
+    def add_child(self, child: "BaseStructureTreeNode"):
         self.children.append(child)
 
-    def get_children(self) -> List["StructureNode"]:
+    def get_children(self) -> List["BaseStructureTreeNode"]:
         return self.children
 
     def to_dict(self) -> Dict:
