@@ -9,7 +9,7 @@
 
 from typing import Any, Callable, Optional, Union, Sequence, Dict, Type
 
-from fairylandfuture.exceptions.general import ValidationError
+from fairylandfuture.exceptions.generic import ValidationError
 
 
 class Validator:

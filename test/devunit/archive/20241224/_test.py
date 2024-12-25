@@ -7,7 +7,7 @@
 @datetime: 2024-12-24 18:04:26 UTC+08:00
 """
 
-from fairylandfuture.toolkits.general.structure import TreeBuilder
+from fairylandfuture.toolkits.generic.structure import TreeBuilderV2
 
 data = [
     {"id": 1, "parent_id": 0, "name": "China", "level": 1},
@@ -27,7 +27,7 @@ data = [
     {"id": 15, "parent_id": 7, "name": "The Bund", "level": 4},
 ]
 
-tree = TreeBuilder.build(data)
+tree = TreeBuilderV2.build(data, max_depth=1)
 
 import json
 
