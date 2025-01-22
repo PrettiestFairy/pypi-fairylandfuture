@@ -61,6 +61,6 @@ class BaseStructureTreeNode:
     def get_children(self) -> List["BaseStructureTreeNode"]:
         return self.children
 
-    def to_dict(self) -> Dict:
+    def to_dict(self) -> Dict[str, ...]:
         result = {"id": self.id, "parent_id": self.parent_id, "data": self.data, "children": [child.to_dict() for child in self.children]}
         return result
