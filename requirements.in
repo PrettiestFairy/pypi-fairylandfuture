@@ -12,6 +12,7 @@ pigar  # pigar -p requirements.txt
 pipdeptree  # pipdeptree -fl
 pip-review  # pip-review --interactive
 pip-autoremove  # pip-autoremove -y <package name>
+uv  # new package manager
 
 setuptools
 wheel
